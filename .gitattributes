@@ -1,0 +1,6 @@
+*.pdf binary
+*.png binary
+*.stl binary
+*.step binary
+*.zip binary
+*.zip.* binary

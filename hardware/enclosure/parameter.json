@@ -1,0 +1,97 @@
+{
+  "version": "0.1",
+  "unit": "mm",
+  "board_basis": "Sonocotta Loud-ESP32, ESP32-WROVER; manufacturer Gerber revisions E2 and E3; delivered revision still to be verified",
+  "case_x": 104.0,
+  "case_y": 80.0,
+  "base_height": 30.0,
+  "lid_thickness": 2.4,
+  "wall": 2.4,
+  "floor": 2.4,
+  "corner_radius": 5.0,
+  "board_x": 85.032342,
+  "board_y": 55.9999896,
+  "board_offset_x": 9.0,
+  "board_offset_y": 3.2,
+  "board_thickness_assumed": 1.6,
+  "board_hole_x": [
+    3.5110674,
+    61.5119674
+  ],
+  "board_hole_y": [
+    3.4999676,
+    52.4991076
+  ],
+  "board_hole_diameter_reference": 2.6924,
+  "standoff_height": 7.0,
+  "standoff_diameter": 5.8,
+  "board_pilot_diameter": 2.1,
+  "board_pilot_depth": 5.5,
+  "lid_boss_diameter": 7.2,
+  "lid_boss_inset": 4.6,
+  "lid_pilot_diameter": 2.5,
+  "lid_pilot_depth": 8.5,
+  "lid_clearance_hole": 3.4,
+  "lip_side_clearance": 0.35,
+  "lip_height": 2.8,
+  "lip_thickness": 1.2,
+  "port_tongue_clearance": 0.3,
+  "port_tongue_thickness": 2.0,
+  "usb_center_x_from_board_left": 11.2,
+  "usb_width": 18.0,
+  "usb_bottom_z_assumed": 8.4,
+  "usb_top_z_assumed": 18.6,
+  "usb_lower_corner_radius": 2.0,
+  "cable_exit_x": [
+    68.0,
+    87.0
+  ],
+  "cable_exit_center_z": 15.0,
+  "cable_exit_diameter": 7.0,
+  "vent_centers_x": [
+    32.0,
+    38.0,
+    44.0,
+    50.0,
+    56.0,
+    62.0,
+    68.0,
+    74.0
+  ],
+  "vent_centers_y": [
+    19.0,
+    57.0
+  ],
+  "vent_width": 2.4,
+  "vent_length": 14.0,
+  "engraving_depth": 0.5,
+  "prototype_notice": "USB height, PCB thickness, underside and component heights are assumptions. Print a fit test and verify the actual board before final use.",
+  "revision": "W1 - Wandmontage",
+  "cable_tie_anchors": [
+    [
+      68.0,
+      64.0
+    ],
+    [
+      94.0,
+      64.0
+    ]
+  ],
+  "wall_mount_enabled": true,
+  "wall_mount_x": [
+    22.0,
+    82.0
+  ],
+  "wall_mount_entry_y": 65.0,
+  "wall_mount_seat_y": 72.0,
+  "wall_mount_entry_diameter": 9.0,
+  "wall_mount_neck_width": 4.5,
+  "wall_mount_reinforcement_width": 18.0,
+  "wall_mount_reinforcement_y": 59.6,
+  "wall_mount_reinforcement_top_z": 5.2,
+  "wall_mount_screw_shank_max": 4.0,
+  "wall_mount_screw_shank_min": 3.5,
+  "wall_mount_screw_head_max": 8.0,
+  "wall_mount_screw_head_height_max": 3.0,
+  "wall_mount_head_underside_gap": 5.5
+}

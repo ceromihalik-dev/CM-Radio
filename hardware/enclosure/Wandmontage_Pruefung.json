@@ -1,0 +1,306 @@
+{
+  "digital_only": true,
+  "spacing_mm": 60.0,
+  "entry_centres_mm": [
+    [
+      22.0,
+      65.0
+    ],
+    [
+      82.0,
+      65.0
+    ]
+  ],
+  "seat_centres_mm": [
+    [
+      22.0,
+      72.0
+    ],
+    [
+      82.0,
+      72.0
+    ]
+  ],
+  "slide_mm": 7.0,
+  "reinforced_thickness_mm": 5.2,
+  "screw_head_clearance_from_pcb_envelope_y_mm": 1.800010399999998,
+  "path_checks": [
+    {
+      "x": 22.0,
+      "y": 65.0,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 65.875,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 66.75,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 67.625,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 68.5,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 69.375,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 70.25,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 71.125,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 72.0,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 65.0,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 65.875,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 66.75,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 67.625,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 68.5,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 69.375,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 70.25,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 71.125,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 22.0,
+      "y": 72.0,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 65.0,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 65.875,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 66.75,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 67.625,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 68.5,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 69.375,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 70.25,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 71.125,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 72.0,
+      "shaft_mm": 3.5,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 65.0,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 65.875,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 66.75,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 67.625,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 68.5,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 69.375,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 70.25,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 71.125,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    },
+    {
+      "x": 82.0,
+      "y": 72.0,
+      "shaft_mm": 4.0,
+      "shaft_collision_mm3": 0.0,
+      "head_collision_mm3": 0.0
+    }
+  ],
+  "strain_relief_checks": [
+    {
+      "x": 68.0,
+      "y": 64.0,
+      "tunnel_collision_mm3": 0.0
+    },
+    {
+      "x": 94.0,
+      "y": 64.0,
+      "tunnel_collision_mm3": 0.0
+    }
+  ],
+  "head_capture_checks": [
+    {
+      "x": 22.0,
+      "head_diameter_mm": 7.0,
+      "blocking_material_mm3": 82.92433669041289
+    },
+    {
+      "x": 82.0,
+      "head_diameter_mm": 7.0,
+      "blocking_material_mm3": 82.9243366904129
+    }
+  ],
+  "settled_head_extra_travel_mm": 0.5
+}

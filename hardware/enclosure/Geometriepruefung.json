@@ -1,0 +1,62 @@
+{
+  "units": "mm",
+  "dimensions_body_without_screw_heads": [
+    104.0,
+    80.0,
+    32.4
+  ],
+  "pcb_bottom_z": 9.4,
+  "pcb_top_z_assumed": 11.0,
+  "models": {
+    "base": {
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 46506.872759931415,
+      "bbox_mm": [
+        104.0,
+        80.0,
+        30.00000000000001
+      ],
+      "z_min": 0.0,
+      "z_max": 30.00000000000001
+    },
+    "lid": {
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 20022.307179490595,
+      "bbox_mm": [
+        104.00000019999999,
+        80.00000019999999,
+        15.644295113392449
+      ],
+      "z_min": 16.75570498660755,
+      "z_max": 32.4000001
+    },
+    "lid_print": {
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 20022.307179490577,
+      "bbox_mm": [
+        104.00000019999999,
+        80.00000019999999,
+        15.64429511339246
+      ],
+      "z_min": -1.000000006123234e-07,
+      "z_max": 15.644295013392458
+    },
+    "fit": {
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 1561.6020658415518,
+      "bbox_mm": [
+        64.40090000000001,
+        55.39914,
+        4.5
+      ],
+      "z_min": 0.0,
+      "z_max": 4.5
+    }
+  },
+  "assembly_collision_mm3": 0.0,
+  "pcb_base_collision_mm3": 0.0
+}

@@ -1,0 +1,183 @@
+CM-Radio - Gehaeuse V0.1 / W1 Wandmontage
+Stand: 07.10.2026
+
+Dieser Entwurf ist eine druckbare Passprobe fuer das bestellte Elecrow/Sonocotta
+Loud-ESP32 mit ESP32-WROVER. Er ist fuer die Elektronik vorgesehen; die vorhandenen
+zwei Deckenlautsprecher bleiben ausserhalb des Gehaeuses.
+
+Aktualisierung W1: zwei verstaerkte Schluesselloch-Aufnahmen auf der Wandseite.
+Gehaeusekoerper jetzt 104 x 80 x 32,4 mm. Unterteil und Deckel als neues Paar
+drucken. Seite 4 der Anleitung enthaelt eine Bohrschablone im Massstab 1:1.
+
+DOWNLOADPAKET
+
+STL/CM-Radio_Unterteil_V0.1.stl
+  Unterteil mit vier Platinenstuetzen, vier Deckel-Schraubsockeln, seitlichen
+  Lueftungsoeffnungen, zwei inneren Kabelbinder-Schlaufen und zwei verstaerkten
+  Schluesselloch-Aufnahmen fuer die Wandbefestigung.
+
+STL/CM-Radio_Deckel_V0.1.stl
+  Deckel mit vertieftem CM-Radio-Schriftzug, Lueftung, Fuehrungsrand und Stegen,
+  die die nach oben offenen Aussparungen im Unterteil schliessen.
+  Die STL liegt bereits mit der Aussenflaeche nach unten auf dem Druckbett.
+
+STL/CM-Radio_Lochraster_Probe_V0.1.stl
+  Sparsame Probe fuer das Befestigungsraster. Zuerst drucken und das Board auf
+  die vier kleinen Stuetzen legen. Vier Durchgangsloecher: Durchmesser 2,8 mm.
+  Diese Probe ist kein Bauteil des Betriebsgehaeuses.
+
+STEP/
+  Unterteil und Deckel einzeln in Druckausrichtung, ausserdem die geschlossene
+  Baugruppe aus den zwei Gehaeuseteilen. Alle STEP-Dateien sind in Millimetern.
+  Die Baugruppe enthaelt keine modellierten elektronischen Bauteile oder Schrauben.
+
+CM-Radio_Druckanleitung_V0.1.pdf
+  Vier Seiten: Entwurf, Druck/Montage, Messblatt fuer die passgenaue V0.2 sowie
+  Wandmontage mit Bohrschablone bei 100 Prozent / Tatsaechliche Groesse.
+
+CM-Radio_Vorschau_V0.1.png
+  Direkte CAD/STL-Vorschau. Die Farben sind eine Darstellungsempfehlung;
+  die Teile koennen jeweils einfarbig gedruckt werden.
+
+CM-Radio_Gehaeuse.py + parameter.json
+  Aenderbarer CadQuery-Entwurf und Parameter. Diese Dateien werden zum Drucken
+  nicht benoetigt. Fuer Anpassungen reichen auch die STEP-Dateien in einem CAD.
+
+Geometriepruefung.json / STL_Pruefung.json / STEP_Pruefung.json
+  Digitale Pruefergebnisse fuer die ausgegebenen Dateien.
+Wandmontage_Pruefung.json
+  Schraubenbewegung, Halt des Kopfes am schmalen Schlitz, Abstand zur
+  Platinenkontur und freie Kabelbinder-Durchfuehrungen digital geprueft.
+
+MASSE UND BEFESTIGUNG
+
+Geschlossener Gehaeusekoerper: 104 x 80 x 32,4 mm, ohne Schraubenkoepfe.
+Wand, Boden und Deckel: jeweils 2,4 mm.
+Im Bereich der Wandaufnahmen ist der Boden auf 5,2 mm verstaerkt.
+Hoehe der Platinenstuetzen: 7,0 mm ab der Bodenoberseite.
+PCB-Unterseite: Z = 9,4 mm. PCB-Oberseite angenommen Z = 11,0 mm.
+Deckel-Unterseite mittig: Z = 30,0 mm. Mittig 19,0 mm Raum ueber der PCB-Oberseite.
+Fuehrungsrand ragt 2,8 mm nach unten; in Randbereichen weniger Freiraum.
+
+Platinenbefestigung: 4 x M2,5 x 6 mm Linsenkopf, in Kunststoff-Pilotloch 2,1 mm.
+Deckelbefestigung: 4 x M3 x 10 mm Linsenkopf, in Kunststoff-Pilotloch 2,5 mm.
+Schrauben vorsichtig ansetzen, ggf. druckbedingt nachbohren. Keine Einsaetze.
+Kabelbinder: 2 x ca. 2,5 mm breit fuer die inneren Zugentlastungsschlaufen.
+
+USB-Aussparung vorne: nominal 18,0 mm breit, von Z = 8,4 bis 18,6 mm.
+Unterkante mit Radius 2,0 mm, daher nicht rechteckig bis in die unteren Ecken.
+Lautsprecherkabel hinten: zwei Oeffnungen Durchmesser 7,0 mm, Zentren X=68/87,
+Z=15 mm. Deckelstege haben 0,3 mm seitliches Spiel und 0,15 mm extra Bogenfreiheit.
+Die Schraubklemmen bleiben innen; die Kabel werden im Unterteil nach hinten
+gefuehrt und mit den Kabelbinderschlaufen entlastet.
+
+WANDBEFESTIGUNG
+
+Zwei Schraubenkopf-Aufnahmen mit 60,0 mm horizontalem Abstand.
+Einlass je Durchmesser 9,0 mm, Schlitzbreite 4,5 mm, Einhaengeweg ca. 7,0 mm.
+Nominale Endlage der Schraubenschaefte: X=22/82 mm, Y=72 mm, vom unteren
+Gehaeuserand betrachtet. Die grossen Einlassoeffnungen liegen bei Y=65 mm.
+Die Schraubenkopffreiräume liegen ausserhalb der Platinenkontur im erweiterten
+Bereich an der Oberkante. Die Unterseite bleibt flach auf dem Druckbett.
+
+Passende Kopfgeometrie:
+- Rund- oder Linsenkopf; kein Senkkopf.
+- Schaftdurchmesser 3,5-4,0 mm.
+- Kopfdurchmesser 7,0-8,0 mm, Kopfhoehe maximal 3,0 mm.
+- Zwei Schrauben mit passenden Duebeln fuer die vorhandene Wand.
+- Schraubenlaenge und Duebelgroesse haengen von der Wand ab.
+
+Bohrschablone: Seite 4 der PDF bei 100 Prozent / Tatsaechliche Groesse drucken.
+Keine Seitenanpassung. Die Kontrollstrecke mit dem Lineal auf 50 mm pruefen.
+Die Kreuzmitten haben 60 mm Abstand und markieren die beiden Wandbohrungen.
+
+Montage:
+1. Zwei waagerechte Bohrpunkte mit 60 mm Abstand uebertragen.
+2. Duebel und Schrauben setzen. Kopfunterseite zunaechst etwa 5,5 mm von
+   der Wand stehen lassen; danach den Sitz ohne Spiel fein einstellen.
+3. Gehaeuse ueber beide Schraubenkoepfe setzen und ca. 7 mm nach unten schieben.
+4. Montageausrichtung: USB-C unten, die Lautsprecherkabel oben.
+
+Die Aufnahmen werden am fertigen Druck mit den ausgewaehlten Schrauben erprobt.
+Die digitale Pruefung ist kein Belastungsversuch des Materials.
+
+DRUCKEN
+
+1. Zuerst die Lochraster-Probe, danach das Unterteil drucken und die Passung pruefen.
+2. STL-Dateien im Slicer als Millimeter bei 100 Prozent Skalierung importieren.
+3. Startwerte: PETG, Duese 0,4 mm, Schichthoehe 0,2 mm, 4-6 Wandlinien,
+   20-30 Prozent Fuellung. PLA ist fuer eine erste Passprobe geeignet.
+4. Unterteil: Boden auf dem Druckbett. Deckel: Aussenflaeche auf dem Druckbett,
+   Fuehrungsrand und Schliessstege nach oben. Ausrichtung in STLs bereits gesetzt.
+5. Stuetze voraussichtlich nicht erforderlich. Die kleinen Bruecken der
+   Kabelbinder-Schlaufen und der Schriftvertiefungen im Slicer kontrollieren.
+6. Der Fuehrungsrand hat 0,35 mm Luft pro Seite. Gedruckte Passung haengt von
+   Drucker und Material ab; ggf. Bohrungen nacharbeiten oder Parameter anpassen.
+
+HERSTELLERDATEN UND NOCH ZU PRUEFENDE ANNAHMEN
+
+Aus offiziellen Fertigungsdateien E2/E3 abgeleitet und zwischen beiden verglichen:
+- Platinenumhuellung ca. 85,03 x 56,00 mm, einschliesslich Kerbe rechts.
+- Lochraster ca. 58,00 x 49,00 mm.
+- Lochdurchmesser aus Bohrwerkzeug 0,106 Zoll: 2,6924 mm (Fertigungs-Nennwert).
+- Lochpositionen, gemessen von der Platinen-Umhuellung links/unten:
+  X = 3,5111 / 61,5120 mm; Y = 3,5000 / 52,4991 mm.
+- USB-Nennposition X = 11,2 mm von links, aus der Hersteller-PCB-Zeichnung.
+  Die Pad-Mittellinie aus den Gerbern ergibt ca. 11,2276 mm; Oeffnung uebergross.
+
+Die gelieferte Boardrevision ist noch nicht bekannt. Der Entwurf ist fuer
+Loud-ESP32 E2/E3 vorbereitet, keine Zusage fuer alle anderen Revisionen/Modelle.
+
+Noch nicht am echten Board gemessen:
+- PCB-Dicke (angenommen 1,6 mm).
+- Hoechste Loetstelle/Bauteile unter dem Board (7 mm Abstand eingeplant).
+- Maximale Bauteilhoehe oberhalb des Boards.
+- USB-Buchsenhoehe und USB-Steckerhuelle; Z-Fenster ist ein Entwurfswert.
+- Platz fuer Klemmen, Kabelfuehrung und Kabeldurchmesser am echten Aufbau.
+
+Die digitale Geometriepruefung ersetzt diese physische Passprobe nicht.
+Beim Einsetzen muessen USB-Buchse, Loetstellen, Antenne, Klemmen und Bauteile frei
+bleiben. Kabel duerfen beim Schliessen nicht eingeklemmt werden. Anschliessend
+Empfang, Waermeentwicklung und Kabelhalt im Betrieb pruefen.
+
+Optionale Anbauteile (Display, IR, Ethernet, externe Antenne) sind in V0.1 nicht
+eingeplant. Fuer V0.2 die Werte im PDF-Messblatt eintragen.
+
+QUELLEN, ABGERUFEN AM 07.10.2026
+
+https://sonocotta.com/loud-esp32/
+https://www.elecrow.com/loud-esp32.html
+https://github.com/sonocotta/esp32-audio-dock
+
+Mechanische Ausgangsdaten (Dateien im Hersteller-Repository):
+hardware/2-loud-esp32/rev-e2/2505-loud-esp32-e2-gerber.zip
+Git-Blob: 7b84614d02b1e514972f939bb4e2d4c915d31111
+hardware/2-loud-esp32/rev-e3/2603-loud-esp32-e3-2603-loud-esp32-f-gerber.zip
+Git-Blob: b4e36b9d4355be150c64ec4a4eb413995ce7d276
+hardware/2-loud-esp32/rev-e3/2603-loud-esp32-e3-pcb.pdf
+Git-Blob: 3fdac0db37ba9be60f160d09e190b726124288d4
+
+Die Angabe 'f' im Namen des E3-Gerberarchivs ist Teil des Herstellerdateinamens;
+die Datei wurde aus dem E3-Verzeichnis abgerufen. Es handelt sich um E3-ESP32-
+WROVER-Fertigungsdaten, nicht um das ESP32-S3-Modell im Verzeichnis rev-f.
+Die Rohdateien werden im Paket nicht mitgeliefert. Relevante abgeleitete Masse:
+Herstellergeometrie.json. Rundungen in Texten sind keine Fertigungstoleranzen.
+
+ENTWURF AENDERN
+
+Python >= 3.10 mit CadQuery 2.7 installieren. parameter.json bearbeiten.
+PowerShell im entpackten Paketordner:
+
+  py -m pip install -r requirements.txt
+  py .\CM-Radio_Gehaeuse.py
+
+Ausgabe: STL/ und STEP/ werden neu erzeugt. Geometriepruefung.json wird aktualisiert.
+Falls die Schriftart nicht verfuegbar ist:
+
+  py .\CM-Radio_Gehaeuse.py --no-engraving
+
+Alternativ im Quelltext eine lokal installierte Schrift angeben.
+Hoehen des USB-Fensters sind absolute Z-Masse ab Gehaeuseboden; bei Aenderung der
+Stuetzenhoehe oder PCB-Dicke die beiden USB-Z-Parameter entsprechend nachziehen.
+Nach eigenen Aenderungen Vorschau und Pruefdateien aus diesem Originalpaket
+nicht als Pruefung der geaenderten Datei betrachten.

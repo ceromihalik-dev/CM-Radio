@@ -1,0 +1,96 @@
+{
+  "version": "0.1",
+  "revision": "W1 - Wandmontage",
+  "files": [
+    {
+      "file": "Bohrschablone_Pruefung.json",
+      "bytes": 142,
+      "sha256": "97b9a265b6f34e87e3ffaa565748fc111bbdbcf9762232f6d5f2a82113e27a5d"
+    },
+    {
+      "file": "CM-Radio_Druckanleitung_V0.1.pdf",
+      "bytes": 274225,
+      "sha256": "2f528227c1f529baca5d429dc14cdbfb7800960780b92cf6f1e580fdc7e08c36"
+    },
+    {
+      "file": "CM-Radio_Gehaeuse.py",
+      "bytes": 10934,
+      "sha256": "18fa05ae2d08d660f2ca76da9b2e108955bccdf2a7d8dffc9a60d76ffcca7862"
+    },
+    {
+      "file": "CM-Radio_Vorschau_V0.1.png",
+      "bytes": 185984,
+      "sha256": "668edc52b31115c3534c88c158dd2248ace4abd3a55b9b16f74193ab5665c1c5"
+    },
+    {
+      "file": "Geometriepruefung.json",
+      "bytes": 1252,
+      "sha256": "b4bddeef1e81c5323d6da682132127394ea93f26459b73486957150d6fb79598"
+    },
+    {
+      "file": "Herstellergeometrie.json",
+      "bytes": 1460,
+      "sha256": "4a7497c66329c33308829ff59a06d42710584ba182c1683caaa40c63305d9a18"
+    },
+    {
+      "file": "LIESMICH.txt",
+      "bytes": 9095,
+      "sha256": "30e1fd361f442981b3f4118059d9dbb83d15d359df4d05b1dc2bc61d8b5c5095"
+    },
+    {
+      "file": "STEP/CM-Radio_Baugruppe_V0.1.step",
+      "bytes": 2539951,
+      "sha256": "a868d669f407db792327e5625f2aa0645f83cd8d4f90912a6302f7536bfa3194"
+    },
+    {
+      "file": "STEP/CM-Radio_Deckel_V0.1.step",
+      "bytes": 2115303,
+      "sha256": "3f21728c3e9c381337894ccedbd3e4c13e6a55bcb6a1d8c7445d471b71296a56"
+    },
+    {
+      "file": "STEP/CM-Radio_Unterteil_V0.1.step",
+      "bytes": 412577,
+      "sha256": "955e108563e5f3e17683caf21a372493f960901fe941206d2a27c5fd7d42ad0b"
+    },
+    {
+      "file": "STEP_Pruefung.json",
+      "bytes": 593,
+      "sha256": "7a775d54d6069a91a3ccab50ea9762d120b6ed19f9092f51e334bbc0060d1b36"
+    },
+    {
+      "file": "STL/CM-Radio_Deckel_V0.1.stl",
+      "bytes": 1125484,
+      "sha256": "702201c1189ad6da90b859270359e2af6d4f38184991b6a83066a3f9ae05e97c"
+    },
+    {
+      "file": "STL/CM-Radio_Lochraster_Probe_V0.1.stl",
+      "bytes": 171084,
+      "sha256": "0f3bf7a25007b2f12ec24e52e450670e7ac4c64200f406e29b62516965dc2c4a"
+    },
+    {
+      "file": "STL/CM-Radio_Unterteil_V0.1.stl",
+      "bytes": 499684,
+      "sha256": "777318d0435d0c7b0eab426a3311b75444815eff3ad3508f284e96de6c32dd73"
+    },
+    {
+      "file": "STL_Pruefung.json",
+      "bytes": 1046,
+      "sha256": "6e541b3cfdaeab7ed1db4cd50af6c71ab7e0bd16043ffd08cd24c1075d1a3472"
+    },
+    {
+      "file": "Wandmontage_Pruefung.json",
+      "bytes": 5810,
+      "sha256": "c92cffcd7bcf20d884907368b8110d90db700d910d216b29713d98fdd0d38845"
+    },
+    {
+      "file": "parameter.json",
+      "bytes": 2286,
+      "sha256": "277669c4d40f7a6e274750e701cc021ef3d5fd42466151a50f0dcba502a3783a"
+    },
+    {
+      "file": "requirements.txt",
+      "bytes": 16,
+      "sha256": "34385cd1ac77715e84b0d0f217da569868f3d2ef49992211845dee1147daecd0"
+    }
+  ]
+}
