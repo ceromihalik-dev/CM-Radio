@@ -15,9 +15,10 @@ Datum: **7. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Kein 
 | URL-/WLAN-Eingaben | Positivfälle, ungültige Protokolle, Header-Steuerzeichen, Grenzen geprüft |
 | Wiederverbindung | Backoff-Grenze und millis-Überlauf geprüft |
 | Flashskript | Vier Tests: explizites Löschen, korrupte Datei, falsche Kapazität, korrekte Reihenfolge |
+| Automatischer Erststarttest | Sechs Hosttests: gültiges Board, Fehlerzustände, ungültige Antworten, Offline-Gerät, reine GET-Abfragen, Bericht ohne private Daten; echte Boardausführung offen |
 | Weboberfläche | JavaScript-Syntax und Aktualität der eingebetteten Kopie geprüft |
 | Hardware-/Audio-Abnahme | **OFFEN** – siehe TESTPLAN.md |
-| GitHub Actions | Workflow vorbereitet; Ausführung nach Repository-Veröffentlichung offen |
+| GitHub Actions | Workflow veröffentlicht; bisher kein Workflow-Lauf vorhanden |
 | PlatformIO-Telemetrie | Im lokalen Build und CI deaktiviert |
 
 Die RAM-Zahl ist die statische Linkerbelegung. Dynamische Decoder-/Netzwerkpuffer und PSRAM-Belegung müssen auf dem Board beobachtet werden. `audioReady` und `streaming` allein belegen keinen hörbaren, getrennten Stereo-Ton.

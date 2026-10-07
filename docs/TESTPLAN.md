@@ -19,7 +19,7 @@ Status vor Eintreffen: **alle physischen Tests offen**. Ergebnisse mit Datum, Mo
 | CFG-03 | Autostart aus | Neustart bleibt stumm, manueller Play funktioniert | offen |
 | REC-01 | WLAN 60 s aus | Gerät bleibt erreichbar über Setup, nach Netzrückkehr Stream wieder aktiv | offen |
 | REC-02 | Ungültiger Stream | API bleibt bedienbar, Wiederholungen, Stop/anderer Sender möglich | offen |
-| API-01 | Grundtest | smoke_test.py erfolgreich, Passwort wird nicht geliefert | offen |
+| API-01 | Grundtest | 19 Erststart-Kriterien PASS, JSON-Bericht erstellt; keine Zugangsdaten im Bericht | offen |
 | API-02 | Fehlerfälle | -1/22 Lautstärke, ungültiger Index, falscher Datentyp: 400 | offen |
 | UI-01 | Android | Play/Stop, Sender, WLAN und Lautstärke bedienbar | offen |
 | RUN-01 | 60 Minuten | Keine Resets, keine anhaltenden Aussetzer, Heap nicht stetig sinkend | offen |

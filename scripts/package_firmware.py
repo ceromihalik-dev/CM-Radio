@@ -26,6 +26,7 @@ subprocess.run([sys.executable, '-m', 'esptool', '--chip', 'esp32', 'merge_bin',
 shutil.copy2(ROOT/'firmware/platformio.ini', out/'build-platformio.ini')
 shutil.copy2(ROOT/'firmware/partitions.csv', out/'build-partitions.csv')
 shutil.copy2(ROOT/'scripts/flash.py', out/'flash.py')
+shutil.copy2(ROOT/'scripts/smoke_test.py', out/'smoke_test.py')
 shutil.copy2(ROOT/'LICENSE', out/'LICENSE')
 shutil.copy2(ROOT/'THIRD_PARTY.md', out/'THIRD_PARTY.md')
 shutil.copy2(ROOT/'docs/ERSTSTART.md', out/'ERSTSTART.md')

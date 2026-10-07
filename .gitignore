@@ -12,3 +12,4 @@ hardware/enclosure/STL/*.stl
 hardware/enclosure/STEP/CM-Radio_Baugruppe_V0.1.step.zip
 hardware/enclosure/STEP/CM-Radio_Deckel_V0.1.step.zip
 hardware/enclosure/STL/CM-Radio_Deckel_V0.1.stl.zip
+CM-Radio_Boardtest*.json

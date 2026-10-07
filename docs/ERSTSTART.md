@@ -70,4 +70,22 @@ py -m platformio device monitor -b 115200 --port COM5
 
 Seriell `status` gibt Hardware/IP aus, `setup` öffnet erneut das Setup-WLAN, `reset-wifi` löscht nur das gespeicherte WLAN und startet die Einrichtung neu. Vollständiges erneutes Löschen ist über das Erstinstallationsskript möglich.
 
-Optionaler API-Grundtest: `py scripts/smoke_test.py http://GERAETE-IP` aus dem Quellprojekt. Er verändert keine Einstellungen und ersetzt den Hörtest nicht. Alle weiteren Abnahmeschritte stehen in `docs/TESTPLAN.md`.
+## Automatischer Erststarttest
+
+Nach der Verbindung mit dem Heim-WLAN im entpackten Firmwarepaket ausführen:
+
+```powershell
+py smoke_test.py http://cm-radio.local --report CM-Radio_Boardtest.json
+```
+
+Im Quellprojekt lautet der Befehl:
+
+```powershell
+py scripts/smoke_test.py http://cm-radio.local --report CM-Radio_Boardtest.json
+```
+
+Falls `.local` nicht aufgelöst wird, `http://cm-radio.local` durch `http://GERAETE-IP` ersetzen. Der PC muss im gleichen Heimnetz sein. Python genügt; das Prüfprogramm benötigt keine zusätzlichen Pakete.
+
+Der Test liest ausschließlich Status, Senderliste und Konfiguration. Er prüft 19 Kriterien, unter anderem Firmwareversion, Flash, nutzbare PSRAM, WLAN, Audioinitialisierung, gespeicherte Einstellungen und gültige Senderauswahl. Lautstärke, Wiedergabe und Einstellungen werden nicht verändert. Bei einem Fehler endet das Programm mit Exitcode 1; bei Erfolg mit 0. Wenn alle API-Abfragen fehlschlagen, zuerst Adresse, WLAN und Erreichbarkeit im Browser prüfen.
+
+Der JSON-Bericht enthält keine SSID, Geräte-IP, Sender-URLs oder WLAN-Passwörter. **PASS bestätigt die automatischen Prüfungen; die physische Hardware-Abnahme bleibt offen.** Hörprobe, Stereo, Stromneustart, Netzausfall und Dauertest anschließend nach `docs/TESTPLAN.md` durchführen.

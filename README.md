@@ -45,10 +45,12 @@ Der erste `upload` über eine fremde Werksfirmware benötigt zuvor `python -m pl
 ```sh
 python scripts/check_project.py
 python scripts/package_firmware.py
-python scripts/smoke_test.py http://cm-radio.local
+python scripts/smoke_test.py http://cm-radio.local --report CM-Radio_Boardtest.json
 ```
 
 Die Weboberfläche liegt im Firmware-Image; ein separater Dateisystem-Upload entfällt. Wenn `firmware/web/index.html` verändert wird, muss `embed_web.py` erneut ausgeführt werden. CI prüft, dass das eingebettete HTML aktuell ist.
+
+Der automatische Erststarttest prüft 19 Kriterien ausschließlich lesend und schreibt einen Bericht ohne WLAN- oder Senderdaten. Er verändert keine Wiedergabe oder Einstellungen. Die physische Abnahme bleibt separat offen.
 
 ## Projektstruktur
 
