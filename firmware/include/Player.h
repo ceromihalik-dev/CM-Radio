@@ -16,8 +16,9 @@ struct PlayerStatus {
     char message[192] = {};
 };
 namespace player {
-bool begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds);
+bool begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds, int8_t bass = 0, int8_t treble = 0, int8_t balance = 0);
 bool configure(uint8_t limit, uint8_t softStartSeconds, uint8_t volume);
+bool sound(int bass, int treble, int balance);
 bool sleep(unsigned minutes);
 bool play(const char* url, const char* fallbackUrl = "");
 bool fallback(const char* url);

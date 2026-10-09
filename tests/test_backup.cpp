@@ -19,5 +19,11 @@ int main(){
  deserializeJson(d,fixture);d["settings"]["stations"][0]["name"]=std::string(64,'x');assert(!backup::read(d,out,error));
  deserializeJson(d,fixture);d["settings"]["stations"].as<JsonArray>().clear();assert(!backup::read(d,out,error));
  deserializeJson(d,fixture);d["settings"]["ssid"]="PRIVATE";d["settings"]["password"]="SECRET";assert(backup::read(d,out,error)); // Credentials are deliberately never part of Data.
+ deserializeJson(d,fixture);d["settings"]["bass"]=-12;d["settings"]["treble"]=6;d["settings"]["balance"]=-16;assert(backup::read(d,out,error));assert(out.bass==-12&&out.treble==6&&out.balance==-16);
+ deserializeJson(d,fixture);assert(backup::read(d,out,error));assert(out.bass==0&&out.treble==0&&out.balance==0);
+ for(const char* field:{"bass","treble","balance"}){deserializeJson(d,fixture);d["settings"][field]=true;assert(!backup::read(d,out,error));deserializeJson(d,fixture);d["settings"][field]="0";assert(!backup::read(d,out,error));deserializeJson(d,fixture);d["settings"][field]=1.5;assert(!backup::read(d,out,error));}
+ deserializeJson(d,fixture);d["settings"]["bass"]=7;assert(!backup::read(d,out,error));deserializeJson(d,fixture);d["settings"]["treble"]=-13;assert(!backup::read(d,out,error));deserializeJson(d,fixture);d["settings"]["balance"]=17;assert(!backup::read(d,out,error));
+ deserializeJson(d,fixture);d["settings"]["bass"]=6;d["settings"]["treble"]=-12;d["settings"]["balance"]=16;assert(backup::read(d,out,error));
+ int bass=1,treble=2,balance=3;DynamicJsonDocument partial(256);deserializeJson(partial,"{\"bass\":4}");assert(sound::read(partial.as<JsonObjectConst>(),bass,treble,balance));assert(bass==4&&treble==2&&balance==3);
  puts("Backup schema, roundtrip fields, strict types, missing fields, limits, stream validation and credential isolation: PASS");
 }

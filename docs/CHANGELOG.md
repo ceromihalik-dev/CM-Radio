@@ -1,5 +1,14 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a09 — 09.10.2026
+
+- Klangregler unter Gerät: Bässe und Höhen von −12 bis +6 dB, Balance von −16 (nur links) bis +16 (nur rechts). Neutral setzt alle Regler auf 0; Speichern wendet den Entwurf an und erhält ihn dauerhaft.
+- Klangbefehle laufen ausschließlich im Audiotask und benötigen keinen Stream-Neustart. Die Mitte des Equalizers bleibt neutral. Die vorhandene Lautstärkegrenze und der sanfte Start bleiben getrennt davon erhalten.
+- Klangdaten in Status, Konfiguration, Diagnose und Einstellungssicherung. Alte NVS-Daten und Schema-1-Sicherungen ohne Klangfelder laden neutral; neue Felder werden streng geprüft. Wiederherstellung zeigt Klangwerte in der Vorschau und reiht die Anwendung nach Stop ein.
+- Ungespeicherte Klangentwürfe bleiben bei Statusabfragen erhalten und blockieren Wiederherstellung sowie Firmwareinstallation. Loudness bleibt geplant.
+- Build 0a08 einschließlich Browserupdate-/Neustarttest vom Nutzer als PASS bestätigt. Hörprobe, Kanalzuordnung und Klangpersistenz für 0a09 offen.
+
+
 ## v0.1.2 · Build 0a08 — 09.10.2026
 
 - Lokales Firmwareupdate unter Gerät: manifest.json und firmware.bin aus demselben Paket auswählen, Paket prüfen, Installation ausdrücklich bestätigen. Uploadfortschritt und Neustarthinweis anzeigen.

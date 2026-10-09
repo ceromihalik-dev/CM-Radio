@@ -16,6 +16,7 @@ struct Settings {
     uint8_t volumeLimit = 21;
     uint8_t softStartSeconds = 5;
     int fallbackStation = -1;
+    int8_t bass = 0, treble = 0, balance = 0;
 };
 class SettingsStore {
 public:

@@ -1,4 +1,5 @@
 #include "Settings.h"
+#include "SoundConfig.h"
 
 bool SettingsStore::begin() { return preferences.begin("cm-radio", false); }
 bool SettingsStore::load(Settings& s) {
@@ -42,6 +43,9 @@ bool SettingsStore::load(Settings& s) {
     candidate.fallbackStation = fallback;
     candidate.softStartSeconds = softStart;
     candidate.volume = volume > limit ? limit : volume;
+    int bass=0,treble=0,balance=0;
+    if (!sound::read(d.as<JsonObjectConst>(),bass,treble,balance)) return false;
+    candidate.bass=bass;candidate.treble=treble;candidate.balance=balance;
     candidate.autoplay = d["autoplay"] | true;
     s = candidate;
     return true;
@@ -49,6 +53,7 @@ bool SettingsStore::load(Settings& s) {
 bool SettingsStore::save(const Settings& s) {
     DynamicJsonDocument d(12288);
     d["schema"] = 1;
+    d["bass"]=s.bass;d["treble"]=s.treble;d["balance"]=s.balance;
     d["ssid"] = s.ssid;
     d["password"] = s.password;
     d["selected"] = s.selected;

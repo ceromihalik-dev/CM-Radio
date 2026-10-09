@@ -107,3 +107,13 @@ Nutzerabnahme 0a07: PASS am 09.10.2026 um 18:26 Uhr; keine gesonderte Laufzeit �
 Hosttests PASS: Hashmetadaten, in Teilen eintreffender Header, ESP32-Chip-ID, falsche Magicbytes, Übergröße/Teilimage; UI-Paketprüfung, ausdrückliche Zustimmung, Entwurfsschutz, Uploadpfad/Token/Progress, Fehleranzeige und Bedienungssperre. Echte SHA-Prüfung/Flashaktivierung/Neustart am Board OFFEN. Kein direkter USB-Zugriff hier.
 
 Nutzerabnahme Build 0a08 am 09.10.2026 um 18:39 Uhr (Europe/Berlin): PASS nach angefragtem Browserupdate-/Neustarttest mit erhaltenem WLAN, Sendern und Einstellungen. Gezielte Negativtests und Stromausfall-/Recoverytests wurden nicht gesondert bestätigt und bleiben offen.
+
+## Build 0a09 – Klang
+
+1. Browserupdate aus 0a08 durchführen, Strg+F5; vorhandenes WLAN/Sender erhalten und Klang zunächst neutral.
+2. Bei moderater Lautstärke Bässe/Höhen getrennt verändern und speichern; hörbare Wirkung, kein Verbindungsabbruch/Stream-Neustart. Während eines sanften Starts Klang speichern: Lautstärkerampe läuft weiter.
+3. Balance −16 speichern: nur linker Kanal; +16: nur rechter Kanal. Mitte speichern: beide. Stereoquelle und Verkabelung berücksichtigen. Dadurch wird kein Mono-Stream in Stereo umgewandelt.
+4. Werte speichern, Stromneustart: erhalten. Sicherung exportieren, ändern, wiederherstellen: ursprüngliche Klangwerte erhalten, Radio gestoppt; manuell starten. Alte Sicherung ohne Klangwerte: alle drei 0.
+5. Neutral einstellen und speichern. Vor Speichern bleibt Entwurf über Statusabfragen erhalten; Restore/Update mit ungespeicherten Klangentwürfen blockiert.
+
+Hosttests: strikte Typen/Grenzen, positive/negative Endwerte, neutrale Migration alter Sicherungen, Erhalt nicht angegebener Teilfelder, Reglerbeschriftung, Entwurferhalt, Neutralaktion, POST-Klangpayload und ungültige Eingaben PASS. Hörprobe/Neustart/Sicherung am Board OFFEN.

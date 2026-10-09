@@ -2,17 +2,19 @@
 #include "BoardConfig.h"
 #include "PlaybackControls.h"
 #include "FallbackPolicy.h"
+#include "SoundConfig.h"
 #include <Audio.h>
 #include <WiFi.h>
 #include <memory>
 
 namespace {
-enum class Operation { Play, Stop, Volume, Configure, Sleep, Fallback };
-struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; char url[rules::maxUrl]; char fallbackUrl[rules::maxUrl]; };
+enum class Operation { Play, Stop, Volume, Configure, Sleep, Fallback, Sound };
+struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; int8_t bass; int8_t treble; int8_t balance; char url[rules::maxUrl]; char fallbackUrl[rules::maxUrl]; };
 QueueHandle_t commands;
 portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;
 PlayerStatus snapshot;
 bool updateRequested = false;
+int8_t initialBass=0,initialTreble=0,initialBalance=0;
 uint8_t initialLimit = 21, initialSoftStart = 5;
 void message(const char* text) {
     portENTER_CRITICAL(&stateLock);
@@ -28,6 +30,7 @@ void audioWorker(void*) {
         vTaskDelete(nullptr);
         return;
     }
+    audio->setTone(initialBass,0,initialTreble);audio->setBalance(initialBalance);
     VolumeEnvelope envelope;
     SleepTimer sleepTimer;
     FallbackPolicy fallbackPolicy;
@@ -64,7 +67,9 @@ void audioWorker(void*) {
         portENTER_CRITICAL(&stateLock);snapshot.updating = false;portEXIT_CRITICAL(&stateLock);
         Command c{};
         while (xQueueReceive(commands, &c, 0) == pdTRUE) {
-            if (c.operation == Operation::Volume) {
+            if (c.operation == Operation::Sound) {
+                audio->setTone(c.bass,0,c.treble);audio->setBalance(c.balance);
+            } else if (c.operation == Operation::Volume) {
                 envelope.setTarget(c.volume);
             } else if (c.operation == Operation::Configure) {
                 envelope.configure(c.limit, c.seconds, c.volume);
@@ -154,7 +159,9 @@ bool enqueue(const Command& command) {
 }
 }
 
-bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds) {
+bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds, int8_t bass, int8_t treble, int8_t balance) {
+    if (!::sound::valid(bass,treble,balance)) return false;
+    initialBass=bass;initialTreble=treble;initialBalance=balance;
     initialLimit = limit;
     initialSoftStart = softStartSeconds;
     pinMode(board::amplifierEnable, OUTPUT);
@@ -217,4 +224,10 @@ void audio_showstreamtitle(const char* title) {
 
 void player::setUpdating(bool updating) {
     portENTER_CRITICAL(&stateLock);updateRequested = updating;portEXIT_CRITICAL(&stateLock);
+}
+
+bool player::sound(int bass,int treble,int balance) {
+    if (!::sound::valid(bass,treble,balance)) return false;
+    Command c{};c.operation=Operation::Sound;c.bass=bass;c.treble=treble;c.balance=balance;
+    return enqueue(c);
 }

@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.2 · Build 0a08.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.2 · Build 0a09.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -91,3 +91,7 @@ Build 0a07 korrigiert den seit 0a05 gemeldeten periodischen Stream-Neustart (CMR
 ### Neuer Stand 0a08
 
 Firmwareupdate unter Gerät: passende manifest.json und firmware.bin auswählen, Paket prüfen und Installation bestätigen. Ab 0a08 sind passende Paketmetadaten enthalten. Einmalig muss 0a08 noch per USB installiert werden. Anschließend sind lokale Paketupdates im Browser möglich. Ausstehende Einstellungen werden gesichert, Audio/Timer gestoppt; das Radio prüft Größe, ESP32-Header und SHA-256 vor Aktivierung des freien Firmware-Slots. Bei Erfolg startet es neu. Nach Verbindung Seite mit Strg+F5 neu laden. CMR-004 wurde in 0a07 vom Nutzer als PASS bestätigt. Nutzer bestätigt Build 0a08 und den angefragten Browserupdate-/Neustarttest am 09.10.2026 um 18:39 Uhr als PASS.
+
+### Neuer Stand 0a09
+
+Unter Gerät lassen sich Bässe/Höhen (−12 bis +6 dB) und Balance (−16 links bis +16 rechts) einstellen und speichern. Neutral erzeugt einen Entwurf mit allen Werten 0; Klang speichern wendet ihn an. Klang wird dauerhaft und in Sicherungen übernommen. Alte Daten laden neutral. Installation über den in 0a08 bestätigten Browserupdate; Hörprobe 0a09 offen. Loudness folgt separat.

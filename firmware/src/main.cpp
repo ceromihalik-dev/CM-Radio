@@ -11,6 +11,7 @@
 #include "WifiScan.h"
 #include "BackupConfig.h"
 #include "FirmwareUpdate.h"
+#include "SoundConfig.h"
 #include <memory>
 #include <new>
 #include <esp_wifi.h>
@@ -27,6 +28,7 @@ bool dirty = false;
 bool applyWifi = false;
 bool applyAudioConfig = false;
 bool applyFallback = false;
+bool applySound = false;
 bool stopAfterRestore = false;
 WifiScan wifiScan;
 struct ScanDriver {
@@ -141,6 +143,7 @@ void writeBackup(JsonDocument& document) {
     document["sourceVersion"] = board::version;document["sourceBuild"] = board::build;
     JsonObject config = document.createNestedObject("settings");
     config["selected"] = settings.selected;config["volume"] = settings.volume;config["autoplay"] = settings.autoplay;
+    config["bass"]=settings.bass;config["treble"]=settings.treble;config["balance"]=settings.balance;
     config["volumeLimit"] = settings.volumeLimit;config["softStartSeconds"] = settings.softStartSeconds;config["fallbackStation"] = settings.fallbackStation;
     JsonArray list = config.createNestedArray("stations");
     for (size_t i = 0; i < settings.count; ++i) {JsonObject item = list.createNestedObject();item["name"] = settings.stations[i].name;item["url"] = settings.stations[i].url;}
@@ -152,15 +155,16 @@ void restoreBackup(bool validateOnly) {
     const char* reason = nullptr;
     if (!backup::read(request, *data, reason)) {error(400, reason);return;}
     if (validateOnly) {
-        StaticJsonDocument<256> response;response["valid"] = true;response["stationCount"] = data->count;response["volume"] = data->volume;response["volumeLimit"] = data->volumeLimit;response["wifiPreserved"] = true;sendJson(200, response);return;
+        StaticJsonDocument<384> response;response["bass"]=data->bass;response["treble"]=data->treble;response["balance"]=data->balance;response["valid"] = true;response["stationCount"] = data->count;response["volume"] = data->volume;response["volumeLimit"] = data->volumeLimit;response["wifiPreserved"] = true;sendJson(200, response);return;
     }
     Settings candidate = settings;
     candidate.count = data->count;candidate.selected = data->selected;candidate.volume = data->volume;
     candidate.volumeLimit = data->volumeLimit;candidate.softStartSeconds = data->softStartSeconds;
+    candidate.bass=data->bass;candidate.treble=data->treble;candidate.balance=data->balance;
     candidate.autoplay = data->autoplay;candidate.fallbackStation = data->fallbackStation;
     for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url};
     if (!persist(candidate)) return;
-    applyAudioConfig = true;applyFallback = true;stopAfterRestore = true;
+    applyAudioConfig = true;applyFallback = true;applySound = true;stopAfterRestore = true;
     accepted();
 }
 void routes() {
@@ -199,6 +203,7 @@ void routes() {
         }
         response["station"] = audibleName;
         response["requestedStation"] = settings.stations[settings.selected].name;
+        response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
         response["fallbackStation"] = settings.fallbackStation;
         response["fallbackActive"] = p.fallbackActive;
         response["title"] = p.title;
@@ -210,7 +215,7 @@ void routes() {
         response["effectiveVolume"] = p.volume;
         response["ramping"] = p.ramping;
         response["sleepRemainingSeconds"] = p.sleepRemainingSeconds;
-        response["audioConfigPending"] = applyAudioConfig || applyFallback;
+        response["audioConfigPending"] = applyAudioConfig || applyFallback || applySound;
         response["restoreStopPending"] = stopAfterRestore;
         response["autoplay"] = settings.autoplay;
         response["settingsPending"] = dirty;
@@ -294,19 +299,20 @@ void routes() {
         accepted();
     });
     server.on("/api/v1/config", HTTP_GET, [] {
-        StaticJsonDocument<256> response;
+        StaticJsonDocument<512> response;
         response["ssid"] = settings.ssid;
         response["autoplay"] = settings.autoplay;
         response["volumeLimit"] = settings.volumeLimit;
         response["softStartSeconds"] = settings.softStartSeconds;
+        response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
         response["fallbackStation"] = settings.fallbackStation;
         sendJson(200, response);
     });
     server.on("/api/v1/config", HTTP_POST, [] {
-        StaticJsonDocument<256> request;
+        StaticJsonDocument<512> request;
         if (!body(request)) return;
         Settings candidate = settings;
-        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds") && !request.containsKey("fallbackStation")) { error(400, "Keine bekannte Einstellung"); return; }
+        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds") && !request.containsKey("fallbackStation") && !request.containsKey("bass") && !request.containsKey("treble") && !request.containsKey("balance")) { error(400, "Keine bekannte Einstellung"); return; }
         if (request.containsKey("autoplay")) {
             if (!request["autoplay"].is<bool>()) { error(400, "autoplay muss boolesch sein"); return; }
             candidate.autoplay = request["autoplay"].as<bool>();
@@ -324,9 +330,14 @@ void routes() {
             if (!request["fallbackStation"].is<int>() || request["fallbackStation"].as<int>() < -1 || request["fallbackStation"].as<int>() >= static_cast<int>(settings.count)) {error(400, "Ungueltiger Ersatzsenderindex");return;}
             candidate.fallbackStation = request["fallbackStation"].as<int>();
         }
+        int bass=candidate.bass,treble=candidate.treble,balance=candidate.balance;
+        if (!sound::read(request.as<JsonObjectConst>(),bass,treble,balance)) {error(400,"Bass/Hoehen: -12 bis +6 dB; Balance: -16 bis +16");return;}
+        const bool soundChanged=bass!=settings.bass||treble!=settings.treble||balance!=settings.balance;
+        candidate.bass=bass;candidate.treble=treble;candidate.balance=balance;
         const bool fallbackChanged = candidate.fallbackStation != settings.fallbackStation;
         const bool audioChanged = candidate.volumeLimit != settings.volumeLimit || candidate.softStartSeconds != settings.softStartSeconds;
         if (!persist(candidate)) return;
+        if (soundChanged) applySound = true;
         if (audioChanged) applyAudioConfig = true;
         if (fallbackChanged) applyFallback = true;
         accepted();
@@ -447,7 +458,7 @@ void setup() {
     apPassword = key;
     if (!psramFound()) diagnostic = "PSRAM fehlt: Audio bleibt deaktiviert";
     else if (ESP.getFlashChipSize() != 8U * 1024U * 1024U) diagnostic = "Flashgroesse passt nicht zur WROVER-N8R8-Konfiguration";
-    else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds)) diagnostic = "Audio-Task konnte nicht gestartet werden";
+    else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds,settings.bass,settings.treble,settings.balance)) diagnostic = "Audio-Task konnte nicht gestartet werden";
     else if (settings.autoplay) player::play(settings.stations[settings.selected].url.c_str(), fallbackUrl());
     connectWifi();
     routes();
@@ -461,6 +472,7 @@ void loop() {
     if (stopAfterRestore && (!player::status().ready || player::stop())) stopAfterRestore = false;
     if (!stopAfterRestore) {
         if (applyAudioConfig && player::configure(settings.volumeLimit, settings.softStartSeconds, settings.volume)) applyAudioConfig = false;
+        if (applySound && player::sound(settings.bass,settings.treble,settings.balance)) applySound = false;
         if (applyFallback && player::fallback(fallbackUrl())) applyFallback = false;
     }
     server.handleClient();
