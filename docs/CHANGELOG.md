@@ -1,5 +1,10 @@
 # CM-Radio – Änderungen
 
+## V0.1.2 – 9. Oktober 2026
+
+- Asynchrone Suche nach verfügbaren 2,4-GHz-WLANs im Setup; Auswahl übernimmt den WLAN-Namen. Signalstärke und offene/gesicherte Netze werden angezeigt. Manuelle Eingabe bleibt möglich.
+- USB-Flash und erster Boot von V0.1.1 am gelieferten Board bestätigt; Audio- und weitere Hardwaretests bleiben offen.
+
 ## V0.1.1 – 9. Oktober 2026
 
 - Webbedienung lädt nach einem Verbindungsfehler automatisch neu; keine parallelen Status-Abfragefolgen.

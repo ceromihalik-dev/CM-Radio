@@ -3,9 +3,10 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const html=fs.readFileSync('firmware/web/index.html','utf8');
 class Element{constructor(){this.value='';this.children=[];this.style={};}replaceChildren(...v){this.children=v;}append(...v){this.children.push(...v);}setAttribute(){}click(){}}
 const nodes=new Map();const document={getElementById(id){if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id);},createElement(){return new Element();},activeElement:null};
+let scanResult={scanning:false,networks:[]},scanError=false;
 let offline=true,calls=[],holdStatus=null,download=null,hanging=false;const timers=new Map();
-const status={name:'CM-Radio',version:'0.1.1',board:'WROVER',audioReady:true,station:'Test',stationIndex:0,volume:5,autoplay:true,state:'streaming',wifiConnected:true,setupActive:false,storageReady:true,settingsPending:false,ssid:'SECRET-SSID',password:'SECRET-PASSWORD',ip:'PRIVATE-IP',title:'PRIVATE-TITLE',message:'PRIVATE-URL',freeHeap:100000,minFreeHeap:90000,resetReason:1};
-const context=vm.createContext({document,AbortController,Date,console,setTimeout(fn,ms){const id=setTimeout(fn,ms);timers.set(id,{fn,ms});return id;},clearTimeout(id){timers.delete(id);clearTimeout(id);},setInterval(){},Blob:class{constructor(parts){download=parts.join('');}},URL:{createObjectURL(){return 'blob:test';},revokeObjectURL(){}},async fetch(url,options){calls.push(url);assert.ok(options.signal);if(offline)throw new Error('offline');if(hanging)await new Promise((resolve,reject)=>options.signal.addEventListener('abort',()=>{const error=new Error('aborted');error.name='AbortError';reject(error);},{once:true}));if(url.endsWith('/status')&&holdStatus)await holdStatus;return{ok:true,json:async()=>url.endsWith('/status')?status:url.endsWith('/stations')?{stations:[{name:'Test',url:'https://example.org/stream'}]}:{ssid:'SECRET-SSID',autoplay:true}};}});
+const status={name:'CM-Radio',version:'0.1.2',board:'WROVER',audioReady:true,station:'Test',stationIndex:0,volume:5,autoplay:true,state:'streaming',wifiConnected:true,setupActive:false,storageReady:true,settingsPending:false,ssid:'SECRET-SSID',password:'SECRET-PASSWORD',ip:'PRIVATE-IP',title:'PRIVATE-TITLE',message:'PRIVATE-URL',freeHeap:100000,minFreeHeap:90000,resetReason:1};
+const context=vm.createContext({document,AbortController,Date,console,setTimeout(fn,ms){const id=setTimeout(fn,ms===1000?0:ms);timers.set(id,{fn,ms});return id;},clearTimeout(id){timers.delete(id);clearTimeout(id);},setInterval(){},Blob:class{constructor(parts){download=parts.join('');}},URL:{createObjectURL(){return 'blob:test';},revokeObjectURL(){}},async fetch(url,options){calls.push(url);assert.ok(options.signal);if(offline)throw new Error('offline');if(hanging)await new Promise((resolve,reject)=>options.signal.addEventListener('abort',()=>{const error=new Error('aborted');error.name='AbortError';reject(error);},{once:true}));if(url.endsWith('/status')&&holdStatus)await holdStatus;if(url.endsWith('/wifi/scan')){if(scanError)throw new Error('Scan fehlgeschlagen');return {ok:true,json:async()=>options.method==='POST'?{accepted:true}:scanResult};}return{ok:true,json:async()=>url.endsWith('/status')?status:url.endsWith('/stations')?{stations:[{name:'Test',url:'https://example.org/stream'}]}:{ssid:'SECRET-SSID',autoplay:true}};}});
 const evaluate=s=>vm.runInContext(s,context);
 const settled=()=>new Promise(resolve=>setImmediate(resolve));
 (async()=>{
@@ -26,6 +27,18 @@ const settled=()=>new Promise(resolve=>setImmediate(resolve));
  const timer=[...timers.values()].find(item=>item.ms===6000);assert.ok(timer);timer.fn();await hung;
  assert.equal(evaluate('pollBusy'),false);assert.equal(nodes.get('play').disabled,true);
  hanging=false;await evaluate('poll()');assert.equal(nodes.get('play').disabled,false);
+ scanResult={scanning:false,networks:[{ssid:'<WLAN & Test>',rssi:-42,secure:true}]};
+ await nodes.get('scanWifi').onclick();
+ assert.equal(nodes.get('wifiNetworks').disabled,false);
+ assert.equal(nodes.get('wifiNetworks').children[1].textContent,'<WLAN & Test> · -42 dBm · gesichert');
+ nodes.get('wifiNetworks').value='<WLAN & Test>';nodes.get('wifiNetworks').onchange();
+ assert.equal(nodes.get('ssid').value,'<WLAN & Test>');
+ assert.equal(document.getElementById('password').value,'');
+ scanResult={scanning:false,networks:[]};await nodes.get('scanWifi').onclick();
+ assert.equal(nodes.get('wifiNetworks').disabled,true);assert.match(nodes.get('scanHint').textContent,/Keine Netzwerke/);
+ scanError=true;await nodes.get('scanWifi').onclick();
+ assert.equal(nodes.get('scanWifi').disabled,false);assert.equal(evaluate('scanBusy'),false);
+ scanError=false;
  await nodes.get('diagnostics').onclick();
  const report=JSON.parse(download);assert.equal(report.hardwareAcceptance,'OPEN');assert.equal(report.resetReason,1);
  for(const privateValue of ['SECRET-SSID','SECRET-PASSWORD','PRIVATE-IP','PRIVATE-TITLE','PRIVATE-URL'])assert.ok(!download.includes(privateValue));

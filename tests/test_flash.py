@@ -15,7 +15,7 @@ class FlashTests(unittest.TestCase):
     def invoke(self, output='Detected flash size: 8MB', erase=True, corrupt=False, use_default=False):
         calls = []
         with tempfile.TemporaryDirectory() as directory:
-            image = Path(directory)/'CM-Radio-V0.1.1-full.bin'
+            image = Path(directory)/'CM-Radio-V0.1.2-full.bin'
             script = Path(directory)/'flash.py'
             script.write_bytes(SCRIPT.read_bytes())
             image.write_bytes(b'checked-test-fixture')
@@ -42,7 +42,7 @@ class FlashTests(unittest.TestCase):
     def test_packaged_default_image(self):
         code, calls = self.invoke(use_default=True)
         self.assertEqual(code, 0)
-        self.assertTrue(calls[-1][-1].endswith('CM-Radio-V0.1.1-full.bin'))
+        self.assertTrue(calls[-1][-1].endswith('CM-Radio-V0.1.2-full.bin'))
 
     def test_requires_explicit_first_installation(self):
         code, calls = self.invoke(erase=False)

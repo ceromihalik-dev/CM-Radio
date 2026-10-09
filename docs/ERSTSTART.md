@@ -10,7 +10,7 @@ Lautsprecher bei ausgeschaltetem Board jeweils an den eigenen Zweipol-Ausgang an
 
 ## A. Kompiliertes Erstinstallationspaket
 
-1. ZIP entpacken. Terminal im Ordner mit `flash.py` und `CM-Radio-V0.1.1-full.bin` öffnen.
+1. ZIP entpacken. Terminal im Ordner mit `flash.py` und `CM-Radio-V0.1.2-full.bin` öffnen.
 2. Python installieren, anschließend unter Windows:
 
 ```powershell
@@ -90,6 +90,20 @@ Der Test liest ausschließlich Status, Senderliste und Konfiguration. Er prüft 
 
 Der JSON-Bericht enthält keine SSID, Geräte-IP, Sender-URLs oder WLAN-Passwörter. **PASS bestätigt die automatischen Prüfungen; die physische Hardware-Abnahme bleibt offen.** Hörprobe, Stereo, Stromneustart, Netzausfall und Dauertest anschließend nach `docs/TESTPLAN.md` durchführen.
 
-## V0.1.1 – Diagnose am gelieferten Board
+## V0.1.2 – Diagnose am gelieferten Board
 
 Die Weboberfläche versucht die Verbindung automatisch erneut. Bei einem fehlgeschlagenen ersten Laden werden auch Sender und WLAN-Konfiguration nachgeladen. Unter Gerätestatus lässt sich ein Diagnosebericht herunterladen; er enthält keine SSID, IP-Adresse, Sender-URL, Titel oder WLAN-Zugangsdaten. Der Bericht enthält unter anderem Firmwarestand, Speicherwerte, WLAN-Signal und den numerischen ESP32-Neustartgrund. Physische Abnahme bleibt offen.
+
+## WLAN-Netzwerke suchen
+
+Unter „WLAN einrichten“ auf „WLAN-Netzwerke suchen“ tippen. Das gewünschte Netzwerk aus der Liste auswählen, Passwort eingeben und speichern. Die Suche zeigt ausschließlich 2,4-GHz-Netzwerke. Versteckte SSIDs lassen sich weiter manuell eingeben. Während der Suche kann die Setup-Verbindung kurz verzögert reagieren.
+
+## Update von V0.1.1 auf V0.1.2 (Einstellungen erhalten)
+
+Seriellen Monitor schließen (Ctrl+]). Neues ZIP entpacken und PowerShell im neuen Paketordner öffnen. Nur die Anwendung schreiben; nicht `--erase` verwenden:
+
+```powershell
+py -3.13 -m esptool --chip esp32 --port COM5 --baud 460800 write_flash --flash_mode dio --flash_freq 40m --flash_size 8MB 0x10000 firmware.bin
+```
+
+Diese Update-Anweisung gilt für das bereits mit CM-Radio V0.1.1 installierte Loud-ESP32 mit unverändertem 8-MB-Partitionslayout. Danach Einrichtungsseite neu laden; bei Bedarf Browserseite vollständig schließen und neu öffnen.

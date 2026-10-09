@@ -30,3 +30,7 @@ curl -X POST http://cm-radio.local/api/v1/stop -H 'Content-Type: application/jso
 ```
 
 V0.1.1 ergänzt `/status` um `minFreeHeap` (Bytes) und `resetReason` (numerischer ESP32/ESP-IDF-Neustartgrund). Vorhandene Felder und API-Pfade bleiben erhalten.
+
+## WLAN-Suche (V0.1.2)
+
+`POST /api/v1/wifi/scan` mit `{}` startet asynchron (202). `GET /api/v1/wifi/scan` liefert `scanning` und `networks` mit `ssid`, `rssi`, `channel`, `secure`. Während der Suche erneut abfragen; fehlgeschlagene oder nicht gestartete Suche: 503. Maximal 20 unterschiedliche sichtbare SSIDs, stärkste zuerst. Versteckte Netzwerke manuell eingeben. Kein Passwort wird zurückgegeben.

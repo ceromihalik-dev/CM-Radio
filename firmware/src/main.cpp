@@ -19,6 +19,7 @@ bool apActive = false;
 bool mdnsActive = false;
 bool dirty = false;
 bool applyWifi = false;
+bool scanStarted = false;
 uint32_t saveAt = 0;
 uint32_t wifiAt = 0;
 uint32_t lastConnectAttempt = 0;
@@ -220,6 +221,44 @@ void routes() {
         candidate.autoplay = request["autoplay"].as<bool>();
         if (!persist(candidate)) return;
         accepted();
+    });
+    server.on("/api/v1/wifi/scan", HTTP_POST, [] {
+        StaticJsonDocument<64> request;
+        if (!body(request)) return;
+        if (applyWifi) { error(409, "WLAN-Verbindung wird gerade geaendert"); return; }
+        if (WiFi.scanComplete() != WIFI_SCAN_RUNNING) {
+            WiFi.scanDelete();
+            const int result = WiFi.scanNetworks(true, false);
+            if (result == WIFI_SCAN_FAILED) { scanStarted = false; error(503, "WLAN-Suche konnte nicht starten"); return; }
+            scanStarted = true;
+        }
+        accepted();
+    });
+    server.on("/api/v1/wifi/scan", HTTP_GET, [] {
+        const int count = WiFi.scanComplete();
+        if (!scanStarted || count == WIFI_SCAN_FAILED) { error(503, "WLAN-Suche nicht gestartet oder fehlgeschlagen"); return; }
+        DynamicJsonDocument response(8192);
+        response["scanning"] = count == WIFI_SCAN_RUNNING;
+        JsonArray networks = response.createNestedArray("networks");
+        if (count >= 0) {
+            // Framework scan results are sorted by signal strength. Keep the
+            // strongest access point per SSID and bound the response size.
+            for (int i = 0; i < count && networks.size() < 20; ++i) {
+                const String ssid = WiFi.SSID(i);
+                if (ssid.isEmpty()) continue;
+                bool duplicate = false;
+                for (JsonObject item : networks) {
+                    if (ssid == item["ssid"].as<const char*>()) { duplicate = true; break; }
+                }
+                if (duplicate) continue;
+                JsonObject item = networks.createNestedObject();
+                item["ssid"] = ssid;
+                item["rssi"] = WiFi.RSSI(i);
+                item["channel"] = WiFi.channel(i);
+                item["secure"] = WiFi.encryptionType(i) != WIFI_AUTH_OPEN;
+            }
+        }
+        sendJson(200, response);
     });
     server.on("/api/v1/wifi", HTTP_POST, [] {
         StaticJsonDocument<512> request;
