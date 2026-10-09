@@ -109,3 +109,7 @@ py -3.13 -m esptool --chip esp32 --port COM5 --baud 460800 write_flash --flash_m
 Diese Update-Anweisung gilt für das bereits mit CM-Radio V0.1.1 installierte Loud-ESP32 mit unverändertem 8-MB-Partitionslayout. Danach Einrichtungsseite neu laden; bei Bedarf Browserseite vollständig schließen und neu öffnen.
 
 Build 0a01 behebt abgelehnte WLAN-Suchstarts bei parallelen Verbindungsversuchen. Bei anhaltendem Fehler kann die SSID manuell eingegeben werden. Version und Build im Gerätestatus prüfen.
+
+## Build 0a02 – neue Oberfläche
+
+Nach dem Update die Seite vollständig neu laden. „Radio“ enthält Wiedergabe und WLAN-Balken, „Sender“ die Verwaltung, „Netzwerk“ die Einrichtung, „Gerät“ Autostart und Diagnose. Die Signalbalken sind eine Orientierung: ab −55 dBm vier grüne, ab −67 dBm drei grüne, ab −75 dBm zwei gelbe, darunter ein roter Balken. Offlinezustände zeigen keine Empfangsbalken.

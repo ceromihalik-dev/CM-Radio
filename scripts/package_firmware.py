@@ -11,7 +11,7 @@ import subprocess
 import sys
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
-parser.add_argument('--output', type=Path, default=ROOT/'dist/CM-Radio-V0.1.2-0a01')
+parser.add_argument('--output', type=Path, default=ROOT/'dist/CM-Radio-V0.1.2-0a02')
 args = parser.parse_args()
 build = ROOT/'firmware/.pio/build/loud_wrover'
 out = args.output.resolve()
@@ -30,7 +30,7 @@ shutil.copy2(ROOT/'scripts/smoke_test.py', out/'smoke_test.py')
 shutil.copy2(ROOT/'LICENSE', out/'LICENSE')
 shutil.copy2(ROOT/'THIRD_PARTY.md', out/'THIRD_PARTY.md')
 shutil.copy2(ROOT/'docs/ERSTSTART.md', out/'ERSTSTART.md')
-manifest = {'name':'CM-Radio','version':'0.1.2','build':'0a01','target':'Loud-ESP32 ESP32-WROVER-N8R8','chip':'esp32','flashSize':8388608,'flashOffset':0,'firmwareFile':'CM-Radio-V0.1.2-full.bin','partitions':{name:hex(offset) for name,offset in files},'hardwareTested':False}
+manifest = {'name':'CM-Radio','version':'0.1.2','build':'0a02','target':'Loud-ESP32 ESP32-WROVER-N8R8','chip':'esp32','flashSize':8388608,'flashOffset':0,'firmwareFile':'CM-Radio-V0.1.2-full.bin','partitions':{name:hex(offset) for name,offset in files},'hardwareTested':False}
 try:
     manifest['sourceCommit'] = subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip()
     manifest['sourceDirty'] = bool(subprocess.check_output(['git','status','--porcelain'], cwd=ROOT, text=True).strip())

@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.2 · Build 0a01
+# Buildstatus – CM-Radio v0.1.2 · Build 0a02
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,7 +8,7 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.273.881 Bytes / 3.145.728 Bytes (40,5 %) |
+| Programmcode | 1.281.721 Bytes / 3.145.728 Bytes (40,7 %) |
 | Statische RAM-Belegung | 51.524 Bytes / 327.680 Bytes (15,7 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
@@ -17,7 +17,7 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Wiederverbindung | Backoff-Grenze und millis-Überlauf geprüft |
 | Flashskript | Fünf Tests: passende Paketdatei, explizites Löschen, korrupte Datei, falsche Kapazität, korrekte Reihenfolge |
 | Automatischer Erststarttest | Sechs Hosttests: gültiges Board, Fehlerzustände, ungültige Antworten, Offline-Gerät, reine GET-Abfragen, Bericht ohne private Daten; echte Boardausführung offen |
-| Weboberfläche | JavaScript-Syntax, eingebettete Kopie, Wiederverbindung nach Ladefehler, keine parallelen Hintergrundabfragen, Erhalt von Senderentwürfen Diagnose-Datenschutz sowie WLAN-Auswahl, leere Suchergebnisse und Fehlerbehandlung geprüft |
+| Weboberfläche | JavaScript-Syntax, eingebettete Kopie, Bereichsnavigation, WLAN-Balken/Farben/Offlinezustände, Wiederverbindung nach Ladefehler, keine parallelen Hintergrundabfragen, Erhalt von Senderentwürfen Diagnose-Datenschutz sowie WLAN-Auswahl, leere Suchergebnisse und Fehlerbehandlung geprüft |
 | Grundlegende Inbetriebnahme | **PASS** – Nutzerbestätigung am 09.10.2026 für WLAN-Suche, beide Lautsprecher, Bedienung und Autostart |
 | Hardware-/Audio-Abnahme | **OFFEN** – siehe TESTPLAN.md |
 | GitHub Actions | Workflow veröffentlicht; aktueller Workflow-Lauf nicht geprüft |
@@ -26,3 +26,5 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 Die RAM-Zahl ist die statische Linkerbelegung. Dynamische Decoder-/Netzwerkpuffer und PSRAM-Belegung müssen auf dem Board beobachtet werden. `audioReady` und `streaming` allein belegen keinen hörbaren, getrennten Stereo-Ton.
 
 Die Binärdatei übernimmt den vom Arduino-Framework eingebetteten ESP-IDF-App-Descriptor. Deshalb kann `esptool image_info` dessen Framework-Builddatum anzeigen; die CM-Radio-Version wird im seriellen Starttext und unter `/api/v1/status` als `0.1.2` ausgegeben. Die Paket-Manifestdatei ordnet den Build dem Projektcommit zu.
+
+Build 0a02: Lokale Bibliotheksobjekte und Archiv nach Linkerfehler neu erstellt; finaler Build PASS. Visuelle Browserprüfung hier nicht verfügbar; Layout und Bedienung am Gerät prüfen. Dauertest Build 0a01 laut Nutzer bisher unauffällig, Dauer und Endstatus noch offen.

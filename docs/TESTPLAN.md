@@ -33,3 +33,9 @@ Der Ersttest muss auch die Freigabepolarität von GPIO 13 bestätigen. Wenn trot
 ## Bestätigte Grundtests – 09.10.2026
 
 Nutzerbestätigungen für v0.1.2 · Build 0a01: WLAN-Suche funktioniert; Ton aus beiden Lautsprechern; Lautstärke, Stoppen und Abspielen funktionieren; Autostart nach USB abziehen und wieder einstecken funktioniert. Eine separate Links-/Rechts-Testdatei und ein Dauerbetrieb sind damit nicht nachgewiesen. Der vorgeschlagene 30-Minuten-Test ist eine Zwischenprüfung; RUN-01 verlangt weiterhin 60 Minuten. Netzteil im Test noch nicht dokumentiert.
+
+## Neuer Stand Build 0a02
+
+Navigation Radio/Sender/Netzwerk/Gerät auf Handy und Desktop prüfen; WLAN-Balken mit dBm und Setup-/Offlinezustand vergleichen; Play/Stop, Lautstärke, Senderverwaltung und WLAN-Suche erneut prüfen. Status: OFFEN.
+
+Dauertest Build 0a01: Nutzer am 09.10.2026 um 17:05 Uhr (Europe/Berlin) meldet „scheint erfolgreich“. Bislang unauffällig; RUN-01 bleibt bis Bestätigung von mindestens 60 Minuten und Endstatus offen.

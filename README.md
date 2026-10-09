@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.2 · Build 0a01.** Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.2 · Build 0a02.** Neue Weboberfläche und grafische WLAN-Anzeige sind implementiert; deren Boardtest steht aus. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 

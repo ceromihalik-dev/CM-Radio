@@ -1,5 +1,13 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a02 – 9. Oktober 2026
+
+- Neue responsive Weboberfläche mit Navigation für Radio, Sender, Netzwerk und Gerät; größere Wiedergabebedienung und sichtbar beschriftete Senderfelder.
+- Grafischer WLAN-Empfang mit vier Balken: Grün für guten, Gelb für mittleren und Rot für schwachen Empfang. Text und dBm ergänzen die Farbe; Setup, offline und fehlender Gerätestatus werden separat dargestellt.
+- Einrichtung öffnet bei aktivem Setup automatisch den Netzwerkbereich.
+- Grundtests von Build 0a01 am Board bestätigt: WLAN-Suche, beide Lautsprecher, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung. Dauertest vom Nutzer als bisher erfolgreich eingeschätzt; bestätigte Dauer und abschließender Gerätestatus fehlen noch.
+- Build 0a02 benötigt einen erneuten Test der Oberfläche am Gerät. Noch keine neue Sendersuche, Klangregler oder OTA-Updates enthalten.
+
 ## v0.1.2 · Build 0a01 – 9. Oktober 2026
 
 - WLAN-Suche pausiert Verbindungsversuche und startet nach kurzer Vorbereitung; begrenzte Startwiederholungen und Timeout.
