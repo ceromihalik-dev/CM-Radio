@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.2 · Build 0a09
+# Buildstatus – CM-Radio v0.1.2 · Build 0a0a
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,8 +8,8 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.345.553 Bytes / 3.145.728 Bytes (42,8 %) |
-| Statische RAM-Belegung | 52.380 Bytes / 327.680 Bytes (16,0 %) |
+| Programmcode | 1.350.213 Bytes / 3.145.728 Bytes (42,9 %) |
+| Statische RAM-Belegung | 52.396 Bytes / 327.680 Bytes (16,0 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
 | URL-/WLAN-Eingaben | Positivfälle, ungültige Protokolle, Header-Steuerzeichen, Grenzen geprüft |
@@ -46,3 +46,5 @@ Build 0a07: PlatformIO und Hosttests PASS. Audiozeit-Stillstandswächter entfern
 Build 0a07: Nutzer meldet PASS am 09.10.2026 um 18:26 Uhr, CMR-004 im erneuten Gerätetest behoben. Build 0a08: PlatformIO PASS, vorhandene Tests sowie OTA-Header/Größen-/Metadaten und Web-Uploadfluss PASS. Audiotask bestätigt Stilllegung vor Flashbeginn; Daten werden gehasht, der freie Slot erst nach vollständigem Upload und erfolgreicher Imagevalidierung aktiviert. Lokales leeres Settings.cpp.o wurde vor finalem erfolgreichen Build neu erstellt. Nutzer bestätigt Build 0a08 am 09.10.2026 um 18:39 Uhr (Europe/Berlin) als PASS nach dem angefragten Browserupdate-/Neustarttest mit erhaltenen Einstellungen. Gezielte Hashfehler-, Abbruch- und Stromausfalltests wurden nicht gesondert bestätigt. Keine automatische Rücknahme bei erfolgreicher Aktivierung eines später nicht startenden Builds. Visuelle Browserprüfung hier nicht verfügbar.
 
 Build 0a09: PlatformIO PASS; Klangwerte/Grenzen/Typen, Migration alter Sicherungen, Teilfeld-Erhalt, Reglerbeschriftung, Entwurfsschutz, Neutral und Webpayload als Hosttests PASS. Ein leeres lokales WString.cpp.o und dessen Frameworkarchiv neu erstellt; finaler Build erfolgreich. Klangänderungen werden getrennt von Lautstärke/Rampe im Audiotask angewendet. NVS- und Sicherungsschema bleiben 1. Reale Hörprobe, Links-/Rechts-Zuordnung, Stromneustart und Wiederherstellung der Klangwerte OFFEN.
+
+Build 0a09 vom Nutzer als PASS bestätigt. Build 0a0a: PlatformIO und Hosttests PASS. Flüchtige Klangvorschau getrennt von NVS/Sicherung; Reset und Speichern werden nach laufender Vorschauanfrage übertragen. Vorschau-Bündelung, Speichern bei laufender Anfrage und Fehlerzustand ohne hängendes Promise geprüft. Reale direkte Hörprobe und Neustartverhalten OFFEN.

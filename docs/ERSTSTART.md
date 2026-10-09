@@ -155,3 +155,7 @@ Erster Test: Das Paket 0a08 nochmals über den Browser installieren und Neustart
 ## Build 0a09 – Klang
 
 Über Gerät/Firmwareupdate die manifest.json und firmware.bin aus Paket 0a09 installieren. Nach Neustart Strg+F5. Unter Gerät Bässe/Höhen/Balance einstellen und Klang speichern. Neutral einstellen ist erst ein Entwurf und braucht Speichern. Bei Balance −16 darf nur der linke Kanal, bei +16 nur der rechte Kanal hörbar sein; physische Zuordnung der angeschlossenen Lautsprecher prüfen. Danach Balance Mitte speichern. Klangwerte nach Stromneustart und nach Sicherung/Wiederherstellung prüfen. Alte Sicherungen ohne Klangfelder stellen neutralen Klang her.
+
+## Build 0a0a – Direkt hören
+
+Über Browserupdate installieren, danach Strg+F5. Regler unter Gerät verändern den Klang direkt als Vorschau. Klang dauerhaft speichern macht die Werte neustartfest. Gespeicherte Werte wiederherstellen verwirft die Vorschau. Neutral hören setzt die Vorschau auf 0; nur Speichern übernimmt dauerhaft. Sicherungen enthalten die gespeicherten Werte. Vorschau bleibt bei Senderwechsel und Stop/Play bestehen, nach Neustart gilt gespeicherter Klang.

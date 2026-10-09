@@ -1,5 +1,14 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a0a — 09.10.2026
+
+- Klangvorschau beim Verschieben von Bässen, Höhen und Balance, ohne dauerhafte Speicherung. Schnelle Bewegungen werden gebündelt und Vorschauanfragen nacheinander gesendet.
+- Klang dauerhaft speichern übernimmt die aktuellen Reglerwerte nach Ende einer laufenden Vorschauanfrage. Gespeicherte Werte wiederherstellen verwirft die Vorschau und stellt den dauerhaft gespeicherten Klang wieder ein.
+- Neutral hören wendet neutrale Werte vorübergehend an. Erst Speichern übernimmt sie dauerhaft. Sicherungen exportieren weiterhin nur gespeicherte Werte; Neustart lädt gespeicherten Klang.
+- Aktive Vorschau wird im Status angezeigt und beim erneuten Öffnen der Oberfläche erkennbar. Wiederherstellung und Update bleiben bei offenen Klangänderungen gesperrt.
+- Nutzer bestätigt Build 0a09 als PASS. Direkte Klangvorschau und Rücksetzen für 0a0a am Board noch zu prüfen.
+
+
 ## v0.1.2 · Build 0a09 — 09.10.2026
 
 - Klangregler unter Gerät: Bässe und Höhen von −12 bis +6 dB, Balance von −16 (nur links) bis +16 (nur rechts). Neutral setzt alle Regler auf 0; Speichern wendet den Entwurf an und erhält ihn dauerhaft.

@@ -117,3 +117,15 @@ Nutzerabnahme Build 0a08 am 09.10.2026 um 18:39 Uhr (Europe/Berlin): PASS nach a
 5. Neutral einstellen und speichern. Vor Speichern bleibt Entwurf über Statusabfragen erhalten; Restore/Update mit ungespeicherten Klangentwürfen blockiert.
 
 Hosttests: strikte Typen/Grenzen, positive/negative Endwerte, neutrale Migration alter Sicherungen, Erhalt nicht angegebener Teilfelder, Reglerbeschriftung, Entwurferhalt, Neutralaktion, POST-Klangpayload und ungültige Eingaben PASS. Hörprobe/Neustart/Sicherung am Board OFFEN.
+
+## Build 0a0a – Direkte Klangvorschau
+
+Build 0a09 vom Nutzer am 09.10.2026 um 18:51 Uhr als PASS bestätigt.
+
+1. Bässe/Höhen/Balance bewegen: hörbare Änderung ohne Speichern und ohne Stream-Neustart. Schnell hin- und herbewegen: letzter Reglerwert gewinnt.
+2. Gespeicherte Werte wiederherstellen: vorheriger Klang und Reglerwerte wieder da. Neutral hören: neutraler Klang als Vorschau. Neustart ohne Speichern: vorher gespeicherte Werte geladen.
+3. Während Vorschau Klang dauerhaft speichern, auch identische zuvor gespeicherte Zahlen: Vorschau beendet, Werte bleiben nach Neustart erhalten.
+4. Vorschau aktiv und Sicherung herunterladen: nur gespeicherte Werte enthalten. Seite neu laden: Vorschau erkennbar; mit Restore/Update erst nach Speichern oder Zurücksetzen fortfahren.
+5. Stop/Play und Senderwechsel: Vorschau bleibt. Netzunterbrechung beim Verstellen: Fehler angezeigt; erneut einstellen oder gespeicherte Werte wiederherstellen.
+
+Hosttests: Bündelung aktueller Reglerwerte, serialisierte Vorschau, Speichern während laufender Anfrage, Rücksetzen, Fehlerrückgabe ohne hängenden Zustand PASS. Reale Hörprobe und Vorschau-/Persistenzabgrenzung OFFEN.

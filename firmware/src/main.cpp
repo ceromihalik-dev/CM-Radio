@@ -29,6 +29,8 @@ bool applyWifi = false;
 bool applyAudioConfig = false;
 bool applyFallback = false;
 bool applySound = false;
+bool soundPreview = false;
+int previewBass=0,previewTreble=0,previewBalance=0;
 bool stopAfterRestore = false;
 WifiScan wifiScan;
 struct ScanDriver {
@@ -164,6 +166,7 @@ void restoreBackup(bool validateOnly) {
     candidate.autoplay = data->autoplay;candidate.fallbackStation = data->fallbackStation;
     for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url};
     if (!persist(candidate)) return;
+    soundPreview = false;
     applyAudioConfig = true;applyFallback = true;applySound = true;stopAfterRestore = true;
     accepted();
 }
@@ -204,6 +207,7 @@ void routes() {
         response["station"] = audibleName;
         response["requestedStation"] = settings.stations[settings.selected].name;
         response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
+        response["soundPreview"]=soundPreview;response["previewBass"]=soundPreview?previewBass:settings.bass;response["previewTreble"]=soundPreview?previewTreble:settings.treble;response["previewBalance"]=soundPreview?previewBalance:settings.balance;
         response["fallbackStation"] = settings.fallbackStation;
         response["fallbackActive"] = p.fallbackActive;
         response["title"] = p.title;
@@ -305,6 +309,7 @@ void routes() {
         response["volumeLimit"] = settings.volumeLimit;
         response["softStartSeconds"] = settings.softStartSeconds;
         response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
+        response["soundPreview"]=soundPreview;response["previewBass"]=soundPreview?previewBass:settings.bass;response["previewTreble"]=soundPreview?previewTreble:settings.treble;response["previewBalance"]=soundPreview?previewBalance:settings.balance;
         response["fallbackStation"] = settings.fallbackStation;
         sendJson(200, response);
     });
@@ -332,15 +337,30 @@ void routes() {
         }
         int bass=candidate.bass,treble=candidate.treble,balance=candidate.balance;
         if (!sound::read(request.as<JsonObjectConst>(),bass,treble,balance)) {error(400,"Bass/Hoehen: -12 bis +6 dB; Balance: -16 bis +16");return;}
-        const bool soundChanged=bass!=settings.bass||treble!=settings.treble||balance!=settings.balance;
+        const bool hasSound=request.containsKey("bass")||request.containsKey("treble")||request.containsKey("balance");
+        const bool soundChanged=(hasSound&&soundPreview)||bass!=settings.bass||treble!=settings.treble||balance!=settings.balance;
         candidate.bass=bass;candidate.treble=treble;candidate.balance=balance;
         const bool fallbackChanged = candidate.fallbackStation != settings.fallbackStation;
         const bool audioChanged = candidate.volumeLimit != settings.volumeLimit || candidate.softStartSeconds != settings.softStartSeconds;
         if (!persist(candidate)) return;
+        if (hasSound) soundPreview = false;
         if (soundChanged) applySound = true;
         if (audioChanged) applyAudioConfig = true;
         if (fallbackChanged) applyFallback = true;
         accepted();
+    });
+    server.on("/api/v1/sound/preview", HTTP_POST, [] {
+        StaticJsonDocument<256> request;if (!body(request)) return;
+        int bass=0,treble=0,balance=0;
+        if (!request.containsKey("bass")||!request.containsKey("treble")||!request.containsKey("balance")||!sound::read(request.as<JsonObjectConst>(),bass,treble,balance)) {error(400,"Alle drei gueltigen Klangwerte erforderlich");return;}
+        if (stopAfterRestore || applySound) {error(409,"Gespeicherter Klang wird noch angewendet; kurz warten");return;}
+        if (!player::status().ready || !player::sound(bass,treble,balance)) {error(503,"Audio nicht bereit oder Warteschlange voll");return;}
+        previewBass=bass;previewTreble=treble;previewBalance=balance;soundPreview=true;accepted();
+    });
+    server.on("/api/v1/sound/reset", HTTP_POST, [] {
+        StaticJsonDocument<128> request;if (!body(request)) return;
+        if (!player::status().ready || !player::sound(settings.bass,settings.treble,settings.balance)) {error(503,"Audio nicht bereit oder Warteschlange voll");return;}
+        soundPreview=false;accepted();
     });
     server.on("/api/v1/backup", HTTP_GET, [] {
         DynamicJsonDocument response(12288);writeBackup(response);

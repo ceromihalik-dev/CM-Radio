@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.2 · Build 0a09.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.2 · Build 0a0a.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -95,3 +95,7 @@ Firmwareupdate unter Gerät: passende manifest.json und firmware.bin auswählen,
 ### Neuer Stand 0a09
 
 Unter Gerät lassen sich Bässe/Höhen (−12 bis +6 dB) und Balance (−16 links bis +16 rechts) einstellen und speichern. Neutral erzeugt einen Entwurf mit allen Werten 0; Klang speichern wendet ihn an. Klang wird dauerhaft und in Sicherungen übernommen. Alte Daten laden neutral. Installation über den in 0a08 bestätigten Browserupdate; Hörprobe 0a09 offen. Loudness folgt separat.
+
+### Neuer Stand 0a0a
+
+Klangregler wirken als Vorschau direkt, ohne NVS-Schreibvorgang. Klang dauerhaft speichern erhält die Werte über Neustarts; Gespeicherte Werte wiederherstellen verwirft die Vorschau. Neutral hören ist vorübergehend. Sicherungen enthalten gespeicherten Klang, keine Vorschau. Vorschau bleibt bis Zurücksetzen, Speichern, Wiederherstellung oder Neustart bestehen, auch bei Senderwechsel und Stop/Play. Nutzer bestätigt 0a09 als PASS; 0a0a-Gerätetest offen.
