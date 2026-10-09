@@ -11,14 +11,14 @@ spec.loader.exec_module(smoke)
 
 class BoardTest(unittest.TestCase):
     def setUp(self):
-        self.status = dict(name='CM-Radio', version='0.1.0', flashBytes=8388608,
+        self.status = dict(name='CM-Radio', version='0.1.1', flashBytes=8388608,
                            psramBytes=4194304, audioReady=True, storageReady=True,
                            wifiConnected=True, setupActive=False, settingsPending=False,
                            volume=5, stationIndex=0, autoplay=True, state='streaming')
         self.stations = [dict(name='Test', url='https://example.org/private-token')]
         self.config = dict(ssid='PRIVATE-SSID', autoplay=True)
     def evaluate(self):
-        return smoke.evaluate(self.status, self.stations, self.config, '0.1.0')
+        return smoke.evaluate(self.status, self.stations, self.config, '0.1.1')
     def test_valid_board(self):
         self.assertTrue(all(c['result'] == 'PASS' for c in self.evaluate()))
     def test_faults_and_boolean_indices(self):

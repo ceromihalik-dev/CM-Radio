@@ -10,7 +10,7 @@ Lautsprecher bei ausgeschaltetem Board jeweils an den eigenen Zweipol-Ausgang an
 
 ## A. Kompiliertes Erstinstallationspaket
 
-1. ZIP entpacken. Terminal im Ordner mit `flash.py` und `CM-Radio-V0.1.0-full.bin` öffnen.
+1. ZIP entpacken. Terminal im Ordner mit `flash.py` und `CM-Radio-V0.1.1-full.bin` öffnen.
 2. Python installieren, anschließend unter Windows:
 
 ```powershell
@@ -89,3 +89,7 @@ Falls `.local` nicht aufgelöst wird, `http://cm-radio.local` durch `http://GERA
 Der Test liest ausschließlich Status, Senderliste und Konfiguration. Er prüft 19 Kriterien, unter anderem Firmwareversion, Flash, nutzbare PSRAM, WLAN, Audioinitialisierung, gespeicherte Einstellungen und gültige Senderauswahl. Lautstärke, Wiedergabe und Einstellungen werden nicht verändert. Bei einem Fehler endet das Programm mit Exitcode 1; bei Erfolg mit 0. Wenn alle API-Abfragen fehlschlagen, zuerst Adresse, WLAN und Erreichbarkeit im Browser prüfen.
 
 Der JSON-Bericht enthält keine SSID, Geräte-IP, Sender-URLs oder WLAN-Passwörter. **PASS bestätigt die automatischen Prüfungen; die physische Hardware-Abnahme bleibt offen.** Hörprobe, Stereo, Stromneustart, Netzausfall und Dauertest anschließend nach `docs/TESTPLAN.md` durchführen.
+
+## V0.1.1 – Diagnose am gelieferten Board
+
+Die Weboberfläche versucht die Verbindung automatisch erneut. Bei einem fehlgeschlagenen ersten Laden werden auch Sender und WLAN-Konfiguration nachgeladen. Unter Gerätestatus lässt sich ein Diagnosebericht herunterladen; er enthält keine SSID, IP-Adresse, Sender-URL, Titel oder WLAN-Zugangsdaten. Der Bericht enthält unter anderem Firmwarestand, Speicherwerte, WLAN-Signal und den numerischen ESP32-Neustartgrund. Physische Abnahme bleibt offen.

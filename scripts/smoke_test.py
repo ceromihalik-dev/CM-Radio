@@ -55,7 +55,7 @@ def evaluate(status, stations, config, expected_version):
     check('Playerzustand gueltig', status.get('state') in ('stopped', 'connecting', 'streaming', 'error'))
     return checks
 
-def run(address, expected_version='0.1.0', timeout=10):
+def run(address, expected_version='0.1.1', timeout=10):
     # Local radio requests bypass proxies; redirects and unbounded replies are rejected.
     opener = build_opener(ProxyHandler({}), NoRedirect())
     payloads, checks = {}, []
@@ -89,7 +89,7 @@ def run(address, expected_version='0.1.0', timeout=10):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('address', type=base_address, help='http://cm-radio.local oder http://GERAETE-IP')
-    parser.add_argument('--expected-version', default='0.1.0')
+    parser.add_argument('--expected-version', default='0.1.1')
     parser.add_argument('--report', type=Path, help='JSON-Ergebnisbericht ohne WLAN- und Senderdaten')
     args = parser.parse_args()
     report = run(args.address, args.expected_version)

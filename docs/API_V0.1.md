@@ -28,3 +28,5 @@ curl -X POST http://cm-radio.local/api/v1/play -H 'Content-Type: application/jso
 curl -X POST http://cm-radio.local/api/v1/volume -H 'Content-Type: application/json' -d '{"volume":5}'
 curl -X POST http://cm-radio.local/api/v1/stop -H 'Content-Type: application/json' -d '{}'
 ```
+
+V0.1.1 ergänzt `/status` um `minFreeHeap` (Bytes) und `resetReason` (numerischer ESP32/ESP-IDF-Neustartgrund). Vorhandene Felder und API-Pfade bleiben erhalten.

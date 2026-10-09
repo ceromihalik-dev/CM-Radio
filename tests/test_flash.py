@@ -12,10 +12,12 @@ from unittest.mock import patch
 
 SCRIPT = Path(__file__).resolve().parents[1]/'scripts/flash.py'
 class FlashTests(unittest.TestCase):
-    def invoke(self, output='Detected flash size: 8MB', erase=True, corrupt=False):
+    def invoke(self, output='Detected flash size: 8MB', erase=True, corrupt=False, use_default=False):
         calls = []
         with tempfile.TemporaryDirectory() as directory:
-            image = Path(directory)/'CM-Radio-V0.1.0-full.bin'
+            image = Path(directory)/'CM-Radio-V0.1.1-full.bin'
+            script = Path(directory)/'flash.py'
+            script.write_bytes(SCRIPT.read_bytes())
             image.write_bytes(b'checked-test-fixture')
             digest = hashlib.sha256(image.read_bytes()).hexdigest()
             (image.parent/'SHA256SUMS').write_text(digest+'  '+image.name+'\n')
@@ -24,16 +26,23 @@ class FlashTests(unittest.TestCase):
             def run(command, **kwargs):
                 calls.append(command)
                 return subprocess.CompletedProcess(command, 0, stdout=output)
-            argv = [str(SCRIPT), '--port', 'TESTPORT', '--image', str(image)]
+            argv = [str(script), '--port', 'TESTPORT']
+            if not use_default:
+                argv.extend(['--image', str(image)])
             if erase:
                 argv.append('--erase')
             exit_code = 0
             with patch.object(sys, 'argv', argv), patch('subprocess.run', side_effect=run), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 try:
-                    runpy.run_path(str(SCRIPT), run_name='__main__')
+                    runpy.run_path(str(script), run_name='__main__')
                 except SystemExit as e:
                     exit_code = e.code
         return exit_code, calls
+
+    def test_packaged_default_image(self):
+        code, calls = self.invoke(use_default=True)
+        self.assertEqual(code, 0)
+        self.assertTrue(calls[-1][-1].endswith('CM-Radio-V0.1.1-full.bin'))
 
     def test_requires_explicit_first_installation(self):
         code, calls = self.invoke(erase=False)

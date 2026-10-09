@@ -18,6 +18,7 @@ with tempfile.TemporaryDirectory() as directory:
     js = Path(directory)/'web.js'
     js.write_text(script)
     subprocess.run(['node', '--check', str(js)], check=True)
+subprocess.run(['node', str(ROOT/'tests/test_web.js')], cwd=ROOT, check=True)
 rows = list(csv.reader(line for line in (ROOT/'firmware/partitions.csv').read_text().splitlines() if line.strip() and not line.startswith('#')))
 previous_end = 0x9000
 apps = []

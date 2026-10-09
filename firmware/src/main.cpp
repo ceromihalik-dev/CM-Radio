@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <esp_system.h>
 #include <WiFi.h>
 #include <WebServer.h>
 #include <DNSServer.h>
@@ -134,6 +135,8 @@ void routes() {
         response["storageReady"] = storageReady;
         response["uptimeSeconds"] = millis() / 1000;
         response["freeHeap"] = ESP.getFreeHeap();
+        response["minFreeHeap"] = ESP.getMinFreeHeap();
+        response["resetReason"] = static_cast<int>(esp_reset_reason());
         response["psramBytes"] = ESP.getPsramSize();
         response["flashBytes"] = ESP.getFlashChipSize();
         sendJson(200, response);

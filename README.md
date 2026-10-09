@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: V0.1.0, Entwicklung vor der ersten Hardware-Inbetriebnahme.** Die Firmware ist für den konkreten WROVER-Aufbau vorbereitet. Ein erfolgreicher Build ersetzt noch keinen Test von Ton, Stereo, WLAN und Neustart auf dem bestellten Board. Ergebnisse stehen in [docs/BUILDSTATUS.md](docs/BUILDSTATUS.md).
+**Stand: V0.1.1, Entwicklung vor der ersten Hardware-Inbetriebnahme.** Die Firmware ist für den konkreten WROVER-Aufbau vorbereitet. Ein erfolgreicher Build ersetzt noch keinen Test von Ton, Stereo, WLAN und Neustart auf dem gelieferten E3-Board. Ergebnisse stehen in [docs/BUILDSTATUS.md](docs/BUILDSTATUS.md).
 
 ## V0.1
 
@@ -17,7 +17,7 @@ Die eigenständige Android-App, Radio-Browser-Sendersuche und OTA-Updates folgen
 
 ## Sofort starten
 
-Ein kompiliertes Erstinstallationspaket enthält `CM-Radio-V0.1.0-full.bin`, `flash.py`, Prüfsummen und `ERSTSTART.md`. Es ist ausschließlich für **klassischen ESP32-WROVER mit 8 MB Flash** geeignet. Das vollständige Image ersetzt bei der Erstinstallation die Werksfirmware und löscht gespeicherte Einstellungen.
+Ein kompiliertes Erstinstallationspaket enthält `CM-Radio-V0.1.1-full.bin`, `flash.py`, Prüfsummen und `ERSTSTART.md`. Es ist ausschließlich für **klassischen ESP32-WROVER mit 8 MB Flash** geeignet. Das vollständige Image ersetzt bei der Erstinstallation die Werksfirmware und löscht gespeicherte Einstellungen.
 
 ```powershell
 py -m pip install esptool==4.8.1

@@ -7,7 +7,7 @@ import subprocess
 import sys
 parser = argparse.ArgumentParser(description='CM-Radio V0.1: Loud-ESP32 WROVER-N8R8, 8 MB Flash')
 parser.add_argument('--port', required=True, help='e.g. COM5 or /dev/ttyUSB0')
-parser.add_argument('--image', type=Path, default=Path(__file__).resolve().parent/'CM-Radio-V0.1.0-full.bin')
+parser.add_argument('--image', type=Path, default=Path(__file__).resolve().parent/'CM-Radio-V0.1.1-full.bin')
 parser.add_argument('--erase', action='store_true', help='First installation: erase factory firmware and NVS; deletes stored settings')
 args = parser.parse_args()
 if not args.erase:
