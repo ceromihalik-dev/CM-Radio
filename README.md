@@ -105,3 +105,5 @@ Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach a
 ### v0.1.3 · Build 01
 
 Loudness lässt sich unter Gerät direkt vorhören und dauerhaft speichern. Die Zusatzanhebung nimmt mit der tatsächlichen Lautstärke ab und ist ab Stufe 15 ausgeschaltet; Bass/Höhen bleiben auf insgesamt +6 dB begrenzt. Alte Einstellungen laden Loudness aus. Jedes Firmware-ZIP enthält die ausführliche USB_ERSTINSTALLATION.txt mit automatisch passenden Paketdaten. Browserupdate nutzt manifest.json und firmware.bin. Gerätetest dieses neuen Stands offen.
+
+Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS nach angefragtem Loudness-Hörtest und Prüfung gespeicherter Werte nach Neustart. Keine gesonderten Messwerte übermittelt. USB-Erstinstallation dieses Pakets und vollständige Hardwareabnahme nicht gesondert bestätigt.

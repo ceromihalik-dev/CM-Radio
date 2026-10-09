@@ -52,3 +52,5 @@ Build 0a09 vom Nutzer als PASS bestätigt. Build 0a0a: PlatformIO und Hosttests 
 Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach angefragtem Test von direkter Klangvorschau, Zurücksetzen und Neustart ohne Speichern. Keine gesonderten Messwerte übermittelt; vollständige Hardwareabnahme bleibt separat.
 
 v0.1.3 Build 01: PlatformIO und Hosttests PASS. Loudness-Grenzen/Stufen, Aus-Zustand, strikter Boolean, neutrale Migration alter Sicherungen und UI-Vorschau/Speichern geprüft. Ein leeres lokales AAC-Decoderobjekt und Audioarchiv vor erfolgreichem Build neu erstellt. Neue USB_ERSTINSTALLATION.txt wird automatisch in alle Firmwarepakete übernommen, passend beschriftet und durch SHA256SUMS erfasst. Physische Hörprobe/Update für 0.1.3 Build 01 offen. Voriger Nutzerstand 0.1.2 Build 0a0a PASS.
+
+Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS nach angefragtem Loudness-Hörtest und Prüfung gespeicherter Werte nach Neustart. Keine gesonderten Messwerte übermittelt. USB-Erstinstallation dieses Pakets und vollständige Hardwareabnahme nicht gesondert bestätigt.

@@ -141,3 +141,5 @@ Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach a
 5. ZIP enthält ausführliche USB_ERSTINSTALLATION.txt mit Version 0.1.3, Build 01 und CM-Radio-V0.1.3-full.bin; keine Platzhalter. Erstinstallation an bereits belegtem Gerät nur als bewusst separater Resettest.
 
 Hosttests: Loudness aus/bei 0/bei 1/bei 15, maximale EQ-Grenzen über alle Lautstärkestufen, strikte boolesche Sicherungswerte und UI-Vorschau/Speichern geprüft. Hörprobe, Update und vollständige USB-Erstinstallation dieses Pakets OFFEN.
+
+Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS nach angefragtem Loudness-Hörtest und Prüfung gespeicherter Werte nach Neustart. Keine gesonderten Messwerte übermittelt. USB-Erstinstallation dieses Pakets und vollständige Hardwareabnahme nicht gesondert bestätigt.
