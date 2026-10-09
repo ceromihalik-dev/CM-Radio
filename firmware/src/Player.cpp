@@ -12,6 +12,7 @@ struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t sec
 QueueHandle_t commands;
 portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;
 PlayerStatus snapshot;
+bool updateRequested = false;
 uint8_t initialLimit = 21, initialSoftStart = 5;
 void message(const char* text) {
     portENTER_CRITICAL(&stateLock);
@@ -43,6 +44,24 @@ void audioWorker(void*) {
     uint32_t nextRetry = 0;
     unsigned attempts = 0;
     for (;;) {
+        portENTER_CRITICAL(&stateLock);
+        const bool updating = updateRequested;
+        portEXIT_CRITICAL(&stateLock);
+        if (updating) {
+            if (!snapshot.updating) {
+                digitalWrite(board::amplifierEnable, LOW);
+                audio->stopSong();wanted = false;wasRunning = false;
+                sleepTimer.cancel();envelope.stop();fallbackPolicy.reset();
+                requestedUrl[0] = '\0';xQueueReset(commands);
+                portENTER_CRITICAL(&stateLock);
+                snapshot.updating = true;snapshot.requested = false;snapshot.running = false;
+                snapshot.sleepRemainingSeconds = 0;snapshot.fallbackActive = false;snapshot.actualUrl[0] = '\0';snapshot.title[0] = '\0';
+                portEXIT_CRITICAL(&stateLock);
+                message("Firmwareupdate; Audio gestoppt");
+            }
+            vTaskDelay(pdMS_TO_TICKS(10));continue;
+        }
+        portENTER_CRITICAL(&stateLock);snapshot.updating = false;portEXIT_CRITICAL(&stateLock);
         Command c{};
         while (xQueueReceive(commands, &c, 0) == pdTRUE) {
             if (c.operation == Operation::Volume) {
@@ -194,4 +213,8 @@ void audio_showstreamtitle(const char* title) {
     portENTER_CRITICAL(&stateLock);
     strlcpy(snapshot.title, title ? title : "", sizeof(snapshot.title));
     portEXIT_CRITICAL(&stateLock);
+}
+
+void player::setUpdating(bool updating) {
+    portENTER_CRITICAL(&stateLock);updateRequested = updating;portEXIT_CRITICAL(&stateLock);
 }

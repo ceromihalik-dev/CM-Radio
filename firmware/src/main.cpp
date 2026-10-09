@@ -10,6 +10,7 @@
 #include "WebUi.h"
 #include "WifiScan.h"
 #include "BackupConfig.h"
+#include "FirmwareUpdate.h"
 #include <memory>
 #include <new>
 #include <esp_wifi.h>
@@ -75,6 +76,7 @@ void accepted() {
     sendJson(202, response);
 }
 bool body(JsonDocument& document) {
+    if (firmwareUpdate::busy()) { error(409, "Firmwareupdate aktiv; Bedienung gesperrt");return false; }
     // Browser writes must come from this device; non-browser local API clients
     // may omit Origin. This is not an authentication mechanism.
     const String origin = server.header("Origin");
@@ -162,8 +164,9 @@ void restoreBackup(bool validateOnly) {
     accepted();
 }
 void routes() {
-    const char* headers[] = {"Content-Type", "Origin"};
-    server.collectHeaders(headers, 2);
+    const char* headers[] = {"Content-Type", "Origin", "X-CM-Update-Token"};
+    server.collectHeaders(headers, 3);
+    firmwareUpdate::begin(server, [] {if (!dirty) return true;if (!storageReady || !store.save(settings)) return false;dirty = false;return true;});
     server.on("/", HTTP_GET, [] {
         server.sendHeader("Cache-Control", "no-cache");
         server.send_P(200, "text/html; charset=utf-8", WEB_UI);
@@ -181,6 +184,7 @@ void routes() {
         response["setupSsid"] = apActive ? apName : "";
         response["rssi"] = WiFi.status() == WL_CONNECTED ? WiFi.RSSI() : 0;
         response["audioReady"] = p.ready;
+        response["updating"] = firmwareUpdate::busy();
         response["requested"] = p.requested;
         response["running"] = p.running;
         response["state"] = !p.ready ? "error" : !p.requested ? "stopped" : !p.running ? "connecting" : "streaming";
@@ -452,6 +456,7 @@ void setup() {
 
 void loop() {
     const uint32_t now = millis();
+    firmwareUpdate::tick();
     wifiScan.tick(now, scanDriver);
     if (stopAfterRestore && (!player::status().ready || player::stop())) stopAfterRestore = false;
     if (!stopAfterRestore) {
@@ -460,8 +465,8 @@ void loop() {
     }
     server.handleClient();
     if (apActive) dns.processNextRequest();
-    serialCommands();
-    if (applyWifi && rules::reached(now, wifiAt)) {
+    if (!firmwareUpdate::busy()) serialCommands();
+    if (!firmwareUpdate::busy() && applyWifi && rules::reached(now, wifiAt)) {
         applyWifi = false;
         connectWifi();
     }

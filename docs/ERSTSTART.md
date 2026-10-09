@@ -145,3 +145,9 @@ Nach dem Firmwareupdate die Seite mit Strg+F5 neu laden. Unter Radio startet ein
 ## Build 0a07
 
 Korrektur gegen seit 0a05 gemeldete periodische Stream-Neustarts. Nach Update Strg+F5, denselben Sender mindestens zehn Minuten testen. Einstellungen bleiben beim Schreiben nur von firmware.bin erhalten.
+
+## Build 0a08 – Update im Browser
+
+Einmalig 0a08 per USB flashen und mit Strg+F5 neu laden. Für spätere Updates: ZIP entpacken, unter Gerät manifest.json und firmware.bin aus demselben Paket auswählen, Paket prüfen, Checkbox zur Installation aktivieren und Firmware installieren. Keine full.bin, kein Bootloader. Größe/Header/SHA-256 werden vor Aktivierung geprüft. Netzteil während des Schreibens angeschlossen lassen. Nach automatischem Neustart Verbindung abwarten, Seite mit Strg+F5 neu laden und installierten Build prüfen. Einstellungen bleiben erhalten; Autostart gilt beim Neustart.
+
+Erster Test: Das Paket 0a08 nochmals über den Browser installieren und Neustart sowie erhaltenes WLAN/Sender prüfen. Bei fehlerhafter Datei bleibt die bisherige Firmware aktiv und Audio kann manuell neu gestartet werden. Bei verloren gegangener Antwort nach vollständiger Übertragung zuerst den installierten Build prüfen. Pakete vor 0a08 haben noch keine passenden Update-Metadaten. Das Update lädt Dateien lokal vom Handy/PC, nicht automatisch von GitHub. Nach OTA kann der aktive Slot wechseln; die bisherige USB-Anweisung 0x10000 trifft dann nicht zwingend die aktive Anwendung. Für USB-Recovery den aktiven Slot klären, statt blind nur 0x10000 zu überschreiben.

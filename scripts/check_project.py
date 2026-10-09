@@ -19,7 +19,7 @@ with tempfile.TemporaryDirectory() as directory:
     control_binary = str(Path(directory)/'playback_controls')
     subprocess.run(['g++', '-std=c++11', '-Wall', '-Wextra', '-Werror', '-I'+str(ROOT/'firmware/include'), str(ROOT/'tests/test_playback_controls.cpp'), '-o', control_binary], check=True)
     subprocess.run([control_binary], check=True)
-    for source in ('test_fallback.cpp', 'test_backup.cpp'):
+    for source in ('test_fallback.cpp', 'test_backup.cpp', 'test_update.cpp'):
         test_binary = str(Path(directory)/source.removesuffix('.cpp'))
         subprocess.run(['g++', '-std=c++11', '-Wall', '-Wextra', '-Werror', '-I'+str(ROOT/'firmware/include'), '-I'+str(ROOT/'firmware/.pio/libdeps/loud_wrover/ArduinoJson/src'), str(ROOT/'tests'/source), '-o', test_binary], check=True)
         subprocess.run([test_binary], check=True)

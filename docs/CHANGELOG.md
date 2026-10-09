@@ -1,5 +1,14 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a08 — 09.10.2026
+
+- Lokales Firmwareupdate unter Gerät: manifest.json und firmware.bin aus demselben Paket auswählen, Paket prüfen, Installation ausdrücklich bestätigen. Uploadfortschritt und Neustarthinweis anzeigen.
+- Updatepakete enthalten Größe, SHA-256 und Hardwareziel der Anwendungsfirmware. Das Radio prüft diese Daten und den ESP32-Imageheader, schreibt den freien OTA-Slot und aktiviert ihn erst nach vollständiger Prüfung und vollständigem HTTP-Upload.
+- Audio und Timer werden vor dem Schreiben im Audiotask gestoppt. Ausstehende Einstellungen werden vorher gespeichert; Änderungen sind während des Updates gesperrt. Fehler oder unvollständige Dateien aktivieren keinen neuen Slot. Nach Fehler Audio bei Bedarf manuell starten.
+- Sitzungstoken und Browser-Ursprungsprüfung begrenzen den Upload auf die vorbereitete Sitzung; kein automatisch heruntergeladenes Internetupdate und keine signierten Pakete.
+- Nutzer bestätigt Build 0a07 am 09.10.2026 um 18:26 Uhr als PASS; CMR-004 im erneuten Gerätetest behoben. Physischer Update-/Neustarttest für 0a08 offen.
+
+
 ## v0.1.2 · Build 0a07 — 09.10.2026
 
 - Korrektur für CMR-004: seit 0a05 gemeldeter Stream-Neustart nach ungefähr zehn Sekunden. Der in 0a05 eingeführte Audiozeit-Stillstandswächter wurde entfernt: die berechnete Audiozeit ist kein zuverlässiger Verbindungsnachweis für jeden Livestream.

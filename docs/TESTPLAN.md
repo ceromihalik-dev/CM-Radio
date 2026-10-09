@@ -93,3 +93,15 @@ Hosttests: direkte Senderwahl, Offline-Sperre, sichere Textdarstellung, Entwurfs
 ## Build 0a07 – CMR-004
 
 Denselben betroffenen Sender mindestens zehn Minuten hören: kein periodischer Abbruch oder Neuladen. Danach Stop/Play, Sleep-Timer, Ersatzsender und WLAN-Wiederverbindung prüfen. Gerätetest offen.
+
+## Build 0a08 – Lokales OTA-Update
+
+Nutzerabnahme 0a07: PASS am 09.10.2026 um 18:26 Uhr; keine gesonderte Laufzeit übermittelt. CMR-004 im erneuten Gerätetest behoben.
+
+1. 0a08 einmalig per USB installieren. Mit Strg+F5 laden, laufenden Sender und Timer starten, Lautstärke verändern. Paket 0a08 in der Oberfläche auswählen, prüfen und bestätigen. Audio/Timer stoppen vor Upload; Fortschritt sichtbar; Neustart; WLAN, Sender, Lautstärke und Wiedergabeeinstellungen bleiben erhalten. Installierten Build prüfen.
+2. Datei mit verändertem Byte, gleicher Größe und unverändertem Manifest über Browser installieren: Hashfehler, kein neuer Slot aktiv, Radio weiter erreichbar, manuelles Play möglich.
+3. Falscher Dateiname/Größe/Manifest/ESP32-Header: abgelehnt. Ohne Installationscheckbox kein Upload. Ungespeicherte Formularentwürfe blockieren Installation.
+4. Transfer abbrechen (Browser schließen/Verbindung trennen): kein erfolgreiches Aktivieren einer Teilfirmware, später wieder erreichbar. Stromunterbrechung als separaten, kontrollierten Recoverytest prüfen; hier keine physische Garantie behauptet.
+5. Neustart nach erfolgreichem Upload, Autostart an/aus und Senderdauerbetrieb prüfen. Zweiten Upload durchführen, um beide OTA-Slots nacheinander zu verwenden.
+
+Hosttests PASS: Hashmetadaten, in Teilen eintreffender Header, ESP32-Chip-ID, falsche Magicbytes, Übergröße/Teilimage; UI-Paketprüfung, ausdrückliche Zustimmung, Entwurfsschutz, Uploadpfad/Token/Progress, Fehleranzeige und Bedienungssperre. Echte SHA-Prüfung/Flashaktivierung/Neustart am Board OFFEN. Kein direkter USB-Zugriff hier.

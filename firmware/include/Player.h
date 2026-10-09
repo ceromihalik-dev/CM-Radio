@@ -6,6 +6,7 @@ struct PlayerStatus {
     bool requested = false;
     bool running = false;
     bool ready = false;
+    bool updating = false;
     uint8_t volume = 5;
     bool ramping = false;
     bool fallbackActive = false;
@@ -21,6 +22,7 @@ bool sleep(unsigned minutes);
 bool play(const char* url, const char* fallbackUrl = "");
 bool fallback(const char* url);
 bool stop();
+void setUpdating(bool updating);
 bool volume(uint8_t value);
 PlayerStatus status();
 }
