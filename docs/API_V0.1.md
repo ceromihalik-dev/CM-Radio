@@ -34,3 +34,5 @@ V0.1.1 ergänzt `/status` um `minFreeHeap` (Bytes) und `resetReason` (numerische
 ## WLAN-Suche (V0.1.2)
 
 `POST /api/v1/wifi/scan` mit `{}` startet asynchron (202). `GET /api/v1/wifi/scan` liefert `scanning` und `networks` mit `ssid`, `rssi`, `channel`, `secure`. Während der Suche erneut abfragen; fehlgeschlagene oder nicht gestartete Suche: 503. Maximal 20 unterschiedliche sichtbare SSIDs, stärkste zuerst. Versteckte Netzwerke manuell eingeben. Kein Passwort wird zurückgegeben.
+
+Build 0a01 ergänzt `/status` um `build`. Die WLAN-Suche pausiert Wiederverbindung, bereitet den Start 300 ms vor und wiederholt abgelehnte Starts höchstens dreimal. Zeitlimit 12 Sekunden. Speichern während der Suche: 409.

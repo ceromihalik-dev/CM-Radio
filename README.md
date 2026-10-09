@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: V0.1.2, USB-Flash und erster Boot am gelieferten Board bestätigt; weitere Hardwaretests offen.** Die Firmware ist für den konkreten WROVER-Aufbau vorbereitet. Ein erfolgreicher Build ersetzt noch keinen Test von Ton, Stereo, WLAN und Neustart auf dem gelieferten E3-Board. Ergebnisse stehen in [docs/BUILDSTATUS.md](docs/BUILDSTATUS.md).
+**Stand: v0.1.2 · Build 0a01, USB-Flash und erster Boot am gelieferten Board bestätigt; weitere Hardwaretests offen.** Die Firmware ist für den konkreten WROVER-Aufbau vorbereitet. Ein erfolgreicher Build ersetzt noch keinen Test von Ton, Stereo, WLAN und Neustart auf dem gelieferten E3-Board. Ergebnisse stehen in [docs/BUILDSTATUS.md](docs/BUILDSTATUS.md).
 
 ## V0.1
 

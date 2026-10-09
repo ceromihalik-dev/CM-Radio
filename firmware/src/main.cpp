@@ -8,6 +8,8 @@
 #include "Settings.h"
 #include "Player.h"
 #include "WebUi.h"
+#include "WifiScan.h"
+#include <esp_wifi.h>
 
 namespace {
 WebServer server(80);
@@ -19,7 +21,27 @@ bool apActive = false;
 bool mdnsActive = false;
 bool dirty = false;
 bool applyWifi = false;
-bool scanStarted = false;
+WifiScan wifiScan;
+struct ScanDriver {
+    bool reconnect = false;
+    void prepare() {
+        reconnect = WiFi.getAutoReconnect();
+        WiFi.setAutoReconnect(false);
+        // Preserve the setup AP and an established home-network connection.
+        // Cancel an unfinished station connection before asking for a scan.
+        WiFi.enableSTA(true);
+        if (WiFi.status() != WL_CONNECTED) WiFi.disconnect(false, false);
+        WiFi.scanDelete();
+    }
+    int start() {
+        const int result = WiFi.scanNetworks(true, false);
+        if (result == WIFI_SCAN_FAILED) Serial.println("WLAN-Suche: Start abgelehnt; Wiederholung folgt");
+        return result;
+    }
+    int complete() { return WiFi.scanComplete(); }
+    void cancel() { esp_wifi_scan_stop(); }
+    void restore() { WiFi.setAutoReconnect(reconnect); }
+} scanDriver;
 uint32_t saveAt = 0;
 uint32_t wifiAt = 0;
 uint32_t lastConnectAttempt = 0;
@@ -115,6 +137,7 @@ void routes() {
         DynamicJsonDocument response(2048);
         response["name"] = "CM-Radio";
         response["version"] = board::version;
+        response["build"] = board::build;
         response["board"] = board::name;
         response["wifiConnected"] = WiFi.status() == WL_CONNECTED;
         response["ip"] = WiFi.localIP().toString();
@@ -226,19 +249,14 @@ void routes() {
         StaticJsonDocument<64> request;
         if (!body(request)) return;
         if (applyWifi) { error(409, "WLAN-Verbindung wird gerade geaendert"); return; }
-        if (WiFi.scanComplete() != WIFI_SCAN_RUNNING) {
-            WiFi.scanDelete();
-            const int result = WiFi.scanNetworks(true, false);
-            if (result == WIFI_SCAN_FAILED) { scanStarted = false; error(503, "WLAN-Suche konnte nicht starten"); return; }
-            scanStarted = true;
-        }
+        wifiScan.request(millis(), scanDriver);
         accepted();
     });
     server.on("/api/v1/wifi/scan", HTTP_GET, [] {
-        const int count = WiFi.scanComplete();
-        if (!scanStarted || count == WIFI_SCAN_FAILED) { error(503, "WLAN-Suche nicht gestartet oder fehlgeschlagen"); return; }
+        const int count = wifiScan.result();
+        if (!wifiScan.started() || (!wifiScan.busy() && count == WIFI_SCAN_FAILED)) { error(503, "WLAN-Suche nicht gestartet oder fehlgeschlagen"); return; }
         DynamicJsonDocument response(8192);
-        response["scanning"] = count == WIFI_SCAN_RUNNING;
+        response["scanning"] = wifiScan.busy();
         JsonArray networks = response.createNestedArray("networks");
         if (count >= 0) {
             // Framework scan results are sorted by signal strength. Keep the
@@ -263,6 +281,7 @@ void routes() {
     server.on("/api/v1/wifi", HTTP_POST, [] {
         StaticJsonDocument<512> request;
         if (!body(request)) return;
+        if (wifiScan.busy()) { error(409, "Bitte WLAN-Suche abwarten"); return; }
         if (!request["ssid"].is<const char*>() || !request["password"].is<const char*>()) { error(400, "ssid und password erforderlich"); return; }
         Settings candidate = settings;
         candidate.ssid = request["ssid"].as<String>();
@@ -288,7 +307,7 @@ void serialCommands() {
             serialLine.trim();
             if (serialLine == "setup") startAp();
             else if (serialLine == "status") {
-                Serial.printf("CM-Radio %s | Flash %u | PSRAM %u | IP %s | Audio %s\n", board::version, ESP.getFlashChipSize(), ESP.getPsramSize(), WiFi.localIP().toString().c_str(), player::status().ready ? "bereit" : "Fehler");
+                Serial.printf("CM-Radio %s build %s | Flash %u | PSRAM %u | IP %s | Audio %s\n", board::version, board::build, ESP.getFlashChipSize(), ESP.getPsramSize(), WiFi.localIP().toString().c_str(), player::status().ready ? "bereit" : "Fehler");
             } else if (serialLine == "reset-wifi") {
                 Settings candidate = settings;
                 candidate.ssid = "";
@@ -311,7 +330,7 @@ void setup() {
     pinMode(board::amplifierEnable, OUTPUT);
     digitalWrite(board::amplifierEnable, LOW);
     Serial.begin(115200);
-    Serial.printf("\nCM-Radio %s | %s\nFlash: %u Bytes | PSRAM: %u Bytes\n", board::version, board::name, ESP.getFlashChipSize(), ESP.getPsramSize());
+    Serial.printf("\nCM-Radio %s build %s | %s\nFlash: %u Bytes | PSRAM: %u Bytes\n", board::version, board::build, board::name, ESP.getFlashChipSize(), ESP.getPsramSize());
     storageReady = store.begin();
     if (!storageReady) diagnostic = "NVS-Speicher nicht verfuegbar";
     if (!store.load(settings)) diagnostic = "Gespeicherte Konfiguration ungueltig; Standard geladen";
@@ -336,6 +355,7 @@ void setup() {
 
 void loop() {
     const uint32_t now = millis();
+    wifiScan.tick(now, scanDriver);
     server.handleClient();
     if (apActive) dns.processNextRequest();
     serialCommands();
@@ -344,7 +364,7 @@ void loop() {
         connectWifi();
     }
     const bool online = WiFi.status() == WL_CONNECTED;
-    if (online && !wasOnline) {
+    if (online && !wasOnline && !wifiScan.busy()) {
         Serial.printf("WLAN verbunden: http://%s / http://cm-radio.local\n", WiFi.localIP().toString().c_str());
         stopAp();
         mdnsActive = MDNS.begin("cm-radio");
@@ -354,10 +374,10 @@ void loop() {
         if (mdnsActive) MDNS.end();
         mdnsActive = false;
     }
-    wasOnline = online;
+    if (!wifiScan.busy()) wasOnline = online;
     if (!online && !settings.ssid.isEmpty()) {
         if (now - offlineSince >= 30000) startAp();
-        if (now - lastConnectAttempt >= 20000) {
+        if (!wifiScan.busy() && now - lastConnectAttempt >= 20000) {
             WiFi.begin(settings.ssid.c_str(), settings.password.c_str());
             lastConnectAttempt = now;
         }

@@ -1,7 +1,9 @@
 # CM-Radio – Änderungen
 
-## V0.1.2 – 9. Oktober 2026
+## v0.1.2 · Build 0a01 – 9. Oktober 2026
 
+- WLAN-Suche pausiert Verbindungsversuche und startet nach kurzer Vorbereitung; begrenzte Startwiederholungen und Timeout.
+- Einheitliche Buildkennung in Status-API, Startausgabe, Weboberfläche und Paketmanifest.
 - Asynchrone Suche nach verfügbaren 2,4-GHz-WLANs im Setup; Auswahl übernimmt den WLAN-Namen. Signalstärke und offene/gesicherte Netze werden angezeigt. Manuelle Eingabe bleibt möglich.
 - USB-Flash und erster Boot von V0.1.1 am gelieferten Board bestätigt; Audio- und weitere Hardwaretests bleiben offen.
 
