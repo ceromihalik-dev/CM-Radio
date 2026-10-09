@@ -21,6 +21,7 @@ bool apActive = false;
 bool mdnsActive = false;
 bool dirty = false;
 bool applyWifi = false;
+bool applyAudioConfig = false;
 WifiScan wifiScan;
 struct ScanDriver {
     bool reconnect = false;
@@ -154,6 +155,12 @@ void routes() {
         response["message"] = diagnostic.isEmpty() ? p.message : diagnostic;
         response["volume"] = settings.volume;
         response["maxVolume"] = rules::maxVolume;
+        response["volumeLimit"] = settings.volumeLimit;
+        response["softStartSeconds"] = settings.softStartSeconds;
+        response["effectiveVolume"] = p.volume;
+        response["ramping"] = p.ramping;
+        response["sleepRemainingSeconds"] = p.sleepRemainingSeconds;
+        response["audioConfigPending"] = applyAudioConfig;
         response["autoplay"] = settings.autoplay;
         response["settingsPending"] = dirty;
         response["storageReady"] = storageReady;
@@ -223,7 +230,7 @@ void routes() {
         if (!body(request)) return;
         if (!request["volume"].is<int>()) { error(400, "volume muss eine Ganzzahl sein"); return; }
         const int value = request["volume"].as<int>();
-        if (value < 0 || value > rules::maxVolume) { error(400, "Lautstaerke muss 0 bis 21 sein"); return; }
+        if (value < 0 || value > settings.volumeLimit) { error(400, "Lautstaerke ueberschreitet die eingestellte Grenze"); return; }
         if (!player::volume(value)) { error(503, "Audio-Warteschlange voll"); return; }
         settings.volume = value;
         dirty = true;
@@ -234,15 +241,39 @@ void routes() {
         StaticJsonDocument<256> response;
         response["ssid"] = settings.ssid;
         response["autoplay"] = settings.autoplay;
+        response["volumeLimit"] = settings.volumeLimit;
+        response["softStartSeconds"] = settings.softStartSeconds;
         sendJson(200, response);
     });
     server.on("/api/v1/config", HTTP_POST, [] {
         StaticJsonDocument<256> request;
         if (!body(request)) return;
-        if (!request["autoplay"].is<bool>()) { error(400, "autoplay muss boolesch sein"); return; }
         Settings candidate = settings;
-        candidate.autoplay = request["autoplay"].as<bool>();
+        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds")) { error(400, "Keine bekannte Einstellung"); return; }
+        if (request.containsKey("autoplay")) {
+            if (!request["autoplay"].is<bool>()) { error(400, "autoplay muss boolesch sein"); return; }
+            candidate.autoplay = request["autoplay"].as<bool>();
+        }
+        if (request.containsKey("volumeLimit")) {
+            if (!request["volumeLimit"].is<int>() || request["volumeLimit"].as<int>() < 0 || request["volumeLimit"].as<int>() > 21) { error(400, "volumeLimit muss 0 bis 21 sein"); return; }
+            candidate.volumeLimit = request["volumeLimit"].as<int>();
+            if (candidate.volume > candidate.volumeLimit) candidate.volume = candidate.volumeLimit;
+        }
+        if (request.containsKey("softStartSeconds")) {
+            if (!request["softStartSeconds"].is<int>() || request["softStartSeconds"].as<int>() < 0 || request["softStartSeconds"].as<int>() > 30) { error(400, "softStartSeconds muss 0 bis 30 sein"); return; }
+            candidate.softStartSeconds = request["softStartSeconds"].as<int>();
+        }
+        const bool audioChanged = candidate.volumeLimit != settings.volumeLimit || candidate.softStartSeconds != settings.softStartSeconds;
         if (!persist(candidate)) return;
+        if (audioChanged) applyAudioConfig = true;
+        accepted();
+    });
+    server.on("/api/v1/sleep", HTTP_POST, [] {
+        StaticJsonDocument<128> request;
+        if (!body(request)) return;
+        if (!request["minutes"].is<int>() || request["minutes"].as<int>() < 0 || request["minutes"].as<int>() > 180) { error(400, "minutes muss 0 bis 180 sein (0 beendet den Timer)"); return; }
+        if (!player::status().ready) { error(503, "Audio nicht bereit"); return; }
+        if (!player::sleep(request["minutes"].as<int>())) { error(503, "Audio-Warteschlange voll"); return; }
         accepted();
     });
     server.on("/api/v1/wifi/scan", HTTP_POST, [] {
@@ -346,7 +377,7 @@ void setup() {
     apPassword = key;
     if (!psramFound()) diagnostic = "PSRAM fehlt: Audio bleibt deaktiviert";
     else if (ESP.getFlashChipSize() != 8U * 1024U * 1024U) diagnostic = "Flashgroesse passt nicht zur WROVER-N8R8-Konfiguration";
-    else if (!player::begin(settings.volume)) diagnostic = "Audio-Task konnte nicht gestartet werden";
+    else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds)) diagnostic = "Audio-Task konnte nicht gestartet werden";
     else if (settings.autoplay) player::play(settings.stations[settings.selected].url.c_str());
     connectWifi();
     routes();
@@ -356,6 +387,7 @@ void setup() {
 void loop() {
     const uint32_t now = millis();
     wifiScan.tick(now, scanDriver);
+    if (applyAudioConfig && player::configure(settings.volumeLimit, settings.softStartSeconds, settings.volume)) applyAudioConfig = false;
     server.handleClient();
     if (apActive) dns.processNextRequest();
     serialCommands();

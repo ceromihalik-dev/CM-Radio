@@ -16,6 +16,9 @@ with tempfile.TemporaryDirectory() as directory:
     scan_binary = str(Path(directory)/'wifi_scan')
     subprocess.run(['g++', '-std=c++11', '-Wall', '-Wextra', '-Werror', '-I'+str(ROOT/'firmware/include'), str(ROOT/'tests/test_wifi_scan.cpp'), '-o', scan_binary], check=True)
     subprocess.run([scan_binary], check=True)
+    control_binary = str(Path(directory)/'playback_controls')
+    subprocess.run(['g++', '-std=c++11', '-Wall', '-Wextra', '-Werror', '-I'+str(ROOT/'firmware/include'), str(ROOT/'tests/test_playback_controls.cpp'), '-o', control_binary], check=True)
+    subprocess.run([control_binary], check=True)
     html = (ROOT/'firmware/web/index.html').read_text()
     script = re.search(r'<script>(.*?)</script>', html, re.S).group(1)
     js = Path(directory)/'web.js'

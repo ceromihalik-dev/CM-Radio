@@ -8,7 +8,9 @@ bool SettingsStore::load(Settings& s) {
     if (raw.isEmpty()) return true;
     if (raw.length() > 8192) return false;
     DynamicJsonDocument d(12288);
-    if (deserializeJson(d, raw) || d["schema"].as<int>() != 1) return false;
+    if (deserializeJson(d, raw)) return false;
+    const int schema = d["schema"] | 0;
+    if (schema != 1) return false;
     const String ssid = d["ssid"] | "";
     const String password = d["password"] | "";
     if (!ssid.isEmpty() && !rules::validWifi(ssid.c_str(), password.c_str())) return false;
@@ -28,7 +30,14 @@ bool SettingsStore::load(Settings& s) {
     const int volume = d["volume"] | 5;
     if (selected < 0 || selected >= static_cast<int>(candidate.count) || volume < 0 || volume > rules::maxVolume) return false;
     candidate.selected = selected;
-    candidate.volume = volume;
+    if (d.containsKey("volumeLimit") && !d["volumeLimit"].is<int>()) return false;
+    if (d.containsKey("softStartSeconds") && !d["softStartSeconds"].is<int>()) return false;
+    const int limit = d["volumeLimit"] | 21;
+    const int softStart = d["softStartSeconds"] | 5;
+    if (limit < 0 || limit > 21 || softStart < 0 || softStart > 30) return false;
+    candidate.volumeLimit = limit;
+    candidate.softStartSeconds = softStart;
+    candidate.volume = volume > limit ? limit : volume;
     candidate.autoplay = d["autoplay"] | true;
     s = candidate;
     return true;
@@ -41,6 +50,8 @@ bool SettingsStore::save(const Settings& s) {
     d["selected"] = s.selected;
     d["volume"] = s.volume;
     d["autoplay"] = s.autoplay;
+    d["volumeLimit"] = s.volumeLimit;
+    d["softStartSeconds"] = s.softStartSeconds;
     JsonArray list = d.createNestedArray("stations");
     for (size_t i = 0; i < s.count; ++i) {
         JsonObject station = list.createNestedObject();

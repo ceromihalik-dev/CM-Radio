@@ -40,3 +40,11 @@ Build 0a01 ergänzt `/status` um `build`. Die WLAN-Suche pausiert Wiederverbindu
 ## Sendersuche (Build 0a03)
 
 Die Weboberfläche fragt Radio-Browser direkt im Handy-/PC-Browser ab; keine zusätzliche Suchroute auf dem ESP32. Übernahme nutzt weiterhin `PUT /api/v1/stations`. Namen sind auf 63 UTF-8-Bytes begrenzt, Streamadressen auf 383. Änderungen werden erst nach explizitem Speichern geschrieben. Eine spätere Android-App muss die Verzeichnissuche ebenfalls integrieren. API-Quelle: https://docs.radio-browser.info/ .
+
+## Wiedergabekomfort (Build 0a04)
+
+`POST /api/v1/config` akzeptiert jetzt Teiländerungen mit `autoplay` (bool), `volumeLimit` (int 0–21) und/oder `softStartSeconds` (int 0–30). Mindestens ein bekanntes Feld ist erforderlich, ungültige Felder liefern 400. Die Grenze wird gespeichert; ein höherer gespeicherter Lautstärkewert wird abgesenkt. Bei Erhöhung bleibt der aktuelle Zielwert erhalten. `GET /config` liefert die beiden neuen Werte. `POST /volume` über der gespeicherten Grenze: 400.
+
+`POST /api/v1/sleep` mit `{"minutes":15}` startet/ersetzt den Timer; 0 hebt ihn auf, maximal 180. Antwort 202 bedeutet eingereiht, 400 ungültiger Wert, 503 Audio nicht bereit oder Queue voll. Timer wirkt auch bei Senderwechsel, wird bei manuellem Stop und Stromneustart aufgehoben.
+
+`GET /status` ergänzt `volumeLimit`, `softStartSeconds`, `effectiveVolume` (tatsächlicher Audio-Reglerwert), `ramping`, `sleepRemainingSeconds`, `audioConfigPending`. `volume` bleibt der gespeicherte Zielwert. `maxVolume` bleibt die Hardware-/API-Skala 21. `audioConfigPending` bezeichnet die noch nicht eingereihte Anwendung gespeicherter Einstellungen; Verarbeitung im Audio-Task ist asynchron.

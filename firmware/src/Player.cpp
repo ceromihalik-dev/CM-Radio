@@ -1,15 +1,17 @@
 #include "Player.h"
 #include "BoardConfig.h"
+#include "PlaybackControls.h"
 #include <Audio.h>
 #include <WiFi.h>
 #include <memory>
 
 namespace {
-enum class Operation { Play, Stop, Volume };
-struct Command { Operation operation; uint8_t volume; char url[rules::maxUrl]; };
+enum class Operation { Play, Stop, Volume, Configure, Sleep };
+struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; char url[rules::maxUrl]; };
 QueueHandle_t commands;
 portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;
 PlayerStatus snapshot;
+uint8_t initialLimit = 21, initialSoftStart = 5;
 void message(const char* text) {
     portENTER_CRITICAL(&stateLock);
     strlcpy(snapshot.message, text ? text : "", sizeof(snapshot.message));
@@ -24,8 +26,12 @@ void audioWorker(void*) {
         vTaskDelete(nullptr);
         return;
     }
-    uint8_t vol = snapshot.volume;
+    VolumeEnvelope envelope;
+    SleepTimer sleepTimer;
+    envelope.configure(initialLimit, initialSoftStart, snapshot.volume);
+    uint8_t vol = envelope.tick(millis());
     audio->setVolume(vol);
+    bool wasRunning = false;
     portENTER_CRITICAL(&stateLock);
     snapshot.ready = true;
     portEXIT_CRITICAL(&stateLock);
@@ -37,12 +43,19 @@ void audioWorker(void*) {
         Command c{};
         while (xQueueReceive(commands, &c, 0) == pdTRUE) {
             if (c.operation == Operation::Volume) {
-                vol = c.volume;
-                audio->setVolume(vol);
+                envelope.setTarget(c.volume);
+            } else if (c.operation == Operation::Configure) {
+                envelope.configure(c.limit, c.seconds, c.volume);
+            } else if (c.operation == Operation::Sleep) {
+                sleepTimer.set(millis(), c.minutes);
             } else {
                 digitalWrite(board::amplifierEnable, LOW);
                 audio->stopSong();
                 wanted = c.operation == Operation::Play;
+                wasRunning = false;
+                if (wanted) envelope.prepare();
+                else { envelope.stop(); sleepTimer.cancel(); }
+                audio->setVolume(envelope.tick(millis()));
                 strlcpy(requestedUrl, wanted ? c.url : "", sizeof(requestedUrl));
                 attempts = 0;
                 nextRetry = millis();
@@ -52,6 +65,17 @@ void audioWorker(void*) {
                 message(wanted ? "Stream wird verbunden" : "Gestoppt");
             }
         }
+        if (sleepTimer.expired(millis())) {
+            wanted = false;
+            requestedUrl[0] = '\0';
+            envelope.stop();
+            digitalWrite(board::amplifierEnable, LOW);
+            audio->stopSong();
+            portENTER_CRITICAL(&stateLock);
+            snapshot.title[0] = '\0';
+            portEXIT_CRITICAL(&stateLock);
+            message("Sleep-Timer abgelaufen");
+        }
         const bool online = WiFi.status() == WL_CONNECTED;
         if (!online && audio->isRunning()) {
             digitalWrite(board::amplifierEnable, LOW);
@@ -60,19 +84,28 @@ void audioWorker(void*) {
         }
         if (wanted && online && !audio->isRunning() && rules::reached(millis(), nextRetry)) {
             digitalWrite(board::amplifierEnable, LOW);
+            envelope.prepare();
+            audio->setVolume(envelope.tick(millis()));
             const bool connected = audio->connecttohost(requestedUrl);
             nextRetry = millis() + rules::retryDelay(attempts++);
             if (!connected) message("Stream nicht erreichbar; neuer Versuch folgt");
             else message("Stream verbunden; Audio wird gepuffert");
         }
         audio->loop();
-        const bool running = audio->isRunning();
+        const bool running = audio->isRunning() && online;
+        if (running && !wasRunning) envelope.start(millis());
+        if (!running && wasRunning) envelope.stop();
+        wasRunning = running;
+        const uint8_t effective = envelope.tick(millis());
+        if (vol != effective) { vol = effective; audio->setVolume(vol); }
         digitalWrite(board::amplifierEnable, running && online && vol > 0 ? HIGH : LOW);
         if (running && audio->getAudioCurrentTime() > 5) attempts = 0;
         portENTER_CRITICAL(&stateLock);
         snapshot.requested = wanted;
         snapshot.running = running && online;
         snapshot.volume = vol;
+        snapshot.ramping = envelope.ramping();
+        snapshot.sleepRemainingSeconds = sleepTimer.remaining(millis());
         portEXIT_CRITICAL(&stateLock);
         vTaskDelay(1);
     }
@@ -82,10 +115,12 @@ bool enqueue(const Command& command) {
 }
 }
 
-bool player::begin(uint8_t volume) {
+bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds) {
+    initialLimit = limit;
+    initialSoftStart = softStartSeconds;
     pinMode(board::amplifierEnable, OUTPUT);
     digitalWrite(board::amplifierEnable, LOW);
-    snapshot.volume = volume;
+    snapshot.volume = volume > limit ? limit : volume;
     commands = xQueueCreate(8, sizeof(Command));
     if (!commands) return false;
     return xTaskCreatePinnedToCore(audioWorker, "CM-RadioAudio", 12288, nullptr, 2, nullptr, 0) == pdPASS;
@@ -107,6 +142,20 @@ bool player::volume(uint8_t value) {
     Command c{};
     c.operation = Operation::Volume;
     c.volume = value;
+    return enqueue(c);
+}
+bool player::configure(uint8_t limit, uint8_t seconds, uint8_t volume) {
+    if (limit > 21 || seconds > 30 || volume > limit) return false;
+    Command c{};
+    c.operation = Operation::Configure;
+    c.limit = limit; c.seconds = seconds; c.volume = volume;
+    return enqueue(c);
+}
+bool player::sleep(unsigned minutes) {
+    if (minutes > 180) return false;
+    Command c{};
+    c.operation = Operation::Sleep;
+    c.minutes = minutes;
     return enqueue(c);
 }
 PlayerStatus player::status() {

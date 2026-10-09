@@ -53,3 +53,16 @@ Dauertest Build 0a01: Nutzer am 09.10.2026 um 17:05 Uhr (Europe/Berlin) meldet �
 5. Mehrere Treffer hinzufügen, doppelte Adresse nicht mehrfach übernehmen, maximal zehn Sender.
 6. Suche bei ausgefallenem Verzeichnis/fehlendem Browserinternet prüfen; bestehende Sammlung und Wiedergabe bleiben nutzbar.
 7. Stromneustart: neu gespeicherter Sender bleibt vorhanden.
+
+## Build 0a03 – Nutzerabnahme
+
+09.10.2026: Nutzer bestätigt „0a03 pass“. Grundabnahme der Sendersuche dokumentiert.
+
+## Build 0a04 – Gerätetest (offen)
+
+1. Nach Update WLAN, vorhandene Sender und Lautstärke prüfen. Neue Standardwerte: Grenze 21, sanfter Start 5 Sekunden.
+2. Grenze z. B. auf 8 speichern; Regler bleibt ≤8. `POST /volume` mit 9 muss 400 liefern. Grenze reduzieren, auch während einer Rampe, und keine Ausgabe über der Grenze beobachten.
+3. Sanften Start auf 5 Sekunden setzen, Zielwert bei niedriger Lautstärke wählen, Stop/Play und Autostart prüfen. Manuelle Regleränderung beendet die Rampe. 0 Sekunden deaktiviert sie.
+4. Eigenen Sleep-Timer 1 Minute setzen; Restzeit prüfen; Ablauf stoppt den Stream ohne automatischen Wiederanlauf. Timer während laufender Wiedergabe ändern und aufheben; Stop hebt ihn ebenfalls auf.
+5. Timer bleibt bei Senderwechsel aktiv. Neustart startet ohne Timer; Autostart gilt weiterhin nach gespeicherter Einstellung.
+6. Grenze und Rampendauer nach Stromneustart erhalten.

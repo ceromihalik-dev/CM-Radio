@@ -121,3 +121,11 @@ Nach dem Update die Seite vollständig neu laden. „Radio“ enthält Wiedergab
 „Sender suchen“ benötigt Internet im Handy-/PC-Browser. Einen Treffer über „Zur Sammlung hinzufügen“ übernehmen und anschließend „Änderungen speichern“ drücken. Danach unter „Radio“ auswählen und abspielen. Maximal zehn Sender bleiben gespeichert; bestehende Entwürfe bleiben erhalten. Eine Verzeichnisstörung beeinträchtigt die gespeicherte Sammlung nicht. Senderdaten können veraltet sein; Hörprobe erforderlich.
 
 Suchbegriff und Land werden an Radio-Browser übertragen; WLAN-Passwörter werden nicht übertragen. Quelle und API: https://docs.radio-browser.info/ .
+
+## Build 0a04 – Sleep-Timer, sanfter Start und Grenze
+
+Unter „Radio“ Sleep-Timer mit 15/30/60 Minuten oder eigener Dauer 1–180 Minuten setzen. „Timer aufheben“ beendet nur den Timer, „Stoppen“ beendet Wiedergabe und Timer. Senderwechsel lässt die Restzeit weiterlaufen. Nach Stromneustart ist kein Timer aktiv. Die Restzeit wird regelmäßig mit dem Gerätestatus aktualisiert.
+
+Unter „Gerät“ maximale Lautstärke 0–21 und sanften Start 0–30 Sekunden einstellen und speichern. 0 Sekunden schaltet die Rampe ab; Standard 5 Sekunden. Eine Grenze von 0 schaltet die Ausgabe stumm. Absenken der Grenze reduziert auch den gespeicherten Zielwert; Erhöhen hebt die Lautstärke nicht automatisch an. Manuelle Lautstärkeänderungen beenden eine laufende Rampe.
+
+Update wie zuvor mit `firmware.bin` an 0x10000 ohne Löschen. Vorhandene Sender/WLAN bleiben gespeichert; neue Felder erhalten Standardwerte. Nach Update Seite vollständig neu laden und Migration am Gerät prüfen.

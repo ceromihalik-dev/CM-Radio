@@ -1,5 +1,15 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a04 – 9. Oktober 2026
+
+- Sleep-Timer mit 15/30/60-Minuten-Schnellwahl und eigener Dauer 1–180 Minuten; Restzeit anzeigen, Dauer ändern oder aufheben. Ablauf stoppt Audio inklusive Wiederholungen. Manuelles Stoppen hebt den Timer auf; Senderwechsel behält ihn bei. Stromneustart startet ohne Timer.
+- Sanfter Start von 0–30 Sekunden (Standard 5; 0 aus), angewendet bei Play, Autostart und erneuter Streamverbindung. Manuelle Lautstärkeänderung beendet die laufende Rampe.
+- Gespeicherte maximale Lautstärke 0–21 (Standard 21) in UI und API; Absenkung reduziert gespeicherten Zielwert und tatsächliche Ausgabe. Audio-Task begrenzt auch eingereihte Lautstärkebefehle.
+- Neue optionale Konfigurationsfelder werden im bestehenden NVS-Schema gespeichert; vorhandene WLAN-/Senderdaten laden weiter mit Standardwerten für die neuen Felder.
+- Konfigurationsänderungen bleiben als ausstehend sichtbar, bis der Audio-Befehl eingereiht wurde. Sleep-Timer und Rampen werden ausschließlich im Audio-Task verwaltet.
+- Build/Hosttests PASS; neue Funktionen und Erhalt der Einstellungen müssen am Board geprüft werden.
+- Nutzerabnahme von Build 0a03 am 09.10.2026: PASS.
+
 ## v0.1.2 · Build 0a03 – 9. Oktober 2026
 
 - Radiosendersuche im Senderbereich: international, national nach Land und lokal über Namen/Regionsangaben. Lokale Suche benötigt einen Begriff; keine GPS-/Umkreissuche.

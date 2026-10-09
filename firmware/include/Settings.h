@@ -13,6 +13,8 @@ struct Settings {
     size_t selected = 0;
     uint8_t volume = 5;
     bool autoplay = true;
+    uint8_t volumeLimit = 21;
+    uint8_t softStartSeconds = 5;
 };
 class SettingsStore {
 public:
