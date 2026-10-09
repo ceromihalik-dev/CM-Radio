@@ -125,3 +125,5 @@ Gerät ist in sieben kompakte aufklappbare Bereiche gegliedert. Desktop: zwei Sp
 ### v0.1.3 · Build 05
 
 50 Lautstärkestufen (0 stumm), unveränderte maximale Verstärkung. Alte Lautstärke und Grenze werden abgerundet auf die neue Skala übertragen. Neue Einstellungen und Sicherungen nutzen Schema 2; Schema 1 kann importiert werden. Ältere Firmware kann Schema 2 nicht laden. Netzwerk steht als aufklappbarer Bereich unter Gerät; WLAN-Knopf öffnet ihn direkt. Gerätetest offen.
+
+Nutzerabnahme v0.1.3 Build 05 am 09.10.2026 um 20:04 Uhr (Europe/Berlin): PASS nach angefragter Prüfung von Lautstärke, Obergrenze, Neustart und WLAN-Suche. Keine gesonderten Messwerte oder Bestätigung eines Sicherungsimports übermittelt; vollständige Hardwareabnahme bleibt separat.

@@ -60,4 +60,4 @@ Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualis
 
 Build 0a07 korrigiert den seit 0a05 gemeldeten periodischen Stream-Neustart (CMR-004) durch Entfernen des Audiozeit-Stillstandswächters. Bestätigung am betroffenen Sender steht aus.
 
-Build 05: 50 Lautstärkestufen mit abgerundeter Migration alter Lautstärkegrenzen; Netzwerk unter Gerät. Build und Hosttests PASS, Gerätetest offen. Build 04 ohne gesonderte Nutzerabnahme.
+Build 05: 50 Lautstärkestufen mit abgerundeter Migration alter Lautstärkegrenzen; Netzwerk unter Gerät. Build und Hosttests PASS; Nutzer bestätigt Build 05 am 09.10.2026 um 20:04 Uhr als PASS (Lautstärke, Obergrenze, Neustart und WLAN-Suche). Build 04 ohne gesonderte Nutzerabnahme.

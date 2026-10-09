@@ -70,3 +70,5 @@ Kompakte Geräteoberfläche mit sieben nativen aufklappbaren Bereichen, zwei Des
 ## v0.1.3 Build 05
 
 50 Lautstärkestufen in Audio/API/UI, Schema-1-Migration auf Schema 2 und Netzwerk in Gerät. Alte Sicherungen weiterhin importierbar; neue Schema-2-Daten sind nicht von älterer Firmware lesbar. Gerätetest inklusive Migration, Klang, Autostart und WLAN offen. Build 04 nicht gesondert vom Nutzer abgenommen.
+
+Nutzerabnahme v0.1.3 Build 05 am 09.10.2026 um 20:04 Uhr (Europe/Berlin): PASS nach angefragter Prüfung von Lautstärke, Obergrenze, Neustart und WLAN-Suche. Keine gesonderten Messwerte oder Bestätigung eines Sicherungsimports übermittelt; vollständige Hardwareabnahme bleibt separat.

@@ -183,3 +183,5 @@ Gerätetest Build 04: offen.
 - Smartphone/Desktop: acht Bereiche, ein bzw. zwei Spalten; Klangentwürfe bleiben beim Schließen erhalten.
 
 Gerätetest: offen.
+
+Nutzerabnahme v0.1.3 Build 05 am 09.10.2026 um 20:04 Uhr (Europe/Berlin): PASS nach angefragter Prüfung von Lautstärke, Obergrenze, Neustart und WLAN-Suche. Keine gesonderten Messwerte oder Bestätigung eines Sicherungsimports übermittelt; vollständige Hardwareabnahme bleibt separat.
