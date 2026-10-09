@@ -64,3 +64,5 @@ Ersatzwechsel: drei Verbindungsversuche ohne stabilen Stream, nur bei verbundene
 ## Ergänzung Build 0a06
 
 Status ergänzt `playingStationIndex`: Senderindex des im Audiotask aktuell angeforderten Streams, anhand der tatsächlichen URL auf die gespeicherte Sammlung abgebildet; `-1`, wenn kein Stream angefordert oder keine passende gespeicherte Adresse vorhanden ist. Die Oberfläche markiert diesen Index nur bei `state:"streaming"`. `stationIndex` bleibt die dauerhaft gewählte Hauptsenderauswahl; `fallbackStation` die konfigurierte Ersatzsenderauswahl. Mehrere Einträge mit gleicher URL markieren den ersten Treffer. Schnellwahl verwendet die bestehende Play-API, Reihenfolge die bestehende Stations-PUT-API; keine Schemaänderung.
+
+Ab Build 0a07 entfällt der Audiozeit-Stillstandswächter. Eine unveränderte berechnete Audiozeit löst keinen Stream-Neustart aus. Die reguläre Wiederverbindung nach Verbindungsende bleibt erhalten.

@@ -89,3 +89,7 @@ Hostprüfungen: strikte Sicherungstypen und Grenzen, unbekannte Zugangsdaten ohn
 5. Unter Gerät Changelog aufklappen: Build 0a06 und die bisherigen Einträge müssen auch ohne Internet am Handy/PC lesbar sein.
 
 Hosttests: direkte Senderwahl, Offline-Sperre, sichere Textdarstellung, Entwurfstrennung, gespeicherte Reihenfolge, Grenzbuttons, Schutz offener Wiedergabeeinstellungen und tatsächliche Ersatzsender-Markierung PASS. Changelog-Synchronität und eingebettete UI geprüft. Gerätetest 0a06 OFFEN.
+
+## Build 0a07 – CMR-004
+
+Denselben betroffenen Sender mindestens zehn Minuten hören: kein periodischer Abbruch oder Neuladen. Danach Stop/Play, Sleep-Timer, Ersatzsender und WLAN-Wiederverbindung prüfen. Gerätetest offen.

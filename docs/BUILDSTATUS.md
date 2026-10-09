@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.2 · Build 0a06
+# Buildstatus – CM-Radio v0.1.2 · Build 0a07
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,7 +8,7 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.318.797 Bytes / 3.145.728 Bytes (41,9 %) |
+| Programmcode | 1.319.237 Bytes / 3.145.728 Bytes (41,9 %) |
 | Statische RAM-Belegung | 51.932 Bytes / 327.680 Bytes (15,8 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
@@ -38,3 +38,7 @@ Build 0a04: Build/Hosttests PASS. Neue C++-Steuerungstests: Timer-Ablauf, Ersetz
 Build 0a04: Nutzer meldet PASS. Build 0a05: PlatformIO PASS; Sicherungsschema und strikte Pflichtfeld-/Grenzprüfung, Ersatzsender-Schwelle/Offline/Einmalwechsel, 15-Sekunden-Stillstand mit Überlauf und Web-Sicherung/Entwurfsschutz/Dateiwechsel PASS. Ein leeres lokales Audio.cpp.o und dessen Bibliotheksarchiv wurden neu erstellt; finaler Link und Firmwarebuild erfolgreich. Dynamische Sicherungspuffer und die vergrößerte Audiowarteschlange sind am Board zu beobachten. Nutzer bestätigt Build 0a05 am 09.10.2026 um 18:12 Uhr (Europe/Berlin) als PASS. Vollständige Hardwareabnahme bleibt separat offen.
 
 Build 0a06: PlatformIO PASS; Schnellwahl/Offline-Sperre/gespeicherte Sammlung/Umordnung/Grenzen/Entwurfsschutz und tatsächliche Ersatzsender-Markierung als Hosttests PASS. Changelog aus zentraler Projektdatei generiert und Übereinstimmung geprüft. Keine Schemaänderung; Schnellwahlreihenfolge nutzt die gespeicherte Senderliste und ist dadurch bereits in Sicherungen enthalten. Visuelle und physische Boardprüfung hier nicht verfügbar; Gerätetest 0a06 offen.
+
+Build 0a07 korrigiert den seit 0a05 gemeldeten periodischen Stream-Neustart (CMR-004) durch Entfernen des Audiozeit-Stillstandswächters. Bestätigung am betroffenen Sender steht aus.
+
+Build 0a07: PlatformIO und Hosttests PASS. Audiozeit-Stillstandswächter entfernt; Ersatzsender- und Wiedergabesteuerungstests bestehen weiterhin. CMR-004-Gerätetest offen.

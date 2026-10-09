@@ -54,6 +54,8 @@ Die Reihenfolge dient der Umsetzung und kann nach Abhängigkeiten angepasst werd
 
 ## Versions- und Pflegekonvention
 
-Aktuell **v0.1.2 · Build 0a06**. Weitere Entwicklungsstände derselben Version: **0a07, 0a08 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
+Aktuell **v0.1.2 · Build 0a07**. Weitere Entwicklungsstände derselben Version: **0a08, 0a09 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
 
 Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualisieren. Für Fehler stabile CMR-IDs verwenden; gelöste Einträge bleiben mit Fix-Build und Nachweis erhalten. Änderungen an Firmware müssen kompilieren und die passenden Prüfungen bestehen. Ein öffentlicher Release wird erst als vollständig hardwaregetestet bezeichnet, wenn seine Abnahmekriterien nachgewiesen sind.
+
+Build 0a07 korrigiert den seit 0a05 gemeldeten periodischen Stream-Neustart (CMR-004) durch Entfernen des Audiozeit-Stillstandswächters. Bestätigung am betroffenen Sender steht aus.

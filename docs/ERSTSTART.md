@@ -141,3 +141,7 @@ Ersatzsender wird nach drei erfolglosen Verbindungsversuchen bei vorhandenem WLA
 ## Build 0a06 testen
 
 Nach dem Firmwareupdate die Seite mit Strg+F5 neu laden. Unter Radio startet ein Tipp auf eine Schnellwahlkachel den gespeicherten Sender. Unter Sender ändern Nach oben/Nach unten die Reihenfolge als Entwurf; Änderungen speichern übernimmt sie dauerhaft. Der Ersatzsender wird dabei anhand seiner Streamadresse erhalten. Unter Gerät stehen aktuelle und bisherige Änderungen zum Aufklappen bereit, ohne Internetverbindung zum Changelog.
+
+## Build 0a07
+
+Korrektur gegen seit 0a05 gemeldete periodische Stream-Neustarts. Nach Update Strg+F5, denselben Sender mindestens zehn Minuten testen. Einstellungen bleiben beim Schreiben nur von firmware.bin erhalten.

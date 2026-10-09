@@ -30,7 +30,6 @@ void audioWorker(void*) {
     VolumeEnvelope envelope;
     SleepTimer sleepTimer;
     FallbackPolicy fallbackPolicy;
-    AudioProgressWatchdog progress;
     char fallbackUrl[rules::maxUrl] = {};
     envelope.configure(initialLimit, initialSoftStart, snapshot.volume);
     uint8_t vol = envelope.tick(millis());
@@ -59,7 +58,6 @@ void audioWorker(void*) {
                 audio->stopSong();
                 wanted = c.operation == Operation::Play;
                 fallbackPolicy.reset();
-                progress.stalled(millis(), false, 0);
                 if (wanted) strlcpy(fallbackUrl, c.fallbackUrl, sizeof(fallbackUrl));
                 wasRunning = false;
                 if (wanted) envelope.prepare();
@@ -112,11 +110,6 @@ void audioWorker(void*) {
             else message("Stream verbunden; Audio wird gepuffert");
         }
         audio->loop();
-        if (progress.stalled(millis(), audio->isRunning() && online, audio->getAudioCurrentTime())) {
-            digitalWrite(board::amplifierEnable, LOW);
-            audio->stopSong();
-            message("Keine Audiofortschritte; neuer Versuch folgt");
-        }
         const bool running = audio->isRunning() && online;
         if (running && !wasRunning) envelope.start(millis());
         if (!running && wasRunning) envelope.stop();

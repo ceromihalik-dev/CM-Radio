@@ -44,3 +44,9 @@ Aktuell kein gemeldeter Fehler ohne nutzbare Umgehung. Offene Hardwaretests steh
 ## Neue Meldungen
 
 Je Meldung nächste freie CMR-ID, Datum, Version/Build, erwartetes und tatsächliches Verhalten, Reproduktionsschritte, Priorität, Status und Abnahmekriterium ergänzen. Keine WLAN-Passwörter oder unverdeckten Setup-Passwörter veröffentlichen. Für öffentliche Nachweise Geräte-/Netzwerkdaten auf das notwendige Maß beschränken.
+
+## CMR-004 – Stream startet seit 0a05 nach kurzer Laufzeit neu
+
+Gemeldet am 09.10.2026 um 18:21 Uhr: Sender spielt etwa zehn Sekunden, danach Abbruch oder erneutes Laden. Betroffen laut Nutzer seit Build 0a05. Verdacht: neuer Stillstandswächter stoppt Audio nach 15 Sekunden ohne Änderung der berechneten Audiozeit; diese ist kein verlässlicher Livestream-Verbindungsindikator. Der abweichende gemeldete Zeitraum und die genaue Streamadresse sind noch nicht untersucht.
+
+Status: FIX IMPLEMENTIERT in Build 0a07, Gerätetest offen. Wächter entfernt; reguläre Wiederverbindung und Ersatzsender bleiben. Abnahme: derselbe Sender mindestens zehn Minuten ohne periodisches Neuladen; danach Stop/Play, Sleep-Timer und Ersatzsender prüfen. Frühere allgemeine PASS-Meldung von 0a05 bleibt historisch erhalten.

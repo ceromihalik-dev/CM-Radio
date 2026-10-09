@@ -29,6 +29,9 @@ with tempfile.TemporaryDirectory() as directory:
     js.write_text(script)
     subprocess.run(['node', '--check', str(js)], check=True)
 subprocess.run(['node', str(ROOT/'tests/test_web.js')], cwd=ROOT, check=True)
+# Playback position is not a reliable liveness signal for live streams.
+player_source = (ROOT/'firmware/src/Player.cpp').read_text()
+assert 'AudioProgressWatchdog' not in player_source and 'progress.stalled' not in player_source
 rows = list(csv.reader(line for line in (ROOT/'firmware/partitions.csv').read_text().splitlines() if line.strip() and not line.startswith('#')))
 previous_end = 0x9000
 apps = []

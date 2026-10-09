@@ -11,14 +11,3 @@ public:
 private:
  uint8_t attempts_=0;bool active_=false;
 };
-class AudioProgressWatchdog {
-public:
- bool stalled(uint32_t now,bool running,uint32_t audioSeconds){
-  if(!running){tracking_=false;return false;}
-  if(!tracking_||audioSeconds!=lastSeconds_){tracking_=true;lastSeconds_=audioSeconds;lastProgress_=now;return false;}
-  if(uint32_t(now-lastProgress_)<15000)return false;
-  tracking_=false;return true;
- }
-private:
- bool tracking_=false;uint32_t lastSeconds_=0,lastProgress_=0;
-};

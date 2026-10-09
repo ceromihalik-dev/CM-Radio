@@ -1,5 +1,12 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a07 — 09.10.2026
+
+- Korrektur für CMR-004: seit 0a05 gemeldeter Stream-Neustart nach ungefähr zehn Sekunden. Der in 0a05 eingeführte Audiozeit-Stillstandswächter wurde entfernt: die berechnete Audiozeit ist kein zuverlässiger Verbindungsnachweis für jeden Livestream.
+- Laufende Streams werden nicht mehr wegen einer unveränderten Audiozeitanzeige gestoppt. Wiederverbindung nach tatsächlichem Verbindungsende und Ersatzsender nach erfolglosen Verbindungsversuchen bleiben erhalten.
+- Build 0a05 PASS-Meldung bleibt historisch erhalten; spätere Regression separat dokumentiert. Korrektur muss am betroffenen Sender geprüft werden.
+
+
 ## v0.1.2 · Build 0a06 — 09.10.2026
 
 - Schnellwahl: große Senderkacheln starten gespeicherte Sender direkt. Der tatsächlich aktive Haupt- oder Ersatzsender wird gekennzeichnet. Offline oder bei nicht bereitem Audio sind die Kacheln gesperrt.
