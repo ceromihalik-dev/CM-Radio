@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.3 · Build 06
+# Buildstatus – CM-Radio v0.1.3 · Build 07
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,7 +8,7 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.377.001 Bytes / 3.145.728 Bytes (43,8 %) |
+| Programmcode | 1.377.977 Bytes / 3.145.728 Bytes (43,8 %) |
 | Statische RAM-Belegung | 52.612 Bytes / 327.680 Bytes (16,1 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
@@ -80,3 +80,5 @@ Dauerhaftes Setup-Passwort mit verpflichtendem Erstwechsel, späterer Änderung 
 Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10–59 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.
 
 Werkseinstellungen über dieselbe BOOT/IO0-Taste: Bei laufendem Radio mindestens 60 Sekunden halten und loslassen. Erst das Loslassen löst den vollständigen Reset aus. Heim-WLAN, Sender, Klang, Lautstärke und Setup-Passwort werden gelöscht; Firmware bleibt installiert, Radio startet neu. Danach Erstzugang mit passwort und verpflichtender Änderung. Während Firmwareupdates werden Tastenresets ignoriert; Taste neu betätigen. Gerätetest: kurzer Druck ohne Wirkung, 10–59 s nur Passwort, ab 60 s vollständiger Reset. Vor dem Test Einstellungen sichern; Sicherung enthält keine Zugangspasswörter.
+
+Build 07: Radio als Startseite auch im Fallback; nach Erstwechsel ebenfalls Radio, Netzwerk geschlossen. Passwort bleibt bei Neuladen und Updates gespeichert. Mindestlänge 8 wegen ESP32-WPA2; vier Zeichen technisch nicht direkt möglich. Gerätetest offen.

@@ -1,6 +1,6 @@
 # CM-Radio – Roadmap
 
-Stand: **9. Oktober 2026 · v0.1.3 · Build 06**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
+Stand: **9. Oktober 2026 · v0.1.3 · Build 07**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
 
 Diese Datei ist die verbindliche Projekt-Roadmap. Fehler und deren Abnahme stehen in [BUGLISTE.md](BUGLISTE.md), einzelne Hardwarekriterien im [TESTPLAN.md](TESTPLAN.md). Aussagen im Chat werden bei der nächsten Projektaktualisierung hier mit Datum und Nachweis übernommen. Ein bestandener Teiltest ersetzt keine vollständige Hardwareabnahme.
 
@@ -54,7 +54,7 @@ Die Reihenfolge dient der Umsetzung und kann nach Abhängigkeiten angepasst werd
 
 ## Versions- und Pflegekonvention
 
-Aktuell **v0.1.3 · Build 06**. Weitere Builds innerhalb dieser Version: **07, 08 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
+Aktuell **v0.1.3 · Build 07**. Weitere Builds innerhalb dieser Version: **07, 08 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
 
 Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualisieren. Für Fehler stabile CMR-IDs verwenden; gelöste Einträge bleiben mit Fix-Build und Nachweis erhalten. Änderungen an Firmware müssen kompilieren und die passenden Prüfungen bestehen. Ein öffentlicher Release wird erst als vollständig hardwaregetestet bezeichnet, wenn seine Abnahmekriterien nachgewiesen sind.
 
@@ -67,3 +67,5 @@ Build 06: dauerhafter Setup-/Fallback-Zugang, Erstpasswort passwort mit verpflic
 Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10–59 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.
 
 Werkseinstellungen über dieselbe BOOT/IO0-Taste: Bei laufendem Radio mindestens 60 Sekunden halten und loslassen. Erst das Loslassen löst den vollständigen Reset aus. Heim-WLAN, Sender, Klang, Lautstärke und Setup-Passwort werden gelöscht; Firmware bleibt installiert, Radio startet neu. Danach Erstzugang mit passwort und verpflichtender Änderung. Während Firmwareupdates werden Tastenresets ignoriert; Taste neu betätigen. Gerätetest: kurzer Druck ohne Wirkung, 10–59 s nur Passwort, ab 60 s vollständiger Reset. Vor dem Test Einstellungen sichern; Sicherung enthält keine Zugangspasswörter.
+
+Build 07: Radio als Startseite auch im Fallback; nach Erstwechsel ebenfalls Radio, Netzwerk geschlossen. Passwort bleibt bei Neuladen und Updates gespeichert. Mindestlänge 8 wegen ESP32-WPA2; vier Zeichen technisch nicht direkt möglich. Gerätetest offen.

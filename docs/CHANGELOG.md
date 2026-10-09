@@ -1,5 +1,12 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 07 — 09.10.2026
+
+- Radio bleibt die Startseite beim Neuladen, auch bei aktivem Setup-/Fallback-WLAN. Nach erstem Passwortwechsel zur Radioseite wechseln; Netzwerkbereich bleibt geschlossen und lässt sich gezielt über Gerät bzw. WLAN-Knopf öffnen.
+- Bestehendes Setup-Passwort unverändert in separatem NVS-Schlüssel behalten. Neuladen und Statusabfragen vergeben kein Passwort; Tests prüfen, dass dabei kein Passwort-Schreibaufruf erfolgt. Erstwechsel weiterhin nur bei fehlendem eigenem Setup-Passwort oder explizitem Reset.
+- Gewünschte Mindestlänge 4 für das WLAN-Passwort technisch nicht möglich: verwendetes ESP32-WPA2-System lehnt weniger als 8 Zeichen ab. Mindestlänge bleibt 8, keine verdeckte Passwortverlängerung.
+- Build 06 nicht als hardwareabgenommen bestätigt; Bildanhang im Workspace nicht verfügbar. Gerätetest Build 07 offen.
+
 ## v0.1.3 · Build 06 — 09.10.2026
 
 - Dauerhafter Setup-/Fallback-Zugang: bei leerem Speicher Erstpasswort passwort; erster Browseraufruf verlangt einen Wechsel auf ein eigenes Passwort (8–63 druckbare ASCII-Zeichen, nicht passwort). Auch Upgrades ohne gespeichertes Setup-Passwort verlangen diesen einmaligen Schritt.

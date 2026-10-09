@@ -200,3 +200,7 @@ Gerätetest: offen.
 Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10–59 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.
 
 Werkseinstellungen über dieselbe BOOT/IO0-Taste: Bei laufendem Radio mindestens 60 Sekunden halten und loslassen. Erst das Loslassen löst den vollständigen Reset aus. Heim-WLAN, Sender, Klang, Lautstärke und Setup-Passwort werden gelöscht; Firmware bleibt installiert, Radio startet neu. Danach Erstzugang mit passwort und verpflichtender Änderung. Während Firmwareupdates werden Tastenresets ignoriert; Taste neu betätigen. Gerätetest: kurzer Druck ohne Wirkung, 10–59 s nur Passwort, ab 60 s vollständiger Reset. Vor dem Test Einstellungen sichern; Sicherung enthält keine Zugangspasswörter.
+
+## v0.1.3 Build 07
+
+Nach Browserupdate und Strg+F5 Radio als Startseite prüfen, auch im Fallback. Eigenes Setup-Passwort nach Seitenneuladen und Stromneustart unverändert, keine erneute Wechselaufforderung. Nach explizitem Passwortreset Wechsel erforderlich; danach Radio, Netzwerk geschlossen. WLAN-Knopf öffnet weiterhin Gerät → Netzwerk. Mindestlänge 8 bleibt technisch erforderlich. Gerätetest offen.
