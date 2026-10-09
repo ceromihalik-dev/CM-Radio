@@ -5,7 +5,7 @@
 namespace backup {
 struct Station {char name[rules::maxName]={};char url[rules::maxUrl]={};};
 struct Data {
- Station stations[rules::maxStations];int count=0,selected=0,volume=5,volumeLimit=21,softStartSeconds=5,fallbackStation=-1;bool autoplay=true;int bass=0,treble=0,balance=0;
+ Station stations[rules::maxStations];int count=0,selected=0,volume=5,volumeLimit=21,softStartSeconds=5,fallbackStation=-1;bool autoplay=true,loudness=false;int bass=0,treble=0,balance=0;
 };
 inline bool integer(JsonVariantConst v,int lo,int hi){return v.is<int>()&&v.as<int>()>=lo&&v.as<int>()<=hi;}
 // Caller discards Data on failure. This parser never touches live settings/NVS.
@@ -14,6 +14,8 @@ inline bool read(const JsonDocument& document,Data& out,const char*& error){
  if(!document.is<JsonObjectConst>()||!document["format"].is<const char*>()||strcmp(document["format"],"CM-Radio-Backup")||!integer(document["schema"],1,1))return false;
  JsonObjectConst config=document["settings"].as<JsonObjectConst>();
  if(config.isNull()||!config["stations"].is<JsonArrayConst>())return false;
+ out.loudness=false;
+ if(!sound::readLoudness(config,out.loudness)){error="Loudness muss boolesch sein";return false;}
  out.bass=out.treble=out.balance=0;
  if(!sound::read(config,out.bass,out.treble,out.balance)){error="Ungueltige Klangeinstellungen";return false;}
  JsonArrayConst stations=config["stations"].as<JsonArrayConst>();

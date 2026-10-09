@@ -25,5 +25,8 @@ int main(){
  deserializeJson(d,fixture);d["settings"]["bass"]=7;assert(!backup::read(d,out,error));deserializeJson(d,fixture);d["settings"]["treble"]=-13;assert(!backup::read(d,out,error));deserializeJson(d,fixture);d["settings"]["balance"]=17;assert(!backup::read(d,out,error));
  deserializeJson(d,fixture);d["settings"]["bass"]=6;d["settings"]["treble"]=-12;d["settings"]["balance"]=16;assert(backup::read(d,out,error));
  int bass=1,treble=2,balance=3;DynamicJsonDocument partial(256);deserializeJson(partial,"{\"bass\":4}");assert(sound::read(partial.as<JsonObjectConst>(),bass,treble,balance));assert(bass==4&&treble==2&&balance==3);
+ deserializeJson(d,fixture);assert(backup::read(d,out,error));assert(!out.loudness);d["settings"]["loudness"]=true;assert(backup::read(d,out,error));assert(out.loudness);d["settings"]["loudness"]=1;assert(!backup::read(d,out,error));d["settings"]["loudness"]="true";assert(!backup::read(d,out,error));
+ for(int volume=0;volume<=21;++volume){auto t=sound::tone(6,6,true,volume);assert(t.bass<=6&&t.treble<=6);auto off=sound::tone(-3,2,false,volume);assert(off.bass==-3&&off.treble==2);}
+ auto quiet=sound::tone(0,0,true,1);assert(quiet.bass==4&&quiet.treble==2);auto loud=sound::tone(0,0,true,15);assert(loud.bass==0&&loud.treble==0);auto muted=sound::tone(0,0,true,0);assert(muted.bass==0&&muted.treble==0);
  puts("Backup schema, roundtrip fields, strict types, missing fields, limits, stream validation and credential isolation: PASS");
 }

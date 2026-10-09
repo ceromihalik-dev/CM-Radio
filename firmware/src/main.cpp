@@ -29,7 +29,7 @@ bool applyWifi = false;
 bool applyAudioConfig = false;
 bool applyFallback = false;
 bool applySound = false;
-bool soundPreview = false;
+bool soundPreview = false,previewLoudness=false;
 int previewBass=0,previewTreble=0,previewBalance=0;
 bool stopAfterRestore = false;
 WifiScan wifiScan;
@@ -145,7 +145,7 @@ void writeBackup(JsonDocument& document) {
     document["sourceVersion"] = board::version;document["sourceBuild"] = board::build;
     JsonObject config = document.createNestedObject("settings");
     config["selected"] = settings.selected;config["volume"] = settings.volume;config["autoplay"] = settings.autoplay;
-    config["bass"]=settings.bass;config["treble"]=settings.treble;config["balance"]=settings.balance;
+    config["loudness"]=settings.loudness;config["bass"]=settings.bass;config["treble"]=settings.treble;config["balance"]=settings.balance;
     config["volumeLimit"] = settings.volumeLimit;config["softStartSeconds"] = settings.softStartSeconds;config["fallbackStation"] = settings.fallbackStation;
     JsonArray list = config.createNestedArray("stations");
     for (size_t i = 0; i < settings.count; ++i) {JsonObject item = list.createNestedObject();item["name"] = settings.stations[i].name;item["url"] = settings.stations[i].url;}
@@ -157,12 +157,12 @@ void restoreBackup(bool validateOnly) {
     const char* reason = nullptr;
     if (!backup::read(request, *data, reason)) {error(400, reason);return;}
     if (validateOnly) {
-        StaticJsonDocument<384> response;response["bass"]=data->bass;response["treble"]=data->treble;response["balance"]=data->balance;response["valid"] = true;response["stationCount"] = data->count;response["volume"] = data->volume;response["volumeLimit"] = data->volumeLimit;response["wifiPreserved"] = true;sendJson(200, response);return;
+        StaticJsonDocument<384> response;response["loudness"]=data->loudness;response["bass"]=data->bass;response["treble"]=data->treble;response["balance"]=data->balance;response["valid"] = true;response["stationCount"] = data->count;response["volume"] = data->volume;response["volumeLimit"] = data->volumeLimit;response["wifiPreserved"] = true;sendJson(200, response);return;
     }
     Settings candidate = settings;
     candidate.count = data->count;candidate.selected = data->selected;candidate.volume = data->volume;
     candidate.volumeLimit = data->volumeLimit;candidate.softStartSeconds = data->softStartSeconds;
-    candidate.bass=data->bass;candidate.treble=data->treble;candidate.balance=data->balance;
+    candidate.loudness=data->loudness;candidate.bass=data->bass;candidate.treble=data->treble;candidate.balance=data->balance;
     candidate.autoplay = data->autoplay;candidate.fallbackStation = data->fallbackStation;
     for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url};
     if (!persist(candidate)) return;
@@ -206,7 +206,7 @@ void routes() {
         }
         response["station"] = audibleName;
         response["requestedStation"] = settings.stations[settings.selected].name;
-        response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
+        response["loudness"]=settings.loudness;response["previewLoudness"]=soundPreview?previewLoudness:settings.loudness;response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
         response["soundPreview"]=soundPreview;response["previewBass"]=soundPreview?previewBass:settings.bass;response["previewTreble"]=soundPreview?previewTreble:settings.treble;response["previewBalance"]=soundPreview?previewBalance:settings.balance;
         response["fallbackStation"] = settings.fallbackStation;
         response["fallbackActive"] = p.fallbackActive;
@@ -217,6 +217,7 @@ void routes() {
         response["volumeLimit"] = settings.volumeLimit;
         response["softStartSeconds"] = settings.softStartSeconds;
         response["effectiveVolume"] = p.volume;
+        response["effectiveBass"]=p.effectiveBass;response["effectiveTreble"]=p.effectiveTreble;
         response["ramping"] = p.ramping;
         response["sleepRemainingSeconds"] = p.sleepRemainingSeconds;
         response["audioConfigPending"] = applyAudioConfig || applyFallback || applySound;
@@ -308,7 +309,7 @@ void routes() {
         response["autoplay"] = settings.autoplay;
         response["volumeLimit"] = settings.volumeLimit;
         response["softStartSeconds"] = settings.softStartSeconds;
-        response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
+        response["loudness"]=settings.loudness;response["previewLoudness"]=soundPreview?previewLoudness:settings.loudness;response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
         response["soundPreview"]=soundPreview;response["previewBass"]=soundPreview?previewBass:settings.bass;response["previewTreble"]=soundPreview?previewTreble:settings.treble;response["previewBalance"]=soundPreview?previewBalance:settings.balance;
         response["fallbackStation"] = settings.fallbackStation;
         sendJson(200, response);
@@ -317,7 +318,7 @@ void routes() {
         StaticJsonDocument<512> request;
         if (!body(request)) return;
         Settings candidate = settings;
-        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds") && !request.containsKey("fallbackStation") && !request.containsKey("bass") && !request.containsKey("treble") && !request.containsKey("balance")) { error(400, "Keine bekannte Einstellung"); return; }
+        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds") && !request.containsKey("fallbackStation") && !request.containsKey("bass") && !request.containsKey("treble") && !request.containsKey("balance") && !request.containsKey("loudness")) { error(400, "Keine bekannte Einstellung"); return; }
         if (request.containsKey("autoplay")) {
             if (!request["autoplay"].is<bool>()) { error(400, "autoplay muss boolesch sein"); return; }
             candidate.autoplay = request["autoplay"].as<bool>();
@@ -337,8 +338,11 @@ void routes() {
         }
         int bass=candidate.bass,treble=candidate.treble,balance=candidate.balance;
         if (!sound::read(request.as<JsonObjectConst>(),bass,treble,balance)) {error(400,"Bass/Hoehen: -12 bis +6 dB; Balance: -16 bis +16");return;}
-        const bool hasSound=request.containsKey("bass")||request.containsKey("treble")||request.containsKey("balance");
-        const bool soundChanged=(hasSound&&soundPreview)||bass!=settings.bass||treble!=settings.treble||balance!=settings.balance;
+        bool loudness=candidate.loudness;
+        if(!sound::readLoudness(request.as<JsonObjectConst>(),loudness)){error(400,"Loudness muss boolesch sein");return;}
+        const bool hasSound=request.containsKey("bass")||request.containsKey("treble")||request.containsKey("balance")||request.containsKey("loudness");
+        const bool soundChanged=(hasSound&&soundPreview)||bass!=settings.bass||treble!=settings.treble||balance!=settings.balance||loudness!=settings.loudness;
+        candidate.loudness=loudness;
         candidate.bass=bass;candidate.treble=treble;candidate.balance=balance;
         const bool fallbackChanged = candidate.fallbackStation != settings.fallbackStation;
         const bool audioChanged = candidate.volumeLimit != settings.volumeLimit || candidate.softStartSeconds != settings.softStartSeconds;
@@ -351,15 +355,15 @@ void routes() {
     });
     server.on("/api/v1/sound/preview", HTTP_POST, [] {
         StaticJsonDocument<256> request;if (!body(request)) return;
-        int bass=0,treble=0,balance=0;
-        if (!request.containsKey("bass")||!request.containsKey("treble")||!request.containsKey("balance")||!sound::read(request.as<JsonObjectConst>(),bass,treble,balance)) {error(400,"Alle drei gueltigen Klangwerte erforderlich");return;}
+        int bass=0,treble=0,balance=0;bool loudness=false;
+        if (!request.containsKey("bass")||!request.containsKey("treble")||!request.containsKey("balance")||!sound::read(request.as<JsonObjectConst>(),bass,treble,balance)||!sound::readLoudness(request.as<JsonObjectConst>(),loudness)) {error(400,"Alle drei gueltigen Klangwerte erforderlich");return;}
         if (stopAfterRestore || applySound) {error(409,"Gespeicherter Klang wird noch angewendet; kurz warten");return;}
-        if (!player::status().ready || !player::sound(bass,treble,balance)) {error(503,"Audio nicht bereit oder Warteschlange voll");return;}
-        previewBass=bass;previewTreble=treble;previewBalance=balance;soundPreview=true;accepted();
+        if (!player::status().ready || !player::sound(bass,treble,balance,loudness)) {error(503,"Audio nicht bereit oder Warteschlange voll");return;}
+        previewLoudness=loudness;previewBass=bass;previewTreble=treble;previewBalance=balance;soundPreview=true;accepted();
     });
     server.on("/api/v1/sound/reset", HTTP_POST, [] {
         StaticJsonDocument<128> request;if (!body(request)) return;
-        if (!player::status().ready || !player::sound(settings.bass,settings.treble,settings.balance)) {error(503,"Audio nicht bereit oder Warteschlange voll");return;}
+        if (!player::status().ready || !player::sound(settings.bass,settings.treble,settings.balance,settings.loudness)) {error(503,"Audio nicht bereit oder Warteschlange voll");return;}
         soundPreview=false;accepted();
     });
     server.on("/api/v1/backup", HTTP_GET, [] {
@@ -478,7 +482,7 @@ void setup() {
     apPassword = key;
     if (!psramFound()) diagnostic = "PSRAM fehlt: Audio bleibt deaktiviert";
     else if (ESP.getFlashChipSize() != 8U * 1024U * 1024U) diagnostic = "Flashgroesse passt nicht zur WROVER-N8R8-Konfiguration";
-    else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds,settings.bass,settings.treble,settings.balance)) diagnostic = "Audio-Task konnte nicht gestartet werden";
+    else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds,settings.bass,settings.treble,settings.balance,settings.loudness)) diagnostic = "Audio-Task konnte nicht gestartet werden";
     else if (settings.autoplay) player::play(settings.stations[settings.selected].url.c_str(), fallbackUrl());
     connectWifi();
     routes();
@@ -492,7 +496,7 @@ void loop() {
     if (stopAfterRestore && (!player::status().ready || player::stop())) stopAfterRestore = false;
     if (!stopAfterRestore) {
         if (applyAudioConfig && player::configure(settings.volumeLimit, settings.softStartSeconds, settings.volume)) applyAudioConfig = false;
-        if (applySound && player::sound(settings.bass,settings.treble,settings.balance)) applySound = false;
+        if (applySound && player::sound(settings.bass,settings.treble,settings.balance,settings.loudness)) applySound = false;
         if (applyFallback && player::fallback(fallbackUrl())) applyFallback = false;
     }
     server.handleClient();

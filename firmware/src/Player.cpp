@@ -9,11 +9,12 @@
 
 namespace {
 enum class Operation { Play, Stop, Volume, Configure, Sleep, Fallback, Sound };
-struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; int8_t bass; int8_t treble; int8_t balance; char url[rules::maxUrl]; char fallbackUrl[rules::maxUrl]; };
+struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; int8_t bass; int8_t treble; int8_t balance; bool loudness; char url[rules::maxUrl]; char fallbackUrl[rules::maxUrl]; };
 QueueHandle_t commands;
 portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;
 PlayerStatus snapshot;
 bool updateRequested = false;
+bool initialLoudness=false;
 int8_t initialBass=0,initialTreble=0,initialBalance=0;
 uint8_t initialLimit = 21, initialSoftStart = 5;
 void message(const char* text) {
@@ -30,7 +31,9 @@ void audioWorker(void*) {
         vTaskDelete(nullptr);
         return;
     }
-    audio->setTone(initialBass,0,initialTreble);audio->setBalance(initialBalance);
+    int bass=initialBass,treble=initialTreble;bool loudness=initialLoudness;
+    auto appliedTone=::sound::tone(bass,treble,loudness,snapshot.volume);
+    audio->setTone(appliedTone.bass,0,appliedTone.treble);audio->setBalance(initialBalance);
     VolumeEnvelope envelope;
     SleepTimer sleepTimer;
     FallbackPolicy fallbackPolicy;
@@ -68,7 +71,7 @@ void audioWorker(void*) {
         Command c{};
         while (xQueueReceive(commands, &c, 0) == pdTRUE) {
             if (c.operation == Operation::Sound) {
-                audio->setTone(c.bass,0,c.treble);audio->setBalance(c.balance);
+                bass=c.bass;treble=c.treble;loudness=c.loudness;audio->setBalance(c.balance);
             } else if (c.operation == Operation::Volume) {
                 envelope.setTarget(c.volume);
             } else if (c.operation == Operation::Configure) {
@@ -139,6 +142,8 @@ void audioWorker(void*) {
         if (!running && wasRunning) envelope.stop();
         wasRunning = running;
         const uint8_t effective = envelope.tick(millis());
+        const auto tone=::sound::tone(bass,treble,loudness,effective);
+        if(tone.bass!=appliedTone.bass||tone.treble!=appliedTone.treble){audio->setTone(tone.bass,0,tone.treble);appliedTone=tone;}
         if (vol != effective) { vol = effective; audio->setVolume(vol); }
         digitalWrite(board::amplifierEnable, running && online && vol > 0 ? HIGH : LOW);
         if (running && audio->getAudioCurrentTime() > 5) { attempts = 0; fallbackPolicy.stable(); }
@@ -147,6 +152,7 @@ void audioWorker(void*) {
         snapshot.running = running && online;
         snapshot.volume = vol;
         snapshot.ramping = envelope.ramping();
+        snapshot.effectiveBass=appliedTone.bass;snapshot.effectiveTreble=appliedTone.treble;
         snapshot.fallbackActive = wanted && fallbackPolicy.active();
         strlcpy(snapshot.actualUrl, wanted ? requestedUrl : "", sizeof(snapshot.actualUrl));
         snapshot.sleepRemainingSeconds = sleepTimer.remaining(millis());
@@ -159,9 +165,9 @@ bool enqueue(const Command& command) {
 }
 }
 
-bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds, int8_t bass, int8_t treble, int8_t balance) {
+bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds, int8_t bass, int8_t treble, int8_t balance, bool loudness) {
     if (!::sound::valid(bass,treble,balance)) return false;
-    initialBass=bass;initialTreble=treble;initialBalance=balance;
+    initialLoudness=loudness;initialBass=bass;initialTreble=treble;initialBalance=balance;
     initialLimit = limit;
     initialSoftStart = softStartSeconds;
     pinMode(board::amplifierEnable, OUTPUT);
@@ -226,8 +232,8 @@ void player::setUpdating(bool updating) {
     portENTER_CRITICAL(&stateLock);updateRequested = updating;portEXIT_CRITICAL(&stateLock);
 }
 
-bool player::sound(int bass,int treble,int balance) {
+bool player::sound(int bass,int treble,int balance,bool loudness) {
     if (!::sound::valid(bass,treble,balance)) return false;
-    Command c{};c.operation=Operation::Sound;c.bass=bass;c.treble=treble;c.balance=balance;
+    Command c{};c.operation=Operation::Sound;c.bass=bass;c.treble=treble;c.balance=balance;c.loudness=loudness;
     return enqueue(c);
 }

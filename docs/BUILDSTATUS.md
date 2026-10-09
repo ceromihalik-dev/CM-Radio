@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.2 · Build 0a0a
+# Buildstatus – CM-Radio v0.1.3 · Build 01
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,8 +8,8 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.350.213 Bytes / 3.145.728 Bytes (42,9 %) |
-| Statische RAM-Belegung | 52.396 Bytes / 327.680 Bytes (16,0 %) |
+| Programmcode | 1.353.453 Bytes / 3.145.728 Bytes (43,0 %) |
+| Statische RAM-Belegung | 52.404 Bytes / 327.680 Bytes (16,0 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
 | URL-/WLAN-Eingaben | Positivfälle, ungültige Protokolle, Header-Steuerzeichen, Grenzen geprüft |
@@ -50,3 +50,5 @@ Build 0a09: PlatformIO PASS; Klangwerte/Grenzen/Typen, Migration alter Sicherung
 Build 0a09 vom Nutzer als PASS bestätigt. Build 0a0a: PlatformIO und Hosttests PASS. Flüchtige Klangvorschau getrennt von NVS/Sicherung; Reset und Speichern werden nach laufender Vorschauanfrage übertragen. Vorschau-Bündelung, Speichern bei laufender Anfrage und Fehlerzustand ohne hängendes Promise geprüft. Reale direkte Hörprobe und Neustartverhalten OFFEN.
 
 Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach angefragtem Test von direkter Klangvorschau, Zurücksetzen und Neustart ohne Speichern. Keine gesonderten Messwerte übermittelt; vollständige Hardwareabnahme bleibt separat.
+
+v0.1.3 Build 01: PlatformIO und Hosttests PASS. Loudness-Grenzen/Stufen, Aus-Zustand, strikter Boolean, neutrale Migration alter Sicherungen und UI-Vorschau/Speichern geprüft. Ein leeres lokales AAC-Decoderobjekt und Audioarchiv vor erfolgreichem Build neu erstellt. Neue USB_ERSTINSTALLATION.txt wird automatisch in alle Firmwarepakete übernommen, passend beschriftet und durch SHA256SUMS erfasst. Physische Hörprobe/Update für 0.1.3 Build 01 offen. Voriger Nutzerstand 0.1.2 Build 0a0a PASS.

@@ -1,5 +1,15 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 01 — 09.10.2026
+
+- Neue Versions-/Buildkennung nach Nutzerwunsch: v0.1.3, Build 01; folgende Builds 02, 03 usw.
+- Schaltbare Loudness unter Gerät, auch in direkter Klangvorschau: bei tatsächlicher Lautstärke 1 bis 14 bis zu +4 dB Bass und +2 dB Höhen, ab 15 ohne Zusatzanhebung, bei 0 ohne Anhebung. Gesamt-EQ-Werte höchstens +6 dB.
+- Loudness folgt Lautstärkeregler und sanftem Start im Audiotask; Tone-Koeffizienten nur bei geänderten effektiven Gainwerten neu gesetzt. Bestehende Bass-/Höhenwerte und Balance bleiben als Grundlage erhalten.
+- Loudness in NVS, Status, Klangvorschau, Diagnose und Sicherungen; alte Daten laden ausgeschaltet. Gespeicherte Werte wiederherstellen und Neutral hören berücksichtigen Loudness.
+- Jedes neue Firmware-ZIP enthält automatisch USB_ERSTINSTALLATION.txt mit ausführlichen Windows-/PowerShell-Schritten, BOOT/RST, WLAN, Fehlersuche und OTA-Slot-Hinweisen. Paketgenerator setzt passende Version/Build/Dateinamen ein.
+- Ausgangsstand v0.1.2 Build 0a0a vom Nutzer als PASS bestätigt; Hörprobe und Updateabnahme für v0.1.3 Build 01 offen.
+
+
 ## v0.1.2 · Build 0a0a — 09.10.2026
 
 - Klangvorschau beim Verschieben von Bässen, Höhen und Balance, ohne dauerhafte Speicherung. Schnelle Bewegungen werden gebündelt und Vorschauanfragen nacheinander gesendet.

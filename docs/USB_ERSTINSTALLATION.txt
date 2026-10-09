@@ -1,0 +1,188 @@
+CM-Radio {VERSION} · Build {BUILD}
+Ausführliche Erstinstallation per USB – Windows / PowerShell
+
+1. Wofür dieses Paket vorgesehen ist
+
+Hardware: Elecrow Loud-ESP32 E3 mit ESP32-WROVER-N8R8, 8 MB Flash.
+Nicht für ESP32-S3 oder andere Boards verwenden. Vorhanden sein müssen:
+- USB-C-Datenkabel (reine Ladekabel funktionieren nicht zum Flashen).
+- Windows-PC, Internet zur einmaligen Einrichtung der Python-Werkzeuge.
+- 2,4-GHz-Heim-WLAN mit Kennwort.
+- Zwei getrennt angeschlossene Lautsprecher, jeweils 3 W / 8 Ohm.
+
+Lautsprecher nur bei ausgeschaltetem Board anschließen. Jeder Lautsprecher
+gehört an seinen eigenen Zweipol-Ausgang. Lautsprecher-Minus nicht miteinander
+oder mit GND verbinden; die Class-D-Ausgänge haben keine gemeinsame Masse.
+Für den Hörtest eine stabile 5-V-Versorgung verwenden.
+
+2. ZIP vollständig entpacken
+
+Rechtsklick auf das ZIP -> Alle extrahieren. Nicht aus der ZIP-Ansicht arbeiten.
+Im entpackten Ordner liegen unter anderem:
+- {FULL_IMAGE}: vollständige Erstinstallationsfirmware
+- firmware.bin: Anwendung für das spätere Browserupdate
+- manifest.json: Paket-/Hardwareinformationen und Prüfsumme
+- flash.py: überprüft Paketdateien, Chip und Flashkapazität
+- SHA256SUMS: Dateiprüfsummen
+- diese Anleitung und ERSTSTART.md
+
+PowerShell im entpackten Ordner öffnen: Explorer-Adresszeile anklicken,
+powershell eingeben, Enter. Anschließend Dateien kontrollieren:
+
+Get-ChildItem
+
+3. Python und Flashwerkzeuge einrichten
+
+Python 3.13 mit dem Python-Launcher für Windows installieren. Bei der
+Installation den Launcher installieren und die PATH-Option aktivieren.
+Danach ein neues PowerShell-Fenster öffnen und prüfen:
+
+py -0p
+py -3.13 --version
+py -3.13 -m pip install esptool==4.8.1 pyserial
+py -3.13 -m esptool version
+
+Alle Befehle verwenden bewusst dieselbe Python-Version. Falls Python 3.13
+fehlt, diese zuerst installieren; nicht wahllos pip und py verschiedener
+Versionen mischen. Bei 'No module named esptool' den Installationsbefehl oben
+nochmals mit genau py -3.13 ausführen.
+
+4. Board anschließen und COM-Port feststellen
+
+Board über das Datenkabel an den PC anschließen. Portliste ausgeben:
+
+py -3.13 -m serial.tools.list_ports
+
+Zusätzlich Windows-Geräte-Manager -> Anschlüsse (COM & LPT) öffnen. Board
+abziehen und einstecken: Der neu erscheinende USB-Seriell-Port ist der richtige.
+COM5 wird unten als Beispiel verwendet; überall durch deinen Port ersetzen.
+
+Wenn kein Port erscheint: anderes Datenkabel/USB-Anschluss ausprobieren.
+Bei unbekanntem Gerät oder gelbem Symbol im Geräte-Manager die Hardware-ID
+anzeigen und den passenden USB-UART-Treiber vom Hersteller installieren.
+Je nach USB-Brücke kann ein anderer Treiber nötig sein; nicht einfach einen
+beliebigen CH34x-/CP210x-Treiber voraussetzen. Danach Port erneut kontrollieren.
+
+5. Erstinstallation – bewusst vollständiger Reset
+
+Dieser Schritt löscht Werksfirmware UND alle gespeicherten CM-Radio-Daten.
+Für ein bereits eingerichtetes Radio stattdessen Abschnitt 9 lesen.
+Serielle Monitore und andere Programme schließen, die den COM-Port nutzen.
+
+Empfohlener Weg mit Paket-/Hardwareprüfung:
+
+py -3.13 flash.py --port COM5 --erase
+
+Das Skript nimmt den Dateinamen aus manifest.json und schreibt das vollständige
+Image ab Adresse 0x0. Nicht firmware.bin allein als Erstinstallation verwenden:
+Bootloader, Partitionstabelle und OTA-Daten müssen ebenfalls vorhanden sein.
+
+Direkter Alternativweg, falls das Flashskript nicht verwendet werden kann:
+Nur für bestätigtes ESP32-WROVER-N8R8 / 8 MB und vollständigen Reset:
+
+py -3.13 -m esptool --chip esp32 --port COM5 --baud 460800 erase_flash
+py -3.13 -m esptool --chip esp32 --port COM5 --baud 460800 write_flash --flash_mode dio --flash_freq 40m --flash_size 8MB 0x0 {FULL_IMAGE}
+
+Warten, bis Schreiben und Prüfung abgeschlossen sind. Bei instabiler
+Übertragung 460800 durch 115200 ersetzen. Danach RST kurz drücken oder USB
+abziehen und wieder einstecken.
+
+6. Wenn 'Connecting...' hängen bleibt – BOOT / RST
+
+Auf dem E3-Board heißt die BOOT-Taste IO0. Sie sitzt im oberen mittleren Bereich,
+unter der 3V3-Beschriftung rechts vom ESP-Modul. RST sitzt weiter unten mittig.
+Entscheidend sind die aufgedruckten Namen IO0 und RST.
+
+- IO0 gedrückt halten.
+- RST kurz drücken und loslassen, während IO0 weiter gehalten wird.
+- Sobald esptool das Board erkennt bzw. mit dem Schreiben beginnt, IO0 loslassen.
+
+Bei 'Wrong boot mode (0x13)' diesen Ablauf wiederholen. IO0 beim normalen
+Neustart nicht gedrückt halten: Das Radio soll anschließend normal booten.
+
+7. Starttext ansehen und WLAN einrichten
+
+Seriellen Monitor starten:
+
+py -3.13 -m serial.tools.miniterm COM5 115200
+
+RST kurz drücken. Starttext auf Version {VERSION}, Build {BUILD},
+Flash 8388608 Bytes und verfügbare PSRAM prüfen.
+Der Monitor zeigt das Setup-WLAN CM-Radio-XXXXXX und sein zufälliges Passwort.
+Passwort nicht öffentlich teilen; es kann sich beim nächsten Boot ändern.
+Monitor mit Strg+] schließen. Vor erneutem Flashen immer schließen.
+
+Mit Handy/PC zum Setup-WLAN verbinden. 'Kein Internet' akzeptieren und im
+Setup-WLAN bleiben. Im Browser öffnen:
+
+http://192.168.4.1
+
+Unter Netzwerk nach verfügbaren WLANs suchen, dein 2,4-GHz-Heimnetz auswählen,
+Passwort eintragen, Speichern und verbinden. Handy/PC wieder ins Heimnetz
+wechseln und öffnen:
+
+http://cm-radio.local
+
+Falls der Name nicht aufgelöst wird, die IP aus Router-Geräteliste oder serieller
+Ausgabe verwenden. Bei gespeicherten falschen WLAN-Daten startet nach einer
+Offlinezeit wieder das Setup-WLAN; auf die serielle Ausgabe achten.
+
+8. Erster Hörtest
+
+- Moderat starten, z. B. Lautstärke 5. Funktionierenden MP3-Sender abspielen.
+- Beide Lautsprecher hören, Stop/Play und Lautstärke prüfen.
+- Unter Gerät Lautstärkegrenze, sanften Start und Autostart nach Bedarf setzen.
+- Klangregler wirken als Vorschau. Speichern übernimmt sie dauerhaft.
+- Bei dieser Version auch Loudness bei geringer Lautstärke ein-/ausschalten.
+- Nach Neustart kontrollieren, ob WLAN, Sender und gespeicherte Werte erhalten sind.
+
+9. Spätere Updates und USB-Neuinstallation unterscheiden
+
+Normaler Updateweg für bestehendes Radio ab v0.1.2 Build 0a08:
+ZIP entpacken -> Gerät / Firmwareupdate -> manifest.json und firmware.bin aus
+DEMSSELBEN Paket wählen -> Paket prüfen -> Installation bestätigen -> starten.
+Stromversorgung während des Schreibens angeschlossen lassen. Nach Neustart
+Strg+F5, installierte Version/Build prüfen. Einstellungen bleiben erhalten.
+Kein full.bin und kein Bootloader in den Browser hochladen.
+
+Nach einem Browserupdate kann die aktive Anwendung in einem anderen OTA-Slot
+liegen. Deshalb nicht blind firmware.bin per USB an 0x10000 überschreiben:
+Das könnte den inaktiven Slot treffen und beim nächsten Boot wirkungslos sein.
+
+Für eine vollständige USB-Neuinstallation zuerst, soweit erreichbar, eine
+Einstellungssicherung unter Gerät herunterladen. Danach Abschnitt 5 mit
+bewusstem Löschen durchführen und die Sicherung später prüfen/wiederherstellen.
+Sicherungen enthalten keine WLAN-Zugangsdaten: Heim-WLAN danach neu einrichten.
+Ein vollständiges Image / erase_flash ist kein Update mit Einstellungserhalt.
+
+10. Häufige Fehler
+
+Port belegt / Access denied:
+Seriellen Monitor, Entwicklungsprogramme und andere Portnutzer schließen.
+
+Kein COM-Port:
+Datenkabel, USB-Port, Geräte-Manager und passenden USB-UART-Treiber prüfen.
+
+No module named esptool oder serial:
+py -3.13 -m pip install esptool==4.8.1 pyserial ausführen.
+
+Datei nicht gefunden:
+ZIP vollständig entpacken, PowerShell im Paketordner öffnen, Get-ChildItem.
+
+Verbindungs-/Schreibfehler:
+BOOT/RST-Ablauf, anderes Kabel, direkter USB-Port, Baudrate 115200 probieren.
+
+Neustarts bei höherer Lautstärke / Brownout:
+Stromversorgung und Kabel prüfen, Lautstärke reduzieren. Kein USB-Flashfehler.
+
+PSRAM fehlt / abweichende Flashgröße:
+Modulaufdruck und Starttext prüfen; Hörtest erst nach Klärung fortsetzen.
+
+cm-radio.local nicht erreichbar:
+Handy/PC und Radio im selben Heimnetz; Geräte-IP aus dem Router verwenden.
+
+Browser zeigt alte Oberfläche:
+Nach Update Strg+F5 oder Browsercache für die Geräteadresse löschen.
+
+Wenn der Fehler bleibt: Version/Build, exakten Fehlertext, COM-Port und
+Startprotokoll bereithalten. WLAN-Passwörter vor dem Weitergeben entfernen.

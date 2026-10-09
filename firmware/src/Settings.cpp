@@ -45,6 +45,7 @@ bool SettingsStore::load(Settings& s) {
     candidate.volume = volume > limit ? limit : volume;
     int bass=0,treble=0,balance=0;
     if (!sound::read(d.as<JsonObjectConst>(),bass,treble,balance)) return false;
+    if (!sound::readLoudness(d.as<JsonObjectConst>(),candidate.loudness)) return false;
     candidate.bass=bass;candidate.treble=treble;candidate.balance=balance;
     candidate.autoplay = d["autoplay"] | true;
     s = candidate;
@@ -53,7 +54,7 @@ bool SettingsStore::load(Settings& s) {
 bool SettingsStore::save(const Settings& s) {
     DynamicJsonDocument d(12288);
     d["schema"] = 1;
-    d["bass"]=s.bass;d["treble"]=s.treble;d["balance"]=s.balance;
+    d["loudness"]=s.loudness;d["bass"]=s.bass;d["treble"]=s.treble;d["balance"]=s.balance;
     d["ssid"] = s.ssid;
     d["password"] = s.password;
     d["selected"] = s.selected;

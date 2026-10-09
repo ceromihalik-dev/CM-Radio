@@ -1,4 +1,6 @@
-# CM-Radio V0.1 – Flashen und erster Test
+# CM-Radio – Flashen und erster Test
+
+Die ausführliche Windows-USB-Anleitung liegt in jedem Paket als USB_ERSTINSTALLATION.txt. Sie enthält die passenden Versions- und Dateinamen sowie den Unterschied zwischen Erstinstallation und Updates nach OTA.
 
 ## Vorbereiten
 
@@ -10,7 +12,7 @@ Lautsprecher bei ausgeschaltetem Board jeweils an den eigenen Zweipol-Ausgang an
 
 ## A. Kompiliertes Erstinstallationspaket
 
-1. ZIP entpacken. Terminal im Ordner mit `flash.py` und `CM-Radio-V0.1.2-full.bin` öffnen.
+1. ZIP entpacken. Terminal im Ordner mit `flash.py` und `CM-Radio-V0.1.3-full.bin` öffnen.
 2. Python installieren, anschließend unter Windows:
 
 ```powershell
@@ -159,3 +161,7 @@ Erster Test: Das Paket 0a08 nochmals über den Browser installieren und Neustart
 ## Build 0a0a – Direkt hören
 
 Über Browserupdate installieren, danach Strg+F5. Regler unter Gerät verändern den Klang direkt als Vorschau. Klang dauerhaft speichern macht die Werte neustartfest. Gespeicherte Werte wiederherstellen verwirft die Vorschau. Neutral hören setzt die Vorschau auf 0; nur Speichern übernimmt dauerhaft. Sicherungen enthalten die gespeicherten Werte. Vorschau bleibt bei Senderwechsel und Stop/Play bestehen, nach Neustart gilt gespeicherter Klang.
+
+## v0.1.3 · Build 01
+
+Update über Browser mit manifest.json und firmware.bin, dann Strg+F5. Loudness bei leiser Wiedergabe unter Gerät ein-/ausschalten; direkt hörbare Vorschau. Klang dauerhaft speichern übernimmt die Wahl. Zur USB-Erstinstallation die beigefügte USB_ERSTINSTALLATION.txt verwenden.

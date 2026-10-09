@@ -131,3 +131,13 @@ Build 0a09 vom Nutzer am 09.10.2026 um 18:51 Uhr als PASS bestätigt.
 Hosttests: Bündelung aktueller Reglerwerte, serialisierte Vorschau, Speichern während laufender Anfrage, Rücksetzen, Fehlerrückgabe ohne hängenden Zustand PASS. Reale Hörprobe und Vorschau-/Persistenzabgrenzung OFFEN.
 
 Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach angefragtem Test von direkter Klangvorschau, Zurücksetzen und Neustart ohne Speichern. Keine gesonderten Messwerte übermittelt; vollständige Hardwareabnahme bleibt separat.
+
+## v0.1.3 · Build 01
+
+1. Browserupdate installieren; Version 0.1.3 und Build 01 prüfen. WLAN/Sender/Klangwerte bleiben, Loudness alter Daten aus.
+2. Bei Lautstärke 3–5 Loudness ein-/ausschalten: Bass-/Höhenwirkung hören, kein Stream-Neustart. Bei Stufe 15 soll keine zusätzliche Anhebung mehr wirken. Lautstärkegrenze beachten.
+3. Sanften Start und Lautstärkeänderung: effektive EQ-Anzeige folgt der tatsächlichen Lautstärke. Bass/Höhen an oberer Grenze: angewendete Werte maximal +6 dB. Balance weiterhin korrekt.
+4. Ohne Speichern vorhören, gespeicherte Werte wiederherstellen; mit Speichern Neustart und Sicherung/Wiederherstellung prüfen. Neutral hören setzt Loudness vorübergehend aus.
+5. ZIP enthält ausführliche USB_ERSTINSTALLATION.txt mit Version 0.1.3, Build 01 und CM-Radio-V0.1.3-full.bin; keine Platzhalter. Erstinstallation an bereits belegtem Gerät nur als bewusst separater Resettest.
+
+Hosttests: Loudness aus/bei 0/bei 1/bei 15, maximale EQ-Grenzen über alle Lautstärkestufen, strikte boolesche Sicherungswerte und UI-Vorschau/Speichern geprüft. Hörprobe, Update und vollständige USB-Erstinstallation dieses Pakets OFFEN.

@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.2 · Build 0a0a.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.3 · Build 01.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -101,3 +101,7 @@ Unter Gerät lassen sich Bässe/Höhen (−12 bis +6 dB) und Balance (−16 link
 Klangregler wirken als Vorschau direkt, ohne NVS-Schreibvorgang. Klang dauerhaft speichern erhält die Werte über Neustarts; Gespeicherte Werte wiederherstellen verwirft die Vorschau. Neutral hören ist vorübergehend. Sicherungen enthalten gespeicherten Klang, keine Vorschau. Vorschau bleibt bis Zurücksetzen, Speichern, Wiederherstellung oder Neustart bestehen, auch bei Senderwechsel und Stop/Play. Nutzer bestätigt 0a09 als PASS; 0a0a-Gerätetest offen.
 
 Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach angefragtem Test von direkter Klangvorschau, Zurücksetzen und Neustart ohne Speichern. Keine gesonderten Messwerte übermittelt; vollständige Hardwareabnahme bleibt separat.
+
+### v0.1.3 · Build 01
+
+Loudness lässt sich unter Gerät direkt vorhören und dauerhaft speichern. Die Zusatzanhebung nimmt mit der tatsächlichen Lautstärke ab und ist ab Stufe 15 ausgeschaltet; Bass/Höhen bleiben auf insgesamt +6 dB begrenzt. Alte Einstellungen laden Loudness aus. Jedes Firmware-ZIP enthält die ausführliche USB_ERSTINSTALLATION.txt mit automatisch passenden Paketdaten. Browserupdate nutzt manifest.json und firmware.bin. Gerätetest dieses neuen Stands offen.
