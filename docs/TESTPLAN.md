@@ -204,3 +204,5 @@ Werkseinstellungen über dieselbe BOOT/IO0-Taste: Bei laufendem Radio mindestens
 ## v0.1.3 Build 07
 
 Nach Browserupdate und Strg+F5 Radio als Startseite prüfen, auch im Fallback. Eigenes Setup-Passwort nach Seitenneuladen und Stromneustart unverändert, keine erneute Wechselaufforderung. Nach explizitem Passwortreset Wechsel erforderlich; danach Radio, Netzwerk geschlossen. WLAN-Knopf öffnet weiterhin Gerät → Netzwerk. Mindestlänge 8 bleibt technisch erforderlich. Gerätetest offen.
+
+Nutzer bestätigt v0.1.3 Build 07 am 09.10.2026 um 20:32 Uhr (Europe/Berlin) als PASS nach angefragter Prüfung von Radio-Startseite und Passworterhalt nach Seitenneuladen und Neustart. Kein gesonderter Nachweis für Tasten-/Werksreset oder vollständige Hardwareabnahme.
