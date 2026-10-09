@@ -11,5 +11,6 @@ int main(){
  envelope.configure(3,5,10);assert(envelope.tick(0)==3);envelope.start(0xfffffff0U);assert(envelope.tick(2484)==1);assert(envelope.tick(4984)==3);
  envelope.configure(0,5,10);envelope.start(0);assert(envelope.tick(100000)==0 && !envelope.ramping());
  envelope.configure(21,0,8);envelope.prepare();assert(envelope.tick(0)==8);envelope.start(0);assert(!envelope.ramping());
+ envelope.configure(50,5,50);envelope.start(1000);assert(envelope.tick(3500)==25);assert(envelope.tick(6000)==50);envelope.configure(255,0,255);assert(envelope.tick(0)==50);
  puts("Sleep timer expiry, replace/cancel, bounds, volume ceiling, ramp, manual override and rollover: PASS");
 }

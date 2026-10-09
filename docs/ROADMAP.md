@@ -1,6 +1,6 @@
 # CM-Radio – Roadmap
 
-Stand: **9. Oktober 2026 · v0.1.3 · Build 04**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
+Stand: **9. Oktober 2026 · v0.1.3 · Build 05**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
 
 Diese Datei ist die verbindliche Projekt-Roadmap. Fehler und deren Abnahme stehen in [BUGLISTE.md](BUGLISTE.md), einzelne Hardwarekriterien im [TESTPLAN.md](TESTPLAN.md). Aussagen im Chat werden bei der nächsten Projektaktualisierung hier mit Datum und Nachweis übernommen. Ein bestandener Teiltest ersetzt keine vollständige Hardwareabnahme.
 
@@ -59,3 +59,5 @@ Aktuell **v0.1.3 · Build 02**. Weitere Builds innerhalb dieser Version: **03, 0
 Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualisieren. Für Fehler stabile CMR-IDs verwenden; gelöste Einträge bleiben mit Fix-Build und Nachweis erhalten. Änderungen an Firmware müssen kompilieren und die passenden Prüfungen bestehen. Ein öffentlicher Release wird erst als vollständig hardwaregetestet bezeichnet, wenn seine Abnahmekriterien nachgewiesen sind.
 
 Build 0a07 korrigiert den seit 0a05 gemeldeten periodischen Stream-Neustart (CMR-004) durch Entfernen des Audiozeit-Stillstandswächters. Bestätigung am betroffenen Sender steht aus.
+
+Build 05: 50 Lautstärkestufen mit abgerundeter Migration alter Lautstärkegrenzen; Netzwerk unter Gerät. Build und Hosttests PASS, Gerätetest offen. Build 04 ohne gesonderte Nutzerabnahme.

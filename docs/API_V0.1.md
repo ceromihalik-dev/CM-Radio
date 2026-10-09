@@ -102,3 +102,9 @@ Senderobjekte in GET/PUT stations, NVS und Sicherung ergänzen optionales `logo`
 Anfrage- und NVS-Textlimit für Sender/Sicherungen nun 16384 Bytes (vorher 8192); entsprechende JSON-Puffer 24576 Bytes. Senderlogos sind URL-Verweise, keine eingebetteten Dateien. ESP32 lädt keine Bilder herunter. Browser verlangt HTTPS, unterdrückt Referrer und zeigt bei Fehler bzw. acht Sekunden ohne Hauptlogo einen Platzhalter. Externe Bildquellen benötigen Internet im Browser und sehen die Bildanfrage; Ausfall verändert Audio nicht.
 
 `title` bleibt die unveränderte Streammetadaten-Zeichenfolge. Die UI trennt erstes Muster 'Interpret - Titel' mit Leerraum und Bindestrich/typografischem Gedankenstrich; weitere Trennzeichen bleiben im Titel. Dies ist eine Anzeigeheuristik, keine verifizierte Interpretenerkennung. Ohne Muster vollständiger Titel, ohne Metadaten Ersatztext; technische Meldung separat. Wecker/Zeitpläne entfallen aus dem Projektumfang.
+
+## v0.1.3 Build 05 – Lautstärkeskala und Migration
+
+Ab diesem Build überschreiben folgende Angaben die historische 21er-Skala: volume/volumeLimit/effectiveVolume nutzen 0–50, maxVolume und volumeSteps im Status sind 50. Der Audio-Task verwendet setVolumeSteps(50) mit derselben quadratischen Verstärkungskurve. POST /volume ist zusätzlich auf die gespeicherte Grenze beschränkt. POST /config akzeptiert volumeLimit 0–50. Loudness ist an die relative Skala angepasst, ab 36 ohne Zusatzanhebung.
+
+Neue NVS-Daten und Sicherungen verwenden Schema 2. Schema-1-NVS und -Sicherungen validieren zunächst Werte 0–21, dann Umrechnung floor(Wert × 50 / 21) für Lautstärke und Grenze. Schema-2-Werte werden unverändert übernommen; Restore/validate zeigt bereits umgerechnete Werte. Maximaler JSON-Body 16 KiB, Logo- und Klangfelder wie in Build 02. Ältere Firmware versteht Schema 2 nicht.

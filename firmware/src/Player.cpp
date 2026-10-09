@@ -16,7 +16,7 @@ PlayerStatus snapshot;
 bool updateRequested = false;
 bool initialLoudness=false;
 int8_t initialBass=0,initialTreble=0,initialBalance=0;
-uint8_t initialLimit = 21, initialSoftStart = 5;
+uint8_t initialLimit = 50, initialSoftStart = 5;
 void message(const char* text) {
     portENTER_CRITICAL(&stateLock);
     strlcpy(snapshot.message, text ? text : "", sizeof(snapshot.message));
@@ -31,6 +31,7 @@ void audioWorker(void*) {
         vTaskDelete(nullptr);
         return;
     }
+    audio->setVolumeSteps(rules::maxVolume);
     int bass=initialBass,treble=initialTreble;bool loudness=initialLoudness;
     auto appliedTone=::sound::tone(bass,treble,loudness,snapshot.volume);
     audio->setTone(appliedTone.bass,0,appliedTone.treble);audio->setBalance(initialBalance);
@@ -202,7 +203,7 @@ bool player::volume(uint8_t value) {
     return enqueue(c);
 }
 bool player::configure(uint8_t limit, uint8_t seconds, uint8_t volume) {
-    if (limit > 21 || seconds > 30 || volume > limit) return false;
+    if (limit > 50 || seconds > 30 || volume > limit) return false;
     Command c{};
     c.operation = Operation::Configure;
     c.limit = limit; c.seconds = seconds; c.volume = volume;

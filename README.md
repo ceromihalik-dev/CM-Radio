@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.3 · Build 04.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.3 · Build 05.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -121,3 +121,7 @@ Unter Gerät zeigt der Infobereich den Ersteller C. Mihalik, den öffentlichen G
 ### v0.1.3 · Build 04
 
 Gerät ist in sieben kompakte aufklappbare Bereiche gegliedert. Desktop: zwei Spalten; Smartphone: eine Spalte. Version, WLAN und Speicherzustand stehen oben. Build 03 wurde vom Nutzer als PASS bestätigt; Passwortschutz ist vorerst zurückgestellt. Gerätetest Build 04 offen.
+
+### v0.1.3 · Build 05
+
+50 Lautstärkestufen (0 stumm), unveränderte maximale Verstärkung. Alte Lautstärke und Grenze werden abgerundet auf die neue Skala übertragen. Neue Einstellungen und Sicherungen nutzen Schema 2; Schema 1 kann importiert werden. Ältere Firmware kann Schema 2 nicht laden. Netzwerk steht als aufklappbarer Bereich unter Gerät; WLAN-Knopf öffnet ihn direkt. Gerätetest offen.

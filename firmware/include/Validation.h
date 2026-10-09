@@ -7,7 +7,9 @@ namespace rules {
 constexpr size_t maxStations = 10;
 constexpr size_t maxName = 64;
 constexpr size_t maxUrl = 384;
-constexpr uint8_t maxVolume = 21;
+constexpr uint8_t maxVolume = 50;
+// Round down so migration never increases the stored maximum gain.
+inline int legacyVolume(int value) { return value * 50 / 21; }
 inline bool validUrl(const char* url) {
     if (!url || strlen(url) < 8 || strlen(url) >= maxUrl) return false;
     const char* host = nullptr;

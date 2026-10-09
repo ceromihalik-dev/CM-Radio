@@ -27,7 +27,7 @@ private:
 class VolumeEnvelope {
 public:
     void configure(uint8_t limit, uint8_t seconds, uint8_t target) {
-        limit_ = limit > 21 ? 21 : limit;
+        limit_ = limit > 50 ? 50 : limit;
         seconds_ = seconds > 30 ? 30 : seconds;
         setTarget(target);
     }
@@ -54,7 +54,7 @@ public:
     }
     bool ramping() const { return ramping_; }
 private:
-    uint8_t limit_ = 21, seconds_ = 5, target_ = 5, current_ = 5;
+    uint8_t limit_ = 50, seconds_ = 5, target_ = 5, current_ = 5;
     bool ramping_ = false;
     uint32_t began_ = 0;
 };

@@ -1,5 +1,12 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 05 — 09.10.2026
+
+- 50 tatsächliche Lautstärkestufen über setVolumeSteps(50) der Audiobibliothek; 0 bleibt stumm, 50 hat dieselbe maximale Verstärkung wie vorher 21. Regler, API, Obergrenze und sanfter Start nutzen 0–50. Loudness folgt der relativen Lautstärke; ab 36 keine zusätzliche Anhebung.
+- NVS und neue Sicherungen verwenden Schema 2. Alte Schema-1-Werte werden beim Laden und Import mit floor(Wert × 50 / 21) umgerechnet; Grenzen steigen dadurch nicht über die bisherige relative Verstärkung. Beispiel: 5 wird 11, 21 wird 50. Sender, WLAN und Klang bleiben erhalten. Neue Schema-2-Werte werden unverändert geladen. Rückkehr zu älterer Firmware erfordert eine alte Sicherung bzw. Neueinrichtung, weil diese Schema 2 nicht versteht.
+- Netzwerk in Gerät integriert: WLAN-Suche und Zugangsdaten als achter aufklappbarer Bereich. Hauptnavigation enthält Radio, Sender und Gerät. WLAN-Knopf und Einrichtungsmodus öffnen direkt Gerät → Netzwerk.
+- Hosttests für alte/neue Sicherungen, Skalenmigration und 50er Lautstärkegrenze erweitert. Gerätetest Build 05 offen; für Build 04 liegt keine gesonderte PASS-Meldung vor.
+
 ## v0.1.3 · Build 04 — 09.10.2026
 
 - Gerät kompakter gegliedert: sieben aufklappbare Bereiche für Wiedergabe, Klang, Sicherung, Firmwareupdate, Projektinfos, Changelog und technische Diagnose. Standardmäßig geschlossen; mehrere Bereiche können gleichzeitig geöffnet bleiben.

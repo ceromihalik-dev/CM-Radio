@@ -173,3 +173,13 @@ Gerätetest: offen.
 - Wiedergabeeinstellungen, Sicherungsdownload, Wiederherstellungsvorschau, Projektlinks, Changelog und Diagnose erreichbar; Audio läuft beim Aufklappen weiter.
 
 Gerätetest Build 04: offen.
+
+## v0.1.3 Build 05 – Lautstärke und Netzwerk
+
+- Vor Update Sicherung herunterladen. Nach Browserupdate Strg+F5: Build 05 prüfen.
+- Alte Lautstärke/Grenze werden abgerundet umgerechnet (5 → 11, 21 → 50); Lautstärke steigt durch Migration nicht. Alte Sicherung importieren und prüfen. Neue Sicherung nutzt Schema 2, erneuter Import ändert Werte nicht.
+- Regler 0 stumm, 1–50 feinere Abstufung; Obergrenze, sanfter Start, Loudness, Speichern und Neustart prüfen. Hohe Lautstärke nur bei Bedarf wählen.
+- Hauptnavigation Radio/Sender/Gerät; Netzwerk dort öffnen. WLAN-Knopf springt direkt zum Bereich, WLAN-Suche und Speichern funktionieren.
+- Smartphone/Desktop: acht Bereiche, ein bzw. zwei Spalten; Klangentwürfe bleiben beim Schließen erhalten.
+
+Gerätetest: offen.

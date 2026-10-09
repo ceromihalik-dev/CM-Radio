@@ -11,7 +11,7 @@ bool SettingsStore::load(Settings& s) {
     DynamicJsonDocument d(24576);
     if (deserializeJson(d, raw)) return false;
     const int schema = d["schema"] | 0;
-    if (schema != 1) return false;
+    if (schema != 1 && schema != 2) return false;
     const String ssid = d["ssid"] | "";
     const String password = d["password"] | "";
     if (!ssid.isEmpty() && !rules::validWifi(ssid.c_str(), password.c_str())) return false;
@@ -31,21 +31,22 @@ bool SettingsStore::load(Settings& s) {
         candidate.stations[i] = {name, url, logo};
     }
     const int selected = d["selected"] | 0;
-    const int volume = d["volume"] | 5;
-    if (selected < 0 || selected >= static_cast<int>(candidate.count) || volume < 0 || volume > rules::maxVolume) return false;
+    const int scale = schema == 1 ? 21 : rules::maxVolume;
+    const int volume = d["volume"] | (schema == 1 ? 5 : 11);
+    if (selected < 0 || selected >= static_cast<int>(candidate.count) || volume < 0 || volume > scale) return false;
     candidate.selected = selected;
     if (d.containsKey("volumeLimit") && !d["volumeLimit"].is<int>()) return false;
     if (d.containsKey("softStartSeconds") && !d["softStartSeconds"].is<int>()) return false;
-    const int limit = d["volumeLimit"] | 21;
+    const int limit = d["volumeLimit"] | scale;
     const int softStart = d["softStartSeconds"] | 5;
-    if (limit < 0 || limit > 21 || softStart < 0 || softStart > 30) return false;
-    candidate.volumeLimit = limit;
+    if (limit < 0 || limit > scale || softStart < 0 || softStart > 30) return false;
+    candidate.volumeLimit = schema == 1 ? rules::legacyVolume(limit) : limit;
     if (d.containsKey("fallbackStation") && !d["fallbackStation"].is<int>()) return false;
     const int fallback = d["fallbackStation"] | -1;
     if (fallback < -1 || fallback >= static_cast<int>(candidate.count)) return false;
     candidate.fallbackStation = fallback;
     candidate.softStartSeconds = softStart;
-    candidate.volume = volume > limit ? limit : volume;
+    candidate.volume = schema == 1 ? rules::legacyVolume(volume > limit ? limit : volume) : (volume > limit ? limit : volume);
     int bass=0,treble=0,balance=0;
     if (!sound::read(d.as<JsonObjectConst>(),bass,treble,balance)) return false;
     if (!sound::readLoudness(d.as<JsonObjectConst>(),candidate.loudness)) return false;
@@ -56,7 +57,7 @@ bool SettingsStore::load(Settings& s) {
 }
 bool SettingsStore::save(const Settings& s) {
     DynamicJsonDocument d(24576);
-    d["schema"] = 1;
+    d["schema"] = 2;
     d["loudness"]=s.loudness;d["bass"]=s.bass;d["treble"]=s.treble;d["balance"]=s.balance;
     d["ssid"] = s.ssid;
     d["password"] = s.password;

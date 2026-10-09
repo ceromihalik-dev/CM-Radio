@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.3 · Build 04
+# Buildstatus – CM-Radio v0.1.3 · Build 05
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,7 +8,7 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.364.925 Bytes / 3.145.728 Bytes (43,4 %) |
+| Programmcode | 1.366.705 Bytes / 3.145.728 Bytes (43,4 %) |
 | Statische RAM-Belegung | 52.564 Bytes / 327.680 Bytes (16,0 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
@@ -66,3 +66,7 @@ Infobereich mit C. Mihalik, GitHub und PayPal-Unterstützungslink aus ABOUT.txt 
 ## v0.1.3 Build 04
 
 Kompakte Geräteoberfläche mit sieben nativen aufklappbaren Bereichen, zwei Desktopspalten und einer Smartphonespalte. Nutzer bestätigt Build 03 als PASS; Passwortschutz vorerst zurückgestellt. Gerätetest und visuelle Abnahme auf realen Browsern offen.
+
+## v0.1.3 Build 05
+
+50 Lautstärkestufen in Audio/API/UI, Schema-1-Migration auf Schema 2 und Netzwerk in Gerät. Alte Sicherungen weiterhin importierbar; neue Schema-2-Daten sind nicht von älterer Firmware lesbar. Gerätetest inklusive Migration, Klang, Autostart und WLAN offen. Build 04 nicht gesondert vom Nutzer abgenommen.

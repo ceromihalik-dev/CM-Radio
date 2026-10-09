@@ -141,7 +141,7 @@ const char* fallbackUrl() {
     return settings.fallbackStation >= 0 ? settings.stations[settings.fallbackStation].url.c_str() : "";
 }
 void writeBackup(JsonDocument& document) {
-    document["format"] = "CM-Radio-Backup";document["schema"] = 1;
+    document["format"] = "CM-Radio-Backup";document["schema"] = 2;
     document["sourceVersion"] = board::version;document["sourceBuild"] = board::build;
     JsonObject config = document.createNestedObject("settings");
     config["selected"] = settings.selected;config["volume"] = settings.volume;config["autoplay"] = settings.autoplay;
@@ -214,7 +214,7 @@ void routes() {
         response["fallbackActive"] = p.fallbackActive;
         response["title"] = p.title;
         response["message"] = diagnostic.isEmpty() ? p.message : diagnostic;
-        response["volume"] = settings.volume;
+        response["volume"] = settings.volume;response["volumeSteps"] = rules::maxVolume;
         response["maxVolume"] = rules::maxVolume;
         response["volumeLimit"] = settings.volumeLimit;
         response["softStartSeconds"] = settings.softStartSeconds;
@@ -329,7 +329,7 @@ void routes() {
             candidate.autoplay = request["autoplay"].as<bool>();
         }
         if (request.containsKey("volumeLimit")) {
-            if (!request["volumeLimit"].is<int>() || request["volumeLimit"].as<int>() < 0 || request["volumeLimit"].as<int>() > 21) { error(400, "volumeLimit muss 0 bis 21 sein"); return; }
+            if (!request["volumeLimit"].is<int>() || request["volumeLimit"].as<int>() < 0 || request["volumeLimit"].as<int>() > 50) { error(400, "volumeLimit muss 0 bis 50 sein"); return; }
             candidate.volumeLimit = request["volumeLimit"].as<int>();
             if (candidate.volume > candidate.volumeLimit) candidate.volume = candidate.volumeLimit;
         }

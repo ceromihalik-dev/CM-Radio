@@ -53,7 +53,7 @@ py -m platformio device monitor -b 115200 --port COM5
 2. Auf dem Handy mit dem angezeigten `CM-Radio-XXXXXX`-WLAN verbinden. Das zufällige Passwort steht im seriellen Monitor. Androids Hinweis „Kein Internet“ akzeptieren und im Setup-WLAN bleiben.
 3. `http://192.168.4.1` im Browser öffnen, Heimnetz-SSID und Passwort speichern.
 4. Handy wieder mit dem Heimnetz verbinden. `http://cm-radio.local` öffnen; falls die Namensauflösung nicht funktioniert, Geräte-IP aus Router oder serieller Ausgabe verwenden.
-5. Der MP3-Teststream startet bei aktivem Autostart selbstständig. Lautstärke zunächst bei 5/21 belassen. Beide Lautsprecher und Play/Stop testen.
+5. Der MP3-Teststream startet bei aktivem Autostart selbstständig. Lautstärke zunächst bei 11/50 belassen. Beide Lautsprecher und Play/Stop testen.
 6. Eigene direkte MP3-/AAC-Stream-URLs unter „Sender verwalten“ speichern, gewünschten Sender abspielen.
 7. Nach Lautstärkeänderungen mindestens zwei Sekunden bis zum Ausschalten warten; im Status muss „Gespeichert“ stehen.
 
@@ -128,7 +128,7 @@ Suchbegriff und Land werden an Radio-Browser übertragen; WLAN-Passwörter werde
 
 Unter „Radio“ Sleep-Timer mit 15/30/60 Minuten oder eigener Dauer 1–180 Minuten setzen. „Timer aufheben“ beendet nur den Timer, „Stoppen“ beendet Wiedergabe und Timer. Senderwechsel lässt die Restzeit weiterlaufen. Nach Stromneustart ist kein Timer aktiv. Die Restzeit wird regelmäßig mit dem Gerätestatus aktualisiert.
 
-Unter „Gerät“ maximale Lautstärke 0–21 und sanften Start 0–30 Sekunden einstellen und speichern. 0 Sekunden schaltet die Rampe ab; Standard 5 Sekunden. Eine Grenze von 0 schaltet die Ausgabe stumm. Absenken der Grenze reduziert auch den gespeicherten Zielwert; Erhöhen hebt die Lautstärke nicht automatisch an. Manuelle Lautstärkeänderungen beenden eine laufende Rampe.
+Unter „Gerät“ maximale Lautstärke 0–50 und sanften Start 0–30 Sekunden einstellen und speichern. 0 Sekunden schaltet die Rampe ab; Standard 5 Sekunden. Eine Grenze von 0 schaltet die Ausgabe stumm. Absenken der Grenze reduziert auch den gespeicherten Zielwert; Erhöhen hebt die Lautstärke nicht automatisch an. Manuelle Lautstärkeänderungen beenden eine laufende Rampe.
 
 Update wie zuvor mit `firmware.bin` an 0x10000 ohne Löschen. Vorhandene Sender/WLAN bleiben gespeichert; neue Felder erhalten Standardwerte. Nach Update Seite vollständig neu laden und Migration am Gerät prüfen.
 
@@ -169,3 +169,7 @@ Update über Browser mit manifest.json und firmware.bin, dann Strg+F5. Loudness 
 ## v0.1.3 · Build 02
 
 Nach Browserupdate Strg+F5. Logos für neue Suchtreffer werden bei vorhandener geeigneter HTTPS-Favicon-Adresse übernommen. Für bestehende Sender Logo-Adresse unter Sender ergänzen und Änderungen speichern. Bei fehlendem/defektem Logo erscheint ein CM-Platzhalter, Audio bleibt unabhängig. Bilder werden vom Handy/PC geladen und brauchen dessen Internetzugang. Interpret/Titel werden aus gängigen Streammetadaten getrennt; nicht jeder Sender liefert sie.
+
+## v0.1.3 Build 05
+
+Netzwerk befindet sich jetzt unter Gerät → Netzwerk. Der WLAN-Knopf auf der Radioseite öffnet den Bereich direkt. Lautstärke 0–50, 0 stumm; alte Werte und Grenzen werden beim Update abgerundet umgerechnet. Neue Sicherungen verwenden Schema 2. Vor einem Rückwechsel zu älterer Firmware eine alte Sicherung bereithalten, da ältere Firmware Schema 2 nicht laden kann.

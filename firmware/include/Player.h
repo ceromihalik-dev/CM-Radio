@@ -7,7 +7,7 @@ struct PlayerStatus {
     bool running = false;
     bool ready = false;
     bool updating = false;
-    uint8_t volume = 5;
+    uint8_t volume = 11;
     bool ramping = false;
     int8_t effectiveBass = 0, effectiveTreble = 0;
     bool fallbackActive = false;
