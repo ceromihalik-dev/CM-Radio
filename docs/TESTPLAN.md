@@ -216,3 +216,5 @@ Nutzer bestätigt v0.1.3 Build 07 am 09.10.2026 um 20:32 Uhr (Europe/Berlin) als
 5. Verzeichnis nicht erreichbar: Audio/UI weiter bedienbar, Fehlermeldung; keine Dauerschleife und keine URL-Änderung.
 
 Diese Hardwaretests sind noch nicht durchgeführt.
+
+Nutzerabnahme 09.10.2026: Build-08-Installation PASS (21:04 Europe/Berlin), 60-Minuten-Dauertest PASS und Passwortreset per BOOT PASS (21:05–21:06). Die vier neuen Funktionen und Werkseinstellungen sind damit nicht pauschal hardwareabgenommen.

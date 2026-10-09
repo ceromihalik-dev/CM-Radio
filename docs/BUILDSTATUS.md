@@ -88,3 +88,5 @@ Nutzer bestätigt v0.1.3 Build 07 am 09.10.2026 um 20:32 Uhr (Europe/Berlin) als
 ## v0.1.3 Build 08
 
 Gerätename, Mono/Stereo, Verbindungsdiagnose und Senderreparatur integriert. Hosttests und Kompilierung geprüft; Hardwareabnahme dieser vier Funktionen offen. Bluetooth nicht aktiviert.
+
+Nutzerabnahme 09.10.2026: Build-08-Installation PASS (21:04 Europe/Berlin), 60-Minuten-Dauertest PASS und Passwortreset per BOOT PASS (21:05–21:06). Die vier neuen Funktionen und Werkseinstellungen sind damit nicht pauschal hardwareabgenommen.

@@ -1,5 +1,5 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "unit": "mm",
   "board_basis": "Delivered Loud-ESP32 revision E3; dimensions and hole positions confirmed by user on 2026-10-09",
   "case_x": 104.0,
@@ -13,7 +13,7 @@
   "board_y": 56.0,
   "board_offset_x": 9.0,
   "board_offset_y": 3.2,
-  "board_thickness_assumed": 1.6,
+  "board_thickness_assumed": 1.7,
   "board_hole_x": [
     3.5,
     61.5
@@ -65,8 +65,8 @@
   "vent_width": 2.4,
   "vent_length": 14.0,
   "engraving_depth": 0.5,
-  "prototype_notice": "Board outline, hole raster, underside envelope, component height and USB/cable envelope confirmed. PCB thickness remains assumed 1.6 mm; connector positions, physical fit and load tests remain open.",
-  "revision": "W2 - E3 Boardmasse bestaetigt",
+  "prototype_notice": "PCB thickness 1.7 mm and IO0 height 2.0 mm measured. Reset coordinates from E3 pad centres, corroborated by photos; tactile stroke and FDM fit not measured. Print fit test required. No visible version marking.",
+  "revision": "W3 - IO0-Druckknopf, keine sichtbare Version",
   "cable_tie_anchors": [
     [
       68.0,
@@ -104,5 +104,24 @@
     7.0,
     12.0
   ],
-  "speaker_cable_diameter_measured": 3.0
+  "speaker_cable_diameter_measured": 3.0,
+  "board_thickness_measured": 1.7,
+  "reset_enabled": true,
+  "reset_x_from_board_left": 34.48635,
+  "reset_y_from_board_front": 45.0011,
+  "reset_position_basis": "Centre of opposing E3 switch solder pads (32.3014 / 36.6713, y=45.0011 mm); corresponds to photographed IO0. Verify physical alignment before use.",
+  "reset_switch_height": 2.0,
+  "reset_idle_gap": 0.3,
+  "reset_stroke": 0.6,
+  "reset_shaft_diameter": 6.0,
+  "reset_radial_clearance": 0.25,
+  "reset_collar_diameter": 10.0,
+  "reset_collar_thickness": 1.2,
+  "reset_guide_diameter": 13.0,
+  "reset_collar_top_z": 26.6,
+  "reset_face_recess": 0.3,
+  "reset_retainer_thickness": 2.0,
+  "reset_screw_spacing": 20.0,
+  "reset_screw_pilot": 1.6,
+  "reset_screw_clearance": 2.4
 }

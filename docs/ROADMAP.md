@@ -82,3 +82,7 @@ Gerätename, Mono/Stereo, Verbindungsdiagnose und Senderreparatur integriert. Ho
 | RM-31 | Mono/Stereo | Build 08 implementiert; Boardtest offen |
 | RM-32 | Verbindungsqualität anzeigen | Build 08 implementiert; Boardtest offen |
 | RM-33 | Sender automatisch wiederfinden | Build 08 implementiert; Boardtest offen |
+
+Nutzerabnahme 09.10.2026: Build-08-Installation PASS (21:04 Europe/Berlin), 60-Minuten-Dauertest PASS und Passwortreset per BOOT PASS (21:05–21:06). Die vier neuen Funktionen und Werkseinstellungen sind damit nicht pauschal hardwareabgenommen.
+
+Gehäuse V0.2/W3: versenkter IO0-Druckknopf, Halteplatte und Führung; Platine 1,7 mm / Tasterhöhe 2,0 mm berücksichtigt. Sichtbare Versionsgravur entfernt. Wandaufnahmen erhalten. CAD/STL/STEP-Prüfung PASS; gedruckte Passprobe und Tasterweg offen.
