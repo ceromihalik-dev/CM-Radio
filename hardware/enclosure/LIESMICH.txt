@@ -1,4 +1,4 @@
-CM-Radio Gehäuse V0.2 / W3 – 09.10.2026
+CM-Radio Gehäuse V0.2 / W4 – 09.10.2026
 
 ÄNDERUNGEN
 - Keine sichtbare Versionsnummer am Gehäuse. Beschriftungen: CM-Radio, RESET, USB-C, L, R.
@@ -17,8 +17,7 @@ DRUCK
 PETG empfohlen; 0,2 mm Schichten, 3–4 Wände, 25–35 % Füllung.
 Unterteil und Deckel liegen in ihren STLs bereits passend auf dem Bett.
 Halteplatte flach drucken. Resetknopf steht auf der Tasterkontaktfläche:
-Stützmaterial unter Schaftabsatz und umlaufendem Kragen verwenden, anschließend vollständig entfernen.
-Die 2,5-mm-Kontaktspitze mit Brim stabilisieren.
+Stützmaterial unter Schaftabsatz und Kragen verwenden; 2,5-mm-Spitze mit Brim stabilisieren.
 6-mm-Schaft glatt und frei beweglich halten; 6,5-mm-Führung nicht durch Lack verengen.
 Nicht skalieren. Bei knapper Passung erst Grat entfernen; CAD-Spiel parametrierbar.
 
@@ -57,10 +56,10 @@ RESET-Beschriftung meint diese IO0-Funktion, nicht den direkten Neustart per RST
 
 GEHÄUSEMONTAGE UND WAND
 Bestehende M2,5-Platinen- und M3-Deckelverschraubung wie bisher; Länge vor Montage prüfen.
-Unterteil ist geometrisch unverändert gegenüber W2; bei bereits gedrucktem W2 zuerst
-Deckel und Resetbauteile probieren. Wandbohrungen 60 mm waagerecht, passende Dübel je Wand.
+Unterteil und Deckel gegenüber W3 geändert: beide neu drucken.
+Resetknopf und Halteplatte bleiben unverändert. Wandbohrungen 60 mm waagerecht, passende Dübel je Wand.
 Schraubenschaft 3,5–4 mm, Kopf höchstens 8 mm Durchmesser / 3 mm hoch.
-Kopfunterseite zunächst etwa 5,5 mm vor Wand. Gehäuse über Köpfe setzen und nach unten schieben.
+Kopfunterseite zunächst etwa 3,5 mm vor Wand. Gehäuse über Köpfe setzen und nach unten schieben.
 Elektronik spannungsfrei montieren. Lautsprecherkabel durch L/R-Ausgänge, innen zugentlasten.
 
 PRÜFUNG
@@ -68,3 +67,14 @@ CAD-Solids gültig; Gehäuse, Knopf und Halteplatte im Ruhe- und Anschlagzustand
 kollisionsfrei. STL-Wasserdichtigkeit und STEP-Import separat geprüft.
 Elektronische Bauteile sind in der Baugruppe nicht vollständig modelliert.
 Eine reale Druck-/Montageprüfung ist noch offen.
+
+W4-ÄNDERUNGEN
+Beide Kabeldurchführungen jetzt exakt nominal 3,0 mm, einschließlich der Deckelhälften.
+Bei einem tatsächlichen 3-mm-Kabel ist dies eine enge Passung: FDM-Toleranz und
+Kabelmantel prüfen; Kanten glätten, den Mantel nicht quetschen.
+Materialstärke an Schlüssellöchern: 3,2 mm statt 5,2 mm; übriger Boden bleibt 2,4 mm.
+Schraubenkopf-Unterseite bei montiertem Gehäuse nominal Z=3,5 mm; bei 3 mm Kopfhöhe
+Oberkante Z=6,5 mm, Platinenunterseite Z=9,4 mm: vertikaler Abstand 2,9 mm.
+Unterseitige Bauteilhöhe 2,5 mm wurde berücksichtigt; außerhalb des PCB-Bereichs
+liegende Aufnahmen bieten zusätzlich seitlichen Abstand. Schrauben nicht unnötig
+weit vorstehen lassen. Wand-/Dübeltragfähigkeit und gedruckte Aufnahme real prüfen.

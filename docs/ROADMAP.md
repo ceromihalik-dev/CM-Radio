@@ -86,3 +86,5 @@ Gerätename, Mono/Stereo, Verbindungsdiagnose und Senderreparatur integriert. Ho
 Nutzerabnahme 09.10.2026: Build-08-Installation PASS (21:04 Europe/Berlin), 60-Minuten-Dauertest PASS und Passwortreset per BOOT PASS (21:05–21:06). Die vier neuen Funktionen und Werkseinstellungen sind damit nicht pauschal hardwareabgenommen.
 
 Gehäuse V0.2/W3: versenkter IO0-Druckknopf, Halteplatte und Führung; Platine 1,7 mm / Tasterhöhe 2,0 mm berücksichtigt. Sichtbare Versionsgravur entfernt. Wandaufnahmen erhalten. CAD/STL/STEP-Prüfung PASS; gedruckte Passprobe und Tasterweg offen.
+
+Gehäuse V0.2/W4: Kabeldurchführungen nominal 3,0 mm; Schlüsselloch-Materialstärke 3,2 statt 5,2 mm. Empfohlener Abstand Kopfunterseite/Wand 3,5 mm, Kopf maximal 3 mm hoch. Unterteil/Deckel neu drucken; IO0-Bauteile unverändert. CAD/STL/STEP-Prüfung PASS; Druckpassung und Lastprüfung offen.

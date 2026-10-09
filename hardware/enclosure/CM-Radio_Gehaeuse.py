@@ -129,7 +129,7 @@ def make_models(p, engraving=True):
                           p["usb_width"]-2*tc,tw,h-top+0.05))
     for cx in p["cable_exit_x"]:
         tongue = box_at(cx-cd/2+tc,y-w+(w-tw)/2,cz,cd-2*tc,tw,h-cz+0.05)
-        tongue = tongue.cut(side_circle(cx,cz,cd/2+0.15,y+1,w+3))
+        tongue = tongue.cut(side_circle(cx,cz,cd/2,y+1,w+3))
         lid = lid.union(tongue)
     for hx,hy in lid_holes:
         lid = lid.cut(cyl(hx,hy,h-1,p["lid_clearance_hole"]/2,lt+2))

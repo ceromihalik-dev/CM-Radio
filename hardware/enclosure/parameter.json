@@ -47,7 +47,7 @@
     87.0
   ],
   "cable_exit_center_z": 15.0,
-  "cable_exit_diameter": 7.0,
+  "cable_exit_diameter": 3.0,
   "vent_centers_x": [
     32.0,
     38.0,
@@ -66,7 +66,7 @@
   "vent_length": 14.0,
   "engraving_depth": 0.5,
   "prototype_notice": "PCB thickness 1.7 mm and IO0 height 2.0 mm measured. Reset coordinates from E3 pad centres, corroborated by photos; tactile stroke and FDM fit not measured. Print fit test required. No visible version marking.",
-  "revision": "W3 - IO0-Druckknopf, keine sichtbare Version",
+  "revision": "W4 - Kabeldurchfuehrung 3 mm, flachere Wandaufnahmen",
   "cable_tie_anchors": [
     [
       68.0,
@@ -88,12 +88,12 @@
   "wall_mount_neck_width": 4.5,
   "wall_mount_reinforcement_width": 18.0,
   "wall_mount_reinforcement_y": 59.6,
-  "wall_mount_reinforcement_top_z": 5.2,
+  "wall_mount_reinforcement_top_z": 3.2,
   "wall_mount_screw_shank_max": 4.0,
   "wall_mount_screw_shank_min": 3.5,
   "wall_mount_screw_head_max": 8.0,
   "wall_mount_screw_head_height_max": 3.0,
-  "wall_mount_head_underside_gap": 5.5,
+  "wall_mount_head_underside_gap": 3.5,
   "underside_clearance_measured": 2.5,
   "component_height_above_pcb_measured": 11.0,
   "usb_height_above_pcb_measured": [
