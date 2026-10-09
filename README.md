@@ -111,3 +111,5 @@ Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS n
 ### v0.1.3 · Build 02
 
 Senderlogos aus der Radiosendersuche oder eigener HTTPS-Adresse unter Sender werden gespeichert und in Sicherungen übernommen. Browser lädt Logos; ohne Bild bleibt ein Platzhalter. Titel/Interpret aus üblichen Streammetadaten erscheinen getrennt; bei fehlenden Daten bleibt eine klare Ersatzanzeige. Wecker/Zeitpläne wurden auf Nutzerwunsch gestrichen. USB_ERSTINSTALLATION.txt bleibt in jedem Paket enthalten. Gerätetest Build 02 offen.
+
+Nutzerabnahme v0.1.3 Build 02 am 09.10.2026 um 19:38 Uhr (Europe/Berlin): PASS nach angefragtem Test von Logos, Titelanzeige und Senderwechsel. Keine gesonderten Einzelnachweise übermittelt; vollständige Hardwareabnahme bleibt separat.

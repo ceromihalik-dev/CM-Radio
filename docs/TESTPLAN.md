@@ -152,3 +152,5 @@ Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS n
 4. Sender mit Interpret - Titel: getrennte Zeilen, Sonderzeichen als Text; ohne Format kompletter Titel, ohne Metadaten klare Ersatzanzeige. Streammeldungen getrennt. Manuelles Stop/Play und Dauertest prüfen.
 
 Hosttests: HTTPS-Logo-/Typprüfung, Migration alter Sicherungen, Metadatentrennung/Textdarstellung, Fehlerplatzhalter, alte Ladeereignisse und Wiederholungsunterdrückung PASS. Physische Logo-/Metadatenabnahme offen. Wecker/Zeitpläne werden nicht mehr als Abnahmekriterien geführt.
+
+Nutzerabnahme v0.1.3 Build 02 am 09.10.2026 um 19:38 Uhr (Europe/Berlin): PASS nach angefragtem Test von Logos, Titelanzeige und Senderwechsel. Keine gesonderten Einzelnachweise übermittelt; vollständige Hardwareabnahme bleibt separat.

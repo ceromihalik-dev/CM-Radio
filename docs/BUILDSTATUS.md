@@ -56,3 +56,5 @@ v0.1.3 Build 01: PlatformIO und Hosttests PASS. Loudness-Grenzen/Stufen, Aus-Zus
 Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS nach angefragtem Loudness-Hörtest und Prüfung gespeicherter Werte nach Neustart. Keine gesonderten Messwerte übermittelt. USB-Erstinstallation dieses Pakets und vollständige Hardwareabnahme nicht gesondert bestätigt.
 
 v0.1.3 Build 02: PlatformIO und Hosttests PASS. Logo-URL-/Typprüfung, Migration alter Sicherungen, Suchtreffer-Logoübernahme, Metadatentrennung/sichere Textanzeige, Bildfehler/Platzhalter und alte Ladeereignisse geprüft. Logos werden nur im Browser geladen. Sender-/Sicherungs-JSON-Puffer auf 24 KiB, Anfrage-/NVS-Grenze auf 16 KiB erweitert; dynamische Heapbelegung mit großer Sammlung am Board prüfen. USB-Anleitung bleibt enthalten. Wecker/Zeitpläne auf Nutzerwunsch gestrichen. Reale Logo-/Metadatenprüfung offen.
+
+Nutzerabnahme v0.1.3 Build 02 am 09.10.2026 um 19:38 Uhr (Europe/Berlin): PASS nach angefragtem Test von Logos, Titelanzeige und Senderwechsel. Keine gesonderten Einzelnachweise übermittelt; vollständige Hardwareabnahme bleibt separat.
