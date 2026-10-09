@@ -1,0 +1,4 @@
+#include "FallbackPolicy.h"
+#include <cassert>
+#include <cstdio>
+int main(){FallbackPolicy p;assert(!p.switchNow(true,true));p.attempted();p.attempted();assert(!p.switchNow(true,true));p.attempted();assert(!p.switchNow(false,true));assert(!p.switchNow(true,false));assert(p.switchNow(true,true));assert(p.active());for(int i=0;i<20;++i)p.attempted();assert(!p.switchNow(true,true));p.reset();assert(!p.active());p.attempted();p.attempted();p.offline();assert(!p.switchNow(true,true));p.attempted();p.stable();assert(!p.switchNow(true,true));AudioProgressWatchdog w;assert(!w.stalled(100,true,0));assert(!w.stalled(15099,true,0));assert(w.stalled(15100,true,0));assert(!w.stalled(15101,false,0));assert(!w.stalled(0xfffffff0U,true,1));assert(w.stalled(14984,true,1));assert(!w.stalled(20000,true,2));assert(!w.stalled(30000,true,3));puts("Fallback threshold, offline, identity, single switch, stop/reset and audio-stall watchdog: PASS");}

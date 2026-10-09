@@ -21,13 +21,13 @@ jobs:
         with:
           node-version: '22'
       - run: pip install -r requirements-dev.txt
-      - run: python scripts/check_project.py
       - run: python -m platformio run -d firmware
+      - run: python scripts/check_project.py
       - run: python scripts/package_firmware.py
       - uses: actions/upload-artifact@v4
         with:
-          name: CM-Radio-WROVER-V0.1.2-0a04
-          path: dist/CM-Radio-V0.1.2-0a04/
+          name: CM-Radio-WROVER-V0.1.2-0a05
+          path: dist/CM-Radio-V0.1.2-0a05/
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build
@@ -37,9 +37,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: CM-Radio-WROVER-V0.1.2-0a04
+          name: CM-Radio-WROVER-V0.1.2-0a05
           path: firmware
-      - run: zip -r CM-Radio-WROVER-V0.1.2-0a04.zip firmware
+      - run: zip -r CM-Radio-WROVER-V0.1.2-0a05.zip firmware
       - env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" CM-Radio-WROVER-V0.1.2-0a04.zip --repo "$GITHUB_REPOSITORY" --title "CM-Radio $GITHUB_REF_NAME" --notes "Build-geprüfter Firmwarestand für Loud-ESP32 WROVER-N8R8. Physische Hardwaretests stehen aus. Erststart siehe ERSTSTART.md im ZIP."
+        run: gh release create "$GITHUB_REF_NAME" CM-Radio-WROVER-V0.1.2-0a05.zip --repo "$GITHUB_REPOSITORY" --title "CM-Radio $GITHUB_REF_NAME" --notes "Build-geprüfter Firmwarestand für Loud-ESP32 WROVER-N8R8. Physische Hardwaretests stehen aus. Erststart siehe ERSTSTART.md im ZIP."

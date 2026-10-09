@@ -1,5 +1,14 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a05 — 09.10.2026
+
+- Versionierte JSON-Sicherung der vorhandenen Sender und Wiedergabeeinstellungen. WLAN-Zugangsdaten und laufende Timer bleiben ausgeschlossen.
+- Wiederherstellung mit serverseitiger Prüfung, Vorschau und eigener Übernahme. Ungültige Dateien verändern keine Einstellungen. Übernahme erhält das Heim-WLAN, stoppt Audio und hebt den Sleep-Timer auf.
+- Ersatzsender nach drei erfolglosen Streamversuchen bei verfügbarem WLAN. Pro Wiedergabestart höchstens ein Wechsel; kein automatischer Rückwechsel. Identische Streamadressen werden übersprungen.
+- Stillstehende Audiozeit löst nach 15 Sekunden einen neuen Verbindungsversuch aus. Stoppen und Sleep-Timer bleiben wirksam.
+- Hosttests für Schema/Typen/Grenzen, Ersatzsender und Webübernahme ergänzt. Gerätetest für 0a05 offen. Build 0a04 vom Nutzer als PASS bestätigt.
+
+
 ## v0.1.2 · Build 0a04 – 9. Oktober 2026
 
 - Sleep-Timer mit 15/30/60-Minuten-Schnellwahl und eigener Dauer 1–180 Minuten; Restzeit anzeigen, Dauer ändern oder aufheben. Ablauf stoppt Audio inklusive Wiederholungen. Manuelles Stoppen hebt den Timer auf; Senderwechsel behält ihn bei. Stromneustart startet ohne Timer.

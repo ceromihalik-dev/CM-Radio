@@ -9,6 +9,9 @@
 #include "Player.h"
 #include "WebUi.h"
 #include "WifiScan.h"
+#include "BackupConfig.h"
+#include <memory>
+#include <new>
 #include <esp_wifi.h>
 
 namespace {
@@ -22,6 +25,8 @@ bool mdnsActive = false;
 bool dirty = false;
 bool applyWifi = false;
 bool applyAudioConfig = false;
+bool applyFallback = false;
+bool stopAfterRestore = false;
 WifiScan wifiScan;
 struct ScanDriver {
     bool reconnect = false;
@@ -126,6 +131,36 @@ void connectWifi() {
     lastConnectAttempt = millis();
     offlineSince = millis();
 }
+const char* fallbackUrl() {
+    return settings.fallbackStation >= 0 ? settings.stations[settings.fallbackStation].url.c_str() : "";
+}
+void writeBackup(JsonDocument& document) {
+    document["format"] = "CM-Radio-Backup";document["schema"] = 1;
+    document["sourceVersion"] = board::version;document["sourceBuild"] = board::build;
+    JsonObject config = document.createNestedObject("settings");
+    config["selected"] = settings.selected;config["volume"] = settings.volume;config["autoplay"] = settings.autoplay;
+    config["volumeLimit"] = settings.volumeLimit;config["softStartSeconds"] = settings.softStartSeconds;config["fallbackStation"] = settings.fallbackStation;
+    JsonArray list = config.createNestedArray("stations");
+    for (size_t i = 0; i < settings.count; ++i) {JsonObject item = list.createNestedObject();item["name"] = settings.stations[i].name;item["url"] = settings.stations[i].url;}
+}
+void restoreBackup(bool validateOnly) {
+    DynamicJsonDocument request(12288);if (!body(request)) return;
+    std::unique_ptr<backup::Data> data(new(std::nothrow) backup::Data);
+    if (!data) {error(503, "Zu wenig Speicher fuer Wiederherstellung");return;}
+    const char* reason = nullptr;
+    if (!backup::read(request, *data, reason)) {error(400, reason);return;}
+    if (validateOnly) {
+        StaticJsonDocument<256> response;response["valid"] = true;response["stationCount"] = data->count;response["volume"] = data->volume;response["volumeLimit"] = data->volumeLimit;response["wifiPreserved"] = true;sendJson(200, response);return;
+    }
+    Settings candidate = settings;
+    candidate.count = data->count;candidate.selected = data->selected;candidate.volume = data->volume;
+    candidate.volumeLimit = data->volumeLimit;candidate.softStartSeconds = data->softStartSeconds;
+    candidate.autoplay = data->autoplay;candidate.fallbackStation = data->fallbackStation;
+    for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url};
+    if (!persist(candidate)) return;
+    applyAudioConfig = true;applyFallback = true;stopAfterRestore = true;
+    accepted();
+}
 void routes() {
     const char* headers[] = {"Content-Type", "Origin"};
     server.collectHeaders(headers, 2);
@@ -150,7 +185,15 @@ void routes() {
         response["running"] = p.running;
         response["state"] = !p.ready ? "error" : !p.requested ? "stopped" : !p.running ? "connecting" : "streaming";
         response["stationIndex"] = settings.selected;
-        response["station"] = settings.stations[settings.selected].name;
+        String audibleName = settings.stations[settings.selected].name;
+        if (p.fallbackActive) {
+            audibleName = "Ersatzsender";
+            for (size_t i = 0; i < settings.count; ++i) if (settings.stations[i].url == p.actualUrl) {audibleName = settings.stations[i].name;break;}
+        }
+        response["station"] = audibleName;
+        response["requestedStation"] = settings.stations[settings.selected].name;
+        response["fallbackStation"] = settings.fallbackStation;
+        response["fallbackActive"] = p.fallbackActive;
         response["title"] = p.title;
         response["message"] = diagnostic.isEmpty() ? p.message : diagnostic;
         response["volume"] = settings.volume;
@@ -160,7 +203,8 @@ void routes() {
         response["effectiveVolume"] = p.volume;
         response["ramping"] = p.ramping;
         response["sleepRemainingSeconds"] = p.sleepRemainingSeconds;
-        response["audioConfigPending"] = applyAudioConfig;
+        response["audioConfigPending"] = applyAudioConfig || applyFallback;
+        response["restoreStopPending"] = stopAfterRestore;
         response["autoplay"] = settings.autoplay;
         response["settingsPending"] = dirty;
         response["storageReady"] = storageReady;
@@ -192,6 +236,8 @@ void routes() {
         candidate.count = list.size();
         candidate.selected = 0;
         const String current = settings.stations[settings.selected].url;
+        const String previousFallback = fallbackUrl();
+        candidate.fallbackStation = -1;
         bool currentFound = false;
         for (size_t i = 0; i < candidate.count; ++i) {
             if (!list[i]["name"].is<const char*>() || !list[i]["url"].is<const char*>()) { error(400, "Sender braucht name und url"); return; }
@@ -200,9 +246,11 @@ void routes() {
             name.trim(); url.trim();
             if (name.isEmpty() || name.length() >= rules::maxName || !rules::validUrl(url.c_str())) { error(400, "Ungueltiger Sendername oder HTTP(S)-Stream"); return; }
             candidate.stations[i] = {name, url};
+            if (!previousFallback.isEmpty() && url == previousFallback) candidate.fallbackStation = i;
             if (url == current) { candidate.selected = i; currentFound = true; }
         }
         if (!persist(candidate)) return;
+        applyFallback = true;
         if (!currentFound && !player::stop()) { error(503, "Gespeichert; Audio-Warteschlange voll"); return; }
         accepted();
     });
@@ -212,11 +260,12 @@ void routes() {
         if (!request["station"].is<int>()) { error(400, "station muss eine Ganzzahl sein"); return; }
         const int index = request["station"].as<int>();
         if (index < 0 || index >= static_cast<int>(settings.count)) { error(400, "Senderindex ungueltig"); return; }
+        if (stopAfterRestore) {error(409, "Wiederherstellung wird angewendet; kurz warten");return;}
         if (!player::status().ready) { error(503, "Audio nicht bereit"); return; }
         Settings candidate = settings;
         candidate.selected = index;
         if (!persist(candidate)) return;
-        if (!player::play(settings.stations[index].url.c_str())) { error(503, "Audio-Warteschlange voll"); return; }
+        if (!player::play(settings.stations[index].url.c_str(), fallbackUrl())) { error(503, "Audio-Warteschlange voll"); return; }
         accepted();
     });
     server.on("/api/v1/stop", HTTP_POST, [] {
@@ -243,13 +292,14 @@ void routes() {
         response["autoplay"] = settings.autoplay;
         response["volumeLimit"] = settings.volumeLimit;
         response["softStartSeconds"] = settings.softStartSeconds;
+        response["fallbackStation"] = settings.fallbackStation;
         sendJson(200, response);
     });
     server.on("/api/v1/config", HTTP_POST, [] {
         StaticJsonDocument<256> request;
         if (!body(request)) return;
         Settings candidate = settings;
-        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds")) { error(400, "Keine bekannte Einstellung"); return; }
+        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds") && !request.containsKey("fallbackStation")) { error(400, "Keine bekannte Einstellung"); return; }
         if (request.containsKey("autoplay")) {
             if (!request["autoplay"].is<bool>()) { error(400, "autoplay muss boolesch sein"); return; }
             candidate.autoplay = request["autoplay"].as<bool>();
@@ -263,11 +313,24 @@ void routes() {
             if (!request["softStartSeconds"].is<int>() || request["softStartSeconds"].as<int>() < 0 || request["softStartSeconds"].as<int>() > 30) { error(400, "softStartSeconds muss 0 bis 30 sein"); return; }
             candidate.softStartSeconds = request["softStartSeconds"].as<int>();
         }
+        if (request.containsKey("fallbackStation")) {
+            if (!request["fallbackStation"].is<int>() || request["fallbackStation"].as<int>() < -1 || request["fallbackStation"].as<int>() >= static_cast<int>(settings.count)) {error(400, "Ungueltiger Ersatzsenderindex");return;}
+            candidate.fallbackStation = request["fallbackStation"].as<int>();
+        }
+        const bool fallbackChanged = candidate.fallbackStation != settings.fallbackStation;
         const bool audioChanged = candidate.volumeLimit != settings.volumeLimit || candidate.softStartSeconds != settings.softStartSeconds;
         if (!persist(candidate)) return;
         if (audioChanged) applyAudioConfig = true;
+        if (fallbackChanged) applyFallback = true;
         accepted();
     });
+    server.on("/api/v1/backup", HTTP_GET, [] {
+        DynamicJsonDocument response(12288);writeBackup(response);
+        if (response.overflowed()) {error(503, "Sicherung konnte nicht erstellt werden");return;}
+        sendJson(200, response);
+    });
+    server.on("/api/v1/restore/validate", HTTP_POST, [] {restoreBackup(true);});
+    server.on("/api/v1/restore", HTTP_POST, [] {restoreBackup(false);});
     server.on("/api/v1/sleep", HTTP_POST, [] {
         StaticJsonDocument<128> request;
         if (!body(request)) return;
@@ -378,7 +441,7 @@ void setup() {
     if (!psramFound()) diagnostic = "PSRAM fehlt: Audio bleibt deaktiviert";
     else if (ESP.getFlashChipSize() != 8U * 1024U * 1024U) diagnostic = "Flashgroesse passt nicht zur WROVER-N8R8-Konfiguration";
     else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds)) diagnostic = "Audio-Task konnte nicht gestartet werden";
-    else if (settings.autoplay) player::play(settings.stations[settings.selected].url.c_str());
+    else if (settings.autoplay) player::play(settings.stations[settings.selected].url.c_str(), fallbackUrl());
     connectWifi();
     routes();
     Serial.println("Serielle Befehle: status, setup, reset-wifi (jeweils mit Enter)");
@@ -387,7 +450,11 @@ void setup() {
 void loop() {
     const uint32_t now = millis();
     wifiScan.tick(now, scanDriver);
-    if (applyAudioConfig && player::configure(settings.volumeLimit, settings.softStartSeconds, settings.volume)) applyAudioConfig = false;
+    if (stopAfterRestore && (!player::status().ready || player::stop())) stopAfterRestore = false;
+    if (!stopAfterRestore) {
+        if (applyAudioConfig && player::configure(settings.volumeLimit, settings.softStartSeconds, settings.volume)) applyAudioConfig = false;
+        if (applyFallback && player::fallback(fallbackUrl())) applyFallback = false;
+    }
     server.handleClient();
     if (apActive) dns.processNextRequest();
     serialCommands();

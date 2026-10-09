@@ -15,6 +15,7 @@ struct Settings {
     bool autoplay = true;
     uint8_t volumeLimit = 21;
     uint8_t softStartSeconds = 5;
+    int fallbackStation = -1;
 };
 class SettingsStore {
 public:

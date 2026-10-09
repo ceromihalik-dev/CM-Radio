@@ -129,3 +129,11 @@ Unter „Radio“ Sleep-Timer mit 15/30/60 Minuten oder eigener Dauer 1–180 Mi
 Unter „Gerät“ maximale Lautstärke 0–21 und sanften Start 0–30 Sekunden einstellen und speichern. 0 Sekunden schaltet die Rampe ab; Standard 5 Sekunden. Eine Grenze von 0 schaltet die Ausgabe stumm. Absenken der Grenze reduziert auch den gespeicherten Zielwert; Erhöhen hebt die Lautstärke nicht automatisch an. Manuelle Lautstärkeänderungen beenden eine laufende Rampe.
 
 Update wie zuvor mit `firmware.bin` an 0x10000 ohne Löschen. Vorhandene Sender/WLAN bleiben gespeichert; neue Felder erhalten Standardwerte. Nach Update Seite vollständig neu laden und Migration am Gerät prüfen.
+
+## Build 0a05 testen
+
+Update weiterhin ausschließlich `firmware.bin` an `0x10000` schreiben, ohne Flash zu löschen. Unter **Gerät** Ersatzsender aus der gespeicherten Liste auswählen und Wiedergabeeinstellungen speichern. Bei ungespeicherten Senderentwürfen zuerst die Sammlung speichern.
+
+**Sicherung herunterladen** exportiert gespeicherte Sender und vorhandene Wiedergabeeinstellungen ohne WLAN-Zugangsdaten. Zum Wiederherstellen Datei auswählen, **Datei prüfen**, Zusammenfassung kontrollieren, anschließend **Geprüfte Sicherung übernehmen**. Übernahme ersetzt diese Einstellungen, stoppt Audio und beendet den Timer; Heim-WLAN bleibt erhalten. Danach manuell starten. Künftige Klang- und Zeitplanfunktionen sind noch nicht enthalten.
+
+Ersatzsender wird nach drei erfolglosen Verbindungsversuchen bei vorhandenem WLAN aktiviert. Die Wartezeit hängt von Stream-Timeouts ab. Ein automatischer Rückwechsel erfolgt nicht; manuelles Play beginnt erneut mit dem ausgewählten Sender. Bei WLAN-Ausfall allein erfolgt kein Wechsel. Bei Änderung eines bereits laufenden Ersatzsenders wird die neue Auswahl beim nächsten Wiedergabestart verwendet.

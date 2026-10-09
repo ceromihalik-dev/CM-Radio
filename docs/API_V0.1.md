@@ -48,3 +48,15 @@ Die Weboberfläche fragt Radio-Browser direkt im Handy-/PC-Browser ab; keine zus
 `POST /api/v1/sleep` mit `{"minutes":15}` startet/ersetzt den Timer; 0 hebt ihn auf, maximal 180. Antwort 202 bedeutet eingereiht, 400 ungültiger Wert, 503 Audio nicht bereit oder Queue voll. Timer wirkt auch bei Senderwechsel, wird bei manuellem Stop und Stromneustart aufgehoben.
 
 `GET /status` ergänzt `volumeLimit`, `softStartSeconds`, `effectiveVolume` (tatsächlicher Audio-Reglerwert), `ramping`, `sleepRemainingSeconds`, `audioConfigPending`. `volume` bleibt der gespeicherte Zielwert. `maxVolume` bleibt die Hardware-/API-Skala 21. `audioConfigPending` bezeichnet die noch nicht eingereihte Anwendung gespeicherter Einstellungen; Verarbeitung im Audio-Task ist asynchron.
+
+## Ergänzungen Build 0a05
+
+- `GET /api/v1/backup`: JSON `{format:"CM-Radio-Backup",schema:1,sourceVersion,sourceBuild,settings}`. Settings enthält `stations:[{name,url}]`, `selected`, `volume`, `autoplay`, `volumeLimit`, `softStartSeconds`, `fallbackStation`. Keine WLAN-Zugangsdaten und keine laufenden Timer.
+- `POST /api/v1/restore/validate`: Sicherungsobjekt, maximal 8192 Bytes. Prüft alle Pflichtfelder ohne Änderung und antwortet mit `valid:true`, `stationCount`, `volume`, `volumeLimit`, `wifiPreserved:true`. Fehler HTTP 400.
+- `POST /api/v1/restore`: gleiche Prüfung, anschließend persistente Übernahme; HTTP 202. Heim-WLAN bleibt erhalten. Stop wird vor der neuen Audiokonfiguration eingereiht und hebt den Timer auf. Kein unmittelbarer Autostart; die gespeicherte Autostart-Einstellung gilt beim nächsten Neustart. Bei Speicherfehler keine erfolgreiche Übernahme.
+- `POST /api/v1/config`: optional `fallbackStation` als Integer, `-1` = aus oder gültiger gespeicherter Senderindex. Bestehende Felder unverändert. Senderlistenänderungen erhalten die Ersatzzuordnung anhand der Streamadresse, Entfernen deaktiviert sie.
+- Status ergänzt `fallbackStation`, `fallbackActive`, `requestedStation` und `restoreStopPending`; `station` nennt den hörbaren Ersatzsender. `audioConfigPending` umfasst auch die noch einzureihende Ersatzkonfiguration. HTTP 202 bestätigt die Annahme, nicht bereits erfolgte Ausführung im Audiotask.
+
+Schema 1: 1–10 Sender, Namen maximal 63 UTF-8-Bytes und nicht leer, HTTP(S)-URLs maximal 383 Bytes ohne Zugangsdaten/Steuerzeichen; Auswahl gültig; Lautstärke 0–21 und höchstens Grenze; sanfter Start 0–30 Sekunden; Autoplay strikt Boolean. Alle genannten Einstellungsfelder sind Pflichtfelder. Unbekannte Felder werden nicht übernommen. Künftige Klang-/Zeitplanfunktionen sind noch kein Bestandteil der Sicherung.
+
+Ersatzwechsel: drei Verbindungsversuche ohne stabilen Stream, nur bei verbundenem WLAN, höchstens einmal bis zum nächsten Play/Stop. Identische URLs lösen keinen Wechsel aus. Ein laufender Ersatz wird bei Änderung seiner Konfiguration nicht unmittelbar umgeschaltet. 15 Sekunden ohne Fortschritt der Audiozeit lösen einen neuen Verbindungsversuch aus.

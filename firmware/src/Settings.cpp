@@ -36,6 +36,10 @@ bool SettingsStore::load(Settings& s) {
     const int softStart = d["softStartSeconds"] | 5;
     if (limit < 0 || limit > 21 || softStart < 0 || softStart > 30) return false;
     candidate.volumeLimit = limit;
+    if (d.containsKey("fallbackStation") && !d["fallbackStation"].is<int>()) return false;
+    const int fallback = d["fallbackStation"] | -1;
+    if (fallback < -1 || fallback >= static_cast<int>(candidate.count)) return false;
+    candidate.fallbackStation = fallback;
     candidate.softStartSeconds = softStart;
     candidate.volume = volume > limit ? limit : volume;
     candidate.autoplay = d["autoplay"] | true;
@@ -52,6 +56,7 @@ bool SettingsStore::save(const Settings& s) {
     d["autoplay"] = s.autoplay;
     d["volumeLimit"] = s.volumeLimit;
     d["softStartSeconds"] = s.softStartSeconds;
+    d["fallbackStation"] = s.fallbackStation;
     JsonArray list = d.createNestedArray("stations");
     for (size_t i = 0; i < s.count; ++i) {
         JsonObject station = list.createNestedObject();

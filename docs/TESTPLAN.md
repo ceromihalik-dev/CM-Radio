@@ -66,3 +66,16 @@ Dauertest Build 0a01: Nutzer am 09.10.2026 um 17:05 Uhr (Europe/Berlin) meldet �
 4. Eigenen Sleep-Timer 1 Minute setzen; Restzeit prüfen; Ablauf stoppt den Stream ohne automatischen Wiederanlauf. Timer während laufender Wiedergabe ändern und aufheben; Stop hebt ihn ebenfalls auf.
 5. Timer bleibt bei Senderwechsel aktiv. Neustart startet ohne Timer; Autostart gilt weiterhin nach gespeicherter Einstellung.
 6. Grenze und Rampendauer nach Stromneustart erhalten.
+
+## Build 0a05 – Sicherung und Ersatzsender
+
+Build 0a04: Nutzer meldet PASS am 09.10.2026. Die vollständige Hardwareabnahme und die genaue Dauer des Dauertests bleiben offen.
+
+1. Unter Gerät Sicherung herunterladen. Inhalt: Sender/Auswahl und Wiedergabeeinstellungen; keine SSID, kein WLAN-Passwort.
+2. Einstellungen ändern und speichern. Sicherung auswählen, prüfen, Zusammenfassung kontrollieren, übernehmen. Radio stoppt, Timer endet; Heim-WLAN und Bedienbarkeit bleiben erhalten. Manuell starten und Neustart prüfen: wiederhergestellte Werte bleiben erhalten.
+3. Fehlerhafte JSON-Datei, falsches Schema und Lautstärke oberhalb der Grenze prüfen: keine Übernahme, bestehende Einstellungen unverändert.
+4. Einen funktionierenden Ersatzsender speichern. Einen separaten Testsendeplatz mit `http://127.0.0.1:9/unreachable` anlegen und starten. Nach drei gescheiterten Versuchen muss der Ersatz spielen und als Ersatzsender angezeigt werden. Verbindungs-Timeouts können die Wartezeit verlängern.
+5. Ersatzsender ebenfalls unerreichbar: keine Wechselkette. Stop und Sleep-Timer beenden die Wiedergabe. Manuelles Play startet erneut mit dem ausgewählten Hauptsender.
+6. WLAN-Unterbrechung allein löst keinen Ersatzwechsel aus. Nach WLAN-Rückkehr erfolgen reguläre Verbindungsversuche.
+
+Hostprüfungen: strikte Sicherungstypen und Grenzen, unbekannte Zugangsdaten ohne Übernahme, Ersatzwechsel-Schwelle, identische URLs, einmaliger Wechsel, Offlinezustand, Timerüberlauf, Stillstand sowie Web-Dateiprüfung/Entwurfsschutz/Dateiwechsel geprüft. Gerätetests: OFFEN.

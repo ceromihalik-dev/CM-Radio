@@ -1,13 +1,14 @@
 #include "Player.h"
 #include "BoardConfig.h"
 #include "PlaybackControls.h"
+#include "FallbackPolicy.h"
 #include <Audio.h>
 #include <WiFi.h>
 #include <memory>
 
 namespace {
-enum class Operation { Play, Stop, Volume, Configure, Sleep };
-struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; char url[rules::maxUrl]; };
+enum class Operation { Play, Stop, Volume, Configure, Sleep, Fallback };
+struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; char url[rules::maxUrl]; char fallbackUrl[rules::maxUrl]; };
 QueueHandle_t commands;
 portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;
 PlayerStatus snapshot;
@@ -28,6 +29,9 @@ void audioWorker(void*) {
     }
     VolumeEnvelope envelope;
     SleepTimer sleepTimer;
+    FallbackPolicy fallbackPolicy;
+    AudioProgressWatchdog progress;
+    char fallbackUrl[rules::maxUrl] = {};
     envelope.configure(initialLimit, initialSoftStart, snapshot.volume);
     uint8_t vol = envelope.tick(millis());
     audio->setVolume(vol);
@@ -48,10 +52,15 @@ void audioWorker(void*) {
                 envelope.configure(c.limit, c.seconds, c.volume);
             } else if (c.operation == Operation::Sleep) {
                 sleepTimer.set(millis(), c.minutes);
+            } else if (c.operation == Operation::Fallback) {
+                strlcpy(fallbackUrl, c.url, sizeof(fallbackUrl));
             } else {
                 digitalWrite(board::amplifierEnable, LOW);
                 audio->stopSong();
                 wanted = c.operation == Operation::Play;
+                fallbackPolicy.reset();
+                progress.stalled(millis(), false, 0);
+                if (wanted) strlcpy(fallbackUrl, c.fallbackUrl, sizeof(fallbackUrl));
                 wasRunning = false;
                 if (wanted) envelope.prepare();
                 else { envelope.stop(); sleepTimer.cancel(); }
@@ -67,6 +76,7 @@ void audioWorker(void*) {
         }
         if (sleepTimer.expired(millis())) {
             wanted = false;
+            fallbackPolicy.reset();
             requestedUrl[0] = '\0';
             envelope.stop();
             digitalWrite(board::amplifierEnable, LOW);
@@ -77,6 +87,7 @@ void audioWorker(void*) {
             message("Sleep-Timer abgelaufen");
         }
         const bool online = WiFi.status() == WL_CONNECTED;
+        if (!online) fallbackPolicy.offline();
         if (!online && audio->isRunning()) {
             digitalWrite(board::amplifierEnable, LOW);
             audio->stopSong();
@@ -84,6 +95,15 @@ void audioWorker(void*) {
         }
         if (wanted && online && !audio->isRunning() && rules::reached(millis(), nextRetry)) {
             digitalWrite(board::amplifierEnable, LOW);
+            if (fallbackPolicy.switchNow(online, fallbackUrl[0] && strcmp(fallbackUrl, requestedUrl) != 0)) {
+                strlcpy(requestedUrl, fallbackUrl, sizeof(requestedUrl));
+                attempts = 0;
+                portENTER_CRITICAL(&stateLock);
+                snapshot.title[0] = '\0';
+                portEXIT_CRITICAL(&stateLock);
+                message("Wechsel auf Ersatzsender");
+            }
+            fallbackPolicy.attempted();
             envelope.prepare();
             audio->setVolume(envelope.tick(millis()));
             const bool connected = audio->connecttohost(requestedUrl);
@@ -92,6 +112,11 @@ void audioWorker(void*) {
             else message("Stream verbunden; Audio wird gepuffert");
         }
         audio->loop();
+        if (progress.stalled(millis(), audio->isRunning() && online, audio->getAudioCurrentTime())) {
+            digitalWrite(board::amplifierEnable, LOW);
+            audio->stopSong();
+            message("Keine Audiofortschritte; neuer Versuch folgt");
+        }
         const bool running = audio->isRunning() && online;
         if (running && !wasRunning) envelope.start(millis());
         if (!running && wasRunning) envelope.stop();
@@ -99,12 +124,14 @@ void audioWorker(void*) {
         const uint8_t effective = envelope.tick(millis());
         if (vol != effective) { vol = effective; audio->setVolume(vol); }
         digitalWrite(board::amplifierEnable, running && online && vol > 0 ? HIGH : LOW);
-        if (running && audio->getAudioCurrentTime() > 5) attempts = 0;
+        if (running && audio->getAudioCurrentTime() > 5) { attempts = 0; fallbackPolicy.stable(); }
         portENTER_CRITICAL(&stateLock);
         snapshot.requested = wanted;
         snapshot.running = running && online;
         snapshot.volume = vol;
         snapshot.ramping = envelope.ramping();
+        snapshot.fallbackActive = wanted && fallbackPolicy.active();
+        strlcpy(snapshot.actualUrl, wanted ? requestedUrl : "", sizeof(snapshot.actualUrl));
         snapshot.sleepRemainingSeconds = sleepTimer.remaining(millis());
         portEXIT_CRITICAL(&stateLock);
         vTaskDelay(1);
@@ -125,12 +152,17 @@ bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds) {
     if (!commands) return false;
     return xTaskCreatePinnedToCore(audioWorker, "CM-RadioAudio", 12288, nullptr, 2, nullptr, 0) == pdPASS;
 }
-bool player::play(const char* url) {
-    if (!rules::validUrl(url)) return false;
+bool player::play(const char* url, const char* fallbackUrl) {
+    if (!rules::validUrl(url) || (fallbackUrl[0] && !rules::validUrl(fallbackUrl))) return false;
     Command c{};
     c.operation = Operation::Play;
     strlcpy(c.url, url, sizeof(c.url));
+    strlcpy(c.fallbackUrl, fallbackUrl, sizeof(c.fallbackUrl));
     return enqueue(c);
+}
+bool player::fallback(const char* url) {
+    if (url[0] && !rules::validUrl(url)) return false;
+    Command c{};c.operation = Operation::Fallback;strlcpy(c.url, url, sizeof(c.url));return enqueue(c);
 }
 bool player::stop() {
     Command c{};
