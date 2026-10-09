@@ -129,3 +129,5 @@ Build 0a09 vom Nutzer am 09.10.2026 um 18:51 Uhr als PASS bestätigt.
 5. Stop/Play und Senderwechsel: Vorschau bleibt. Netzunterbrechung beim Verstellen: Fehler angezeigt; erneut einstellen oder gespeicherte Werte wiederherstellen.
 
 Hosttests: Bündelung aktueller Reglerwerte, serialisierte Vorschau, Speichern während laufender Anfrage, Rücksetzen, Fehlerrückgabe ohne hängenden Zustand PASS. Reale Hörprobe und Vorschau-/Persistenzabgrenzung OFFEN.
+
+Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach angefragtem Test von direkter Klangvorschau, Zurücksetzen und Neustart ohne Speichern. Keine gesonderten Messwerte übermittelt; vollständige Hardwareabnahme bleibt separat.

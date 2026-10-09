@@ -99,3 +99,5 @@ Unter Gerät lassen sich Bässe/Höhen (−12 bis +6 dB) und Balance (−16 link
 ### Neuer Stand 0a0a
 
 Klangregler wirken als Vorschau direkt, ohne NVS-Schreibvorgang. Klang dauerhaft speichern erhält die Werte über Neustarts; Gespeicherte Werte wiederherstellen verwirft die Vorschau. Neutral hören ist vorübergehend. Sicherungen enthalten gespeicherten Klang, keine Vorschau. Vorschau bleibt bis Zurücksetzen, Speichern, Wiederherstellung oder Neustart bestehen, auch bei Senderwechsel und Stop/Play. Nutzer bestätigt 0a09 als PASS; 0a0a-Gerätetest offen.
+
+Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach angefragtem Test von direkter Klangvorschau, Zurücksetzen und Neustart ohne Speichern. Keine gesonderten Messwerte übermittelt; vollständige Hardwareabnahme bleibt separat.
