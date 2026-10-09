@@ -105,3 +105,5 @@ Nutzerabnahme 0a07: PASS am 09.10.2026 um 18:26 Uhr; keine gesonderte Laufzeit �
 5. Neustart nach erfolgreichem Upload, Autostart an/aus und Senderdauerbetrieb prüfen. Zweiten Upload durchführen, um beide OTA-Slots nacheinander zu verwenden.
 
 Hosttests PASS: Hashmetadaten, in Teilen eintreffender Header, ESP32-Chip-ID, falsche Magicbytes, Übergröße/Teilimage; UI-Paketprüfung, ausdrückliche Zustimmung, Entwurfsschutz, Uploadpfad/Token/Progress, Fehleranzeige und Bedienungssperre. Echte SHA-Prüfung/Flashaktivierung/Neustart am Board OFFEN. Kein direkter USB-Zugriff hier.
+
+Nutzerabnahme Build 0a08 am 09.10.2026 um 18:39 Uhr (Europe/Berlin): PASS nach angefragtem Browserupdate-/Neustarttest mit erhaltenem WLAN, Sendern und Einstellungen. Gezielte Negativtests und Stromausfall-/Recoverytests wurden nicht gesondert bestätigt und bleiben offen.
