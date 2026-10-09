@@ -1,6 +1,6 @@
 # Buildstatus – CM-Radio v0.1.2 · Build 0a01
 
-Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Build 0a01 enthält eine Korrektur; deren Boardtest und akustische Tests bleiben offen.
+Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
 | Prüfung | Ergebnis |
 | --- | --- |
@@ -18,6 +18,7 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Flashskript | Fünf Tests: passende Paketdatei, explizites Löschen, korrupte Datei, falsche Kapazität, korrekte Reihenfolge |
 | Automatischer Erststarttest | Sechs Hosttests: gültiges Board, Fehlerzustände, ungültige Antworten, Offline-Gerät, reine GET-Abfragen, Bericht ohne private Daten; echte Boardausführung offen |
 | Weboberfläche | JavaScript-Syntax, eingebettete Kopie, Wiederverbindung nach Ladefehler, keine parallelen Hintergrundabfragen, Erhalt von Senderentwürfen Diagnose-Datenschutz sowie WLAN-Auswahl, leere Suchergebnisse und Fehlerbehandlung geprüft |
+| Grundlegende Inbetriebnahme | **PASS** – Nutzerbestätigung am 09.10.2026 für WLAN-Suche, beide Lautsprecher, Bedienung und Autostart |
 | Hardware-/Audio-Abnahme | **OFFEN** – siehe TESTPLAN.md |
 | GitHub Actions | Workflow veröffentlicht; aktueller Workflow-Lauf nicht geprüft |
 | PlatformIO-Telemetrie | Im lokalen Build und CI deaktiviert |

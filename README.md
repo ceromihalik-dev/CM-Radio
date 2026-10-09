@@ -2,7 +2,9 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.2 · Build 0a01, USB-Flash und erster Boot am gelieferten Board bestätigt; weitere Hardwaretests offen.** Die Firmware ist für den konkreten WROVER-Aufbau vorbereitet. Ein erfolgreicher Build ersetzt noch keinen Test von Ton, Stereo, WLAN und Neustart auf dem gelieferten E3-Board. Ergebnisse stehen in [docs/BUILDSTATUS.md](docs/BUILDSTATUS.md).
+**Stand: v0.1.2 · Build 0a01.** Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+
+Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
 ## V0.1
 
@@ -72,6 +74,6 @@ Der automatische Erststarttest prüft 19 Kriterien ausschließlich lesend und sc
 
 ## Dokumentation und Lizenz
 
-[Firmwarekonzept V0.1](docs/FIRMWAREKONZEPT_V0.1.md) · [API](docs/API_V0.1.md) · [Testplan](docs/TESTPLAN.md) · [Roadmap](docs/ROADMAP.md)
+[Firmwarekonzept V0.1](docs/FIRMWAREKONZEPT_V0.1.md) · [API](docs/API_V0.1.md) · [Testplan](docs/TESTPLAN.md) · [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md)
 
 CM-Radio ist unter **GPL-3.0-or-later** lizenziert. Die eingebundene Audiobibliothek und ihre Codec-Lizenzen sind in [THIRD_PARTY.md](THIRD_PARTY.md) verzeichnet. Hersteller-Hardware ist ein unabhängiges Projekt.
