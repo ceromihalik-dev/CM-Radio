@@ -108,3 +108,11 @@ Anfrage- und NVS-Textlimit für Sender/Sicherungen nun 16384 Bytes (vorher 8192)
 Ab diesem Build überschreiben folgende Angaben die historische 21er-Skala: volume/volumeLimit/effectiveVolume nutzen 0–50, maxVolume und volumeSteps im Status sind 50. Der Audio-Task verwendet setVolumeSteps(50) mit derselben quadratischen Verstärkungskurve. POST /volume ist zusätzlich auf die gespeicherte Grenze beschränkt. POST /config akzeptiert volumeLimit 0–50. Loudness ist an die relative Skala angepasst, ab 36 ohne Zusatzanhebung.
 
 Neue NVS-Daten und Sicherungen verwenden Schema 2. Schema-1-NVS und -Sicherungen validieren zunächst Werte 0–21, dann Umrechnung floor(Wert × 50 / 21) für Lautstärke und Grenze. Schema-2-Werte werden unverändert übernommen; Restore/validate zeigt bereits umgerechnete Werte. Maximaler JSON-Body 16 KiB, Logo- und Klangfelder wie in Build 02. Ältere Firmware versteht Schema 2 nicht.
+
+## v0.1.3 Build 06 – Setup-Passwort
+
+GET /status ergänzt setupPasswordRequired (bool). POST /setup/password: JSON {password:string,currentPassword?:string}. Neues Passwort 8–63 druckbare ASCII-Zeichen, nicht passwort. Nach Erstwechsel currentPassword erforderlich und mit gespeichertem Passwort verglichen; 403 bei Abweichung. Speicherung separat in NVS, vor Änderung des laufenden AP; Speicherfehler 507. Erfolg 200 {accepted:true,reconnectRequired:bool}. Bei aktivem AP Neustart nach 2500 ms; erneute Verbindung mit neuem Passwort erforderlich.
+
+Bis zum Erstwechsel normale JSON-Schreibaktionen und Updatevorbereitung mit 428 gesperrt; während geplanter AP-Umstellung JSON-Schreiben 409 bzw. Updatevorbereitung 428. Lesezugriffe bleiben verfügbar. Origin-Prüfung wie bisher; dies ist kein allgemeiner Zugriffsschutz für Bedienung im Heimnetz. Setup-Passwort nie in Status/Backup/Diagnose. reset-ap-password per USB setzt nur den Setup-Zugang zurück, reset-wifi erhält ihn.
+
+Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.

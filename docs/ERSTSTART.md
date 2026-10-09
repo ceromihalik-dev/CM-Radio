@@ -50,8 +50,8 @@ py -m platformio device monitor -b 115200 --port COM5
 ## WLAN und Radio
 
 1. Im Starttext müssen `Flash: 8388608 Bytes` und eine verfügbare PSRAM stehen. `PSRAM fehlt` ist ein Fehler, vor dem Audiotest beheben.
-2. Auf dem Handy mit dem angezeigten `CM-Radio-XXXXXX`-WLAN verbinden. Das zufällige Passwort steht im seriellen Monitor. Androids Hinweis „Kein Internet“ akzeptieren und im Setup-WLAN bleiben.
-3. `http://192.168.4.1` im Browser öffnen, Heimnetz-SSID und Passwort speichern.
+2. Auf dem Handy mit dem angezeigten `CM-Radio-XXXXXX`-WLAN verbinden. Beim Erstzugang ist das Passwort `passwort`; nach Einrichtung das eigene gespeicherte Setup-Passwort verwenden. Androids Hinweis „Kein Internet“ akzeptieren und im Setup-WLAN bleiben.
+3. `http://192.168.4.1` öffnen. Beim ersten Aufruf Setup-Passwort verpflichtend ändern, nach AP-Neustart mit dem neuen Passwort verbinden. Dann unter Gerät → Netzwerk Heimnetz-SSID und Passwort speichern.
 4. Handy wieder mit dem Heimnetz verbinden. `http://cm-radio.local` öffnen; falls die Namensauflösung nicht funktioniert, Geräte-IP aus Router oder serieller Ausgabe verwenden.
 5. Der MP3-Teststream startet bei aktivem Autostart selbstständig. Lautstärke zunächst bei 11/50 belassen. Beide Lautsprecher und Play/Stop testen.
 6. Eigene direkte MP3-/AAC-Stream-URLs unter „Sender verwalten“ speichern, gewünschten Sender abspielen.
@@ -173,3 +173,9 @@ Nach Browserupdate Strg+F5. Logos für neue Suchtreffer werden bei vorhandener g
 ## v0.1.3 Build 05
 
 Netzwerk befindet sich jetzt unter Gerät → Netzwerk. Der WLAN-Knopf auf der Radioseite öffnet den Bereich direkt. Lautstärke 0–50, 0 stumm; alte Werte und Grenzen werden beim Update abgerundet umgerechnet. Neue Sicherungen verwenden Schema 2. Vor einem Rückwechsel zu älterer Firmware eine alte Sicherung bereithalten, da ältere Firmware Schema 2 nicht laden kann.
+
+## v0.1.3 Build 06 – Dauerhafter Fallback-Zugang
+
+Erstpasswort passwort, zwingender Wechsel beim ersten Browseraufruf (auch nach Upgrade von älteren Builds ohne gespeichertes Setup-Passwort). Änderungen später unter Gerät → Netzwerk → Fallback-Zugang mit bisherigem Passwort. Das Setup-Passwort ist vom Heimnetz-Passwort unabhängig und bleibt nach Neustart, Browserupdate, Sicherungsimport und reset-wifi erhalten. Nicht in Sicherungen oder Diagnosen enthalten. Bei Vergessen per USB reset-ap-password und Enter; nur Setup-Zugang wird zurückgesetzt.
+
+Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.

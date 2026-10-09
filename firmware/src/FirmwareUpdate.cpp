@@ -6,7 +6,7 @@
 #include <mbedtls/sha256.h>
 namespace {
 WebServer* http=nullptr;
-std::function<bool()> flush;
+std::function<bool()> flush,setupAccessReady;
 String phase="idle",failure,expectedHash,token;
 size_t expectedSize=0;
 uint32_t preparedAt=0,rebootAt=0;
@@ -61,11 +61,12 @@ void firmwareUpdate::tick(){
  if((phase=="receiving"||phase=="verified")&&uint32_t(millis()-preparedAt)>180000)fail("Upload-Zeitlimit erreicht");
  if(phase=="rebooting"&&int32_t(millis()-rebootAt)>=0)ESP.restart();
 }
-void firmwareUpdate::begin(WebServer& server,std::function<bool()> flushSettings){
- http=&server;flush=flushSettings;
+void firmwareUpdate::begin(WebServer& server,std::function<bool()> flushSettings,std::function<bool()> setupReady){
+ http=&server;flush=flushSettings;setupAccessReady=setupReady;
  server.on("/api/v1/update/status",HTTP_GET,[]{StaticJsonDocument<384>d;firmwareUpdate::status(d.to<JsonObject>());String s;serializeJson(d,s);http->sendHeader("Cache-Control","no-store");http->send(200,"application/json",s);});
  server.on("/api/v1/update/prepare",HTTP_POST,[]{
   if(!sameOrigin()){reply(403,"Fremder Browser-Ursprung");return;}
+  if(!setupAccessReady()){reply(428,"Setup-Passwort zuerst aendern bzw. WLAN-Neustart abwarten");return;}
   if(firmwareUpdate::busy()){reply(409,"Update bereits vorbereitet oder aktiv");return;}
   if(!http->header("Content-Type").startsWith("application/json")||http->arg("plain").length()>2048){reply(400,"Ungueltige Update-Metadaten");return;}
   StaticJsonDocument<1024>d;

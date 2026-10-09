@@ -1,8 +1,11 @@
 #include "Validation.h"
+#include "SetupPassword.h"
 #include <cassert>
 #include <string>
 #include <iostream>
 int main() {
+    assert(!setupAccess::valid(nullptr));assert(setupAccess::valid(std::string(63,'x').c_str()));assert(!setupAccess::valid(std::string(64,'x').c_str()));
+    assert(!setupAccess::valid("passwort"));assert(!setupAccess::valid("1234567"));assert(setupAccess::valid("CM-Radio-123"));assert(!setupAccess::valid("12345678\n"));assert(!setupAccess::valid("Passwört"));
     assert(rules::validUrl("http://stream.example.org:8000/live.mp3"));
     assert(rules::validUrl("https://stream.example.org/live?format=aac"));
     for (const char* bad : {"", "https://", "http:///live", "http://?q", "ftp://example.org/live", "http://user:secret@example.org/live", "http://example.org/with space", "http://example.org/\nHeader:bad", "http://example.org/\\bad"})

@@ -108,8 +108,9 @@ py -3.13 -m serial.tools.miniterm COM5 115200
 
 RST kurz drücken. Starttext auf Version {VERSION}, Build {BUILD},
 Flash 8388608 Bytes und verfügbare PSRAM prüfen.
-Der Monitor zeigt das Setup-WLAN CM-Radio-XXXXXX und sein zufälliges Passwort.
-Passwort nicht öffentlich teilen; es kann sich beim nächsten Boot ändern.
+Der Monitor zeigt das Setup-WLAN CM-Radio-XXXXXX. Bei leerem Gerät ist das
+Erstpasswort: passwort. Beim ersten Browseraufruf muss es ersetzt werden.
+Das eigene Setup-Passwort bleibt für zukünftige Fallback-Zugänge gespeichert.
 Monitor mit Strg+] schließen. Vor erneutem Flashen immer schließen.
 
 Mit Handy/PC zum Setup-WLAN verbinden. 'Kein Internet' akzeptieren und im
@@ -117,7 +118,10 @@ Setup-WLAN bleiben. Im Browser öffnen:
 
 http://192.168.4.1
 
-Unter Netzwerk nach verfügbaren WLANs suchen, dein 2,4-GHz-Heimnetz auswählen,
+Zuerst neues Setup-Passwort zweimal eingeben (8–63 druckbare ASCII-Zeichen,
+nicht passwort). Aufbewahren! Das CM-Radio-WLAN startet nach dem Speichern
+neu. Mit dem neuen Passwort erneut verbinden und 192.168.4.1 wieder öffnen.
+Unter Gerät -> Netzwerk nach WLANs suchen, dein 2,4-GHz-Heimnetz auswählen,
 Passwort eintragen, Speichern und verbinden. Handy/PC wieder ins Heimnetz
 wechseln und öffnen:
 
@@ -186,3 +190,13 @@ Nach Update Strg+F5 oder Browsercache für die Geräteadresse löschen.
 
 Wenn der Fehler bleibt: Version/Build, exakten Fehlertext, COM-Port und
 Startprotokoll bereithalten. WLAN-Passwörter vor dem Weitergeben entfernen.
+
+Setup-Passwort vergessen: USB anschließen, seriellen Monitor öffnen,
+reset-ap-password eingeben und Enter drücken. Damit wird nur der lokale
+Setup-Zugang auf passwort zurückgesetzt; der Browser verlangt einen Wechsel.
+Heimnetz, Sender und Klang bleiben erhalten. reset-wifi löscht hingegen nur
+die Heimnetz-Zugangsdaten und erhält das eigene Setup-Passwort. Firmware-
+Browserupdates und Einstellungssicherungen verändern es nicht. Ein kompletter
+Flash-Erase löscht auch das Setup-Passwort und führt zum Erstzugang zurück.
+
+Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.

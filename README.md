@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.3 · Build 05.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.3 · Build 06.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -127,3 +127,9 @@ Gerät ist in sieben kompakte aufklappbare Bereiche gegliedert. Desktop: zwei Sp
 50 Lautstärkestufen (0 stumm), unveränderte maximale Verstärkung. Alte Lautstärke und Grenze werden abgerundet auf die neue Skala übertragen. Neue Einstellungen und Sicherungen nutzen Schema 2; Schema 1 kann importiert werden. Ältere Firmware kann Schema 2 nicht laden. Netzwerk steht als aufklappbarer Bereich unter Gerät; WLAN-Knopf öffnet ihn direkt. Gerätetest offen.
 
 Nutzerabnahme v0.1.3 Build 05 am 09.10.2026 um 20:04 Uhr (Europe/Berlin): PASS nach angefragter Prüfung von Lautstärke, Obergrenze, Neustart und WLAN-Suche. Keine gesonderten Messwerte oder Bestätigung eines Sicherungsimports übermittelt; vollständige Hardwareabnahme bleibt separat.
+
+### v0.1.3 · Build 06
+
+Erstpasswort des CM-Radio-WLANs ist passwort, erster Aufruf verlangt Änderung. Eigenes Passwort bleibt dauerhaft für Fallback gespeichert. Spätere Änderung unter Gerät → Netzwerk → Fallback-Zugang mit altem Passwort. USB-Befehl reset-ap-password hilft bei vergessenem Passwort, ohne Heimnetz/Sender zu löschen. Auch beim Upgrade von Build 05 einmalig ein eigenes Setup-Passwort festlegen. Gerätetest offen.
+
+Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.

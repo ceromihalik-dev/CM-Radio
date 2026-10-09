@@ -185,3 +185,16 @@ Gerätetest Build 04: offen.
 Gerätetest: offen.
 
 Nutzerabnahme v0.1.3 Build 05 am 09.10.2026 um 20:04 Uhr (Europe/Berlin): PASS nach angefragter Prüfung von Lautstärke, Obergrenze, Neustart und WLAN-Suche. Keine gesonderten Messwerte oder Bestätigung eines Sicherungsimports übermittelt; vollständige Hardwareabnahme bleibt separat.
+
+## v0.1.3 Build 06 – Setup/Fallback-Passwort
+
+- Nach Browserupdate Strg+F5: Build 06; erstmalig eigenes Setup-Passwort zweimal festlegen. passwort, weniger als acht Zeichen und unterschiedliche Bestätigungen abweisen.
+- Erstinstallation: CM-Radio-WLAN mit passwort erreichbar; Änderung verpflichtend vor WLAN-Konfiguration. AP-Neustart und Wiederverbinden mit neuem Passwort prüfen.
+- Heim-WLAN ausschalten: nach etwa 30 Sekunden Fallback mit eigenem Passwort, 192.168.4.1 erreichbar. Passwort bleibt nach Stromneustart gleich. Heim-WLAN wiederherstellen: automatischer Rückwechsel.
+- Unter Gerät → Netzwerk → Fallback-Zugang mit falschem altem Passwort Änderung abweisen; korrektes altes Passwort und bestätigtes neues Passwort speichern. Bei aktivem AP erneut verbinden.
+- Backup/Diagnose enthalten kein Setup-Passwort. Sicherungsimport und reset-wifi verändern es nicht.
+- USB reset-ap-password setzt nur Setup-Passwort zurück und verlangt erneut Wechsel; Sender, Klang und Heim-WLAN erhalten.
+
+Gerätetest: offen.
+
+Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.

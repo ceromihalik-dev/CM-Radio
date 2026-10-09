@@ -1,5 +1,15 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 06 — 09.10.2026
+
+- Dauerhafter Setup-/Fallback-Zugang: bei leerem Speicher Erstpasswort passwort; erster Browseraufruf verlangt einen Wechsel auf ein eigenes Passwort (8–63 druckbare ASCII-Zeichen, nicht passwort). Auch Upgrades ohne gespeichertes Setup-Passwort verlangen diesen einmaligen Schritt.
+- Neues Passwort separat in NVS gespeichert; bleibt bei Neustart, Browserupdate, Wiederherstellung und reset-wifi erhalten. Nicht in Backup, Status, Diagnose oder serieller Ausgabe des eigenen Passworts enthalten. Vollständiges Flash-Erase setzt auch diesen Zugang zurück.
+- Spätere Änderung unter Gerät → Netzwerk → Fallback-Zugang mit bisherigem Passwort und zweimaliger Eingabe des neuen Passworts. Bei aktivem CM-Radio-WLAN Neustart des Access Points nach kurzer Verzögerung; erneut mit neuem Passwort verbinden. Heim-WLAN-Passwort bleibt getrennt.
+- Einstellungsänderungen und Updatevorbereitung bis zum verpflichtenden Wechsel serverseitig gesperrt. Kein allgemeiner Passwortschutz für die Bedienung im Heim-WLAN.
+- BOOT/IO0 bei laufendem Radio zehn Sekunden halten setzt nur das Setup-Passwort zurück; erst nach zuvor beobachtetem Loslassen, einmal je langem Druck. Kurzer Druck ohne Wirkung; während Firmwareupdate ignoriert. BOOT beim Einschalten bleibt Flashmodus. Hosttest für Haltezeit, erneutes Drücken und Zeitüberlauf.
+- USB-Befehl reset-ap-password setzt nur Setup-Zugang auf passwort zurück; Browser verlangt erneut Passwortwechsel. Sender, Heim-WLAN und Klang bleiben erhalten.
+- Fußzeile auf aktuelle Buildkennung korrigiert. USB-Anleitung angepasst; Hosttests für Passwortgrenzen, Pflichtwechsel, Eingabebestätigung, Speicherfehler und spätere Änderung ergänzt. Gerätetest offen.
+
 ## v0.1.3 · Build 05 — 09.10.2026
 
 - 50 tatsächliche Lautstärkestufen über setVolumeSteps(50) der Audiobibliothek; 0 bleibt stumm, 50 hat dieselbe maximale Verstärkung wie vorher 21. Regler, API, Obergrenze und sanfter Start nutzen 0–50. Loudness folgt der relativen Lautstärke; ab 36 keine zusätzliche Anhebung.

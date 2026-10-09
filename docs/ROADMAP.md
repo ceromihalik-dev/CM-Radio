@@ -1,6 +1,6 @@
 # CM-Radio – Roadmap
 
-Stand: **9. Oktober 2026 · v0.1.3 · Build 05**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
+Stand: **9. Oktober 2026 · v0.1.3 · Build 06**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
 
 Diese Datei ist die verbindliche Projekt-Roadmap. Fehler und deren Abnahme stehen in [BUGLISTE.md](BUGLISTE.md), einzelne Hardwarekriterien im [TESTPLAN.md](TESTPLAN.md). Aussagen im Chat werden bei der nächsten Projektaktualisierung hier mit Datum und Nachweis übernommen. Ein bestandener Teiltest ersetzt keine vollständige Hardwareabnahme.
 
@@ -16,7 +16,7 @@ Diese Datei ist die verbindliche Projekt-Roadmap. Fehler und deren Abnahme stehe
 | RM-06 | Web-Wiederverbindung und Diagnosebericht | Implementiert, Hosttests PASS; vollständiger Gerätetest offen |
 | RM-07 | Wandgehäuse W2: Schraubbefestigung und gemessener E3-Lochraster | CAD erstellt und geprüft; Druck, Passform und Betrieb im Gehäuse offen |
 
-## Nächste Schritte – v0.1.2 stabilisieren
+## Nächste Schritte – Stabilität und Hardwareabnahme
 
 | Priorität | ID | Arbeit | Abnahme | Status |
 | --- | --- | --- | --- | --- |
@@ -54,10 +54,14 @@ Die Reihenfolge dient der Umsetzung und kann nach Abhängigkeiten angepasst werd
 
 ## Versions- und Pflegekonvention
 
-Aktuell **v0.1.3 · Build 02**. Weitere Builds innerhalb dieser Version: **03, 04, 05 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
+Aktuell **v0.1.3 · Build 06**. Weitere Builds innerhalb dieser Version: **07, 08 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
 
 Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualisieren. Für Fehler stabile CMR-IDs verwenden; gelöste Einträge bleiben mit Fix-Build und Nachweis erhalten. Änderungen an Firmware müssen kompilieren und die passenden Prüfungen bestehen. Ein öffentlicher Release wird erst als vollständig hardwaregetestet bezeichnet, wenn seine Abnahmekriterien nachgewiesen sind.
 
 Build 0a07 korrigiert den seit 0a05 gemeldeten periodischen Stream-Neustart (CMR-004) durch Entfernen des Audiozeit-Stillstandswächters. Bestätigung am betroffenen Sender steht aus.
 
 Build 05: 50 Lautstärkestufen mit abgerundeter Migration alter Lautstärkegrenzen; Netzwerk unter Gerät. Build und Hosttests PASS; Nutzer bestätigt Build 05 am 09.10.2026 um 20:04 Uhr als PASS (Lautstärke, Obergrenze, Neustart und WLAN-Suche). Build 04 ohne gesonderte Nutzerabnahme.
+
+Build 06: dauerhafter Setup-/Fallback-Zugang, Erstpasswort passwort mit verpflichtendem Wechsel; später unter Gerät → Netzwerk änderbar. Separate NVS-Speicherung, aus Backup ausgeschlossen, USB-Zurücksetzen nur dieses Zugangs möglich. Build und Hosttests PASS; Gerätetest offen. Allgemeiner Bedien-/Update-Passwortschutz bleibt zurückgestellt.
+
+Passwortreset per Taste ab Build 06: Bei laufendem Radio BOOT/IO0 10 Sekunden halten und loslassen. Nur Setup-/Fallback-Passwort wird auf passwort zurückgesetzt; verpflichtender Wechsel beim nächsten Browseraufruf. Nicht mit BOOT beim Einschalten verwechseln (Flashmodus). Während eines Firmwareupdates wird der Reset ignoriert; anschließend neu halten. Prüfen: kurzer Druck bewirkt nichts, ein langer Druck löst einmal aus, Heimnetz/Sender/Klang bleiben erhalten.

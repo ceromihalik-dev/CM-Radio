@@ -3,7 +3,7 @@
 #include <ArduinoJson.h>
 #include <functional>
 namespace firmwareUpdate {
-void begin(WebServer& server,std::function<bool()> flushSettings);
+void begin(WebServer& server,std::function<bool()> flushSettings,std::function<bool()> setupReady);
 bool busy();
 void tick();
 void status(JsonObject response);

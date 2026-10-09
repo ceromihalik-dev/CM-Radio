@@ -1,5 +1,6 @@
 #include "Settings.h"
 #include "SoundConfig.h"
+#include "SetupPassword.h"
 
 bool SettingsStore::begin() { return preferences.begin("cm-radio", false); }
 bool SettingsStore::load(Settings& s) {
@@ -78,3 +79,12 @@ bool SettingsStore::save(const Settings& s) {
     serializeJson(d, raw);
     return preferences.putString("config", raw) == raw.length();
 }
+
+String SettingsStore::setupPassword(){
+ const String saved=preferences.getString("ap-password","");
+ return setupAccess::valid(saved.c_str())?saved:String(setupAccess::initialPassword);
+}
+bool SettingsStore::saveSetupPassword(const String& password){
+ return setupAccess::valid(password.c_str())&&preferences.putString("ap-password",password)==password.length();
+}
+bool SettingsStore::resetSetupPassword(){return !preferences.isKey("ap-password")||preferences.remove("ap-password");}

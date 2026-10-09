@@ -12,6 +12,8 @@
 #include "BackupConfig.h"
 #include "FirmwareUpdate.h"
 #include "SoundConfig.h"
+#include "SetupPassword.h"
+#include "PasswordResetButton.h"
 #include <memory>
 #include <new>
 #include <esp_wifi.h>
@@ -21,6 +23,8 @@ WebServer server(80);
 DNSServer dns;
 Settings settings;
 SettingsStore store;
+PasswordResetButton passwordResetButton;
+constexpr uint8_t setupResetPin = 0; // BOOT/IO0, active low; strap pin unchanged at boot.
 bool storageReady = false;
 bool apActive = false;
 bool mdnsActive = false;
@@ -60,6 +64,9 @@ uint32_t offlineSince = 0;
 bool wasOnline = false;
 String apName;
 String apPassword;
+bool setupPasswordRequired = true;
+bool restartAp = false;
+uint32_t restartApAt = 0;
 String serialLine;
 String diagnostic;
 
@@ -80,6 +87,8 @@ void accepted() {
     sendJson(202, response);
 }
 bool body(JsonDocument& document) {
+    if (setupPasswordRequired && server.uri() != "/api/v1/setup/password") { error(428, "Zuerst das Passwort fuer den Setup-Zugang aendern");return false; }
+    if (restartAp) {error(409, "Setup-WLAN wird neu gestartet; kurz warten");return false;}
     if (firmwareUpdate::busy()) { error(409, "Firmwareupdate aktiv; Bedienung gesperrt");return false; }
     // Browser writes must come from this device; non-browser local API clients
     // may omit Origin. This is not an authentication mechanism.
@@ -120,7 +129,8 @@ void startAp() {
     }
     dns.start(53, "*", WiFi.softAPIP());
     apActive = true;
-    Serial.printf("Setup-WLAN: %s\nSetup-Passwort: %s\nSetup: http://192.168.4.1\n", apName.c_str(), apPassword.c_str());
+    Serial.printf("Setup-WLAN: %s\nSetup: http://192.168.4.1\n", apName.c_str());
+    Serial.println(setupPasswordRequired ? "Erstpasswort: passwort; im Browser aendern" : "Setup-Passwort: gespeichertes eigenes Passwort verwenden");
 }
 void stopAp() {
     if (!apActive) return;
@@ -173,10 +183,20 @@ void restoreBackup(bool validateOnly) {
 void routes() {
     const char* headers[] = {"Content-Type", "Origin", "X-CM-Update-Token"};
     server.collectHeaders(headers, 3);
-    firmwareUpdate::begin(server, [] {if (!dirty) return true;if (!storageReady || !store.save(settings)) return false;dirty = false;return true;});
+    firmwareUpdate::begin(server, [] {if (!dirty) return true;if (!storageReady || !store.save(settings)) return false;dirty = false;return true;}, [] {return !setupPasswordRequired && !restartAp;});
     server.on("/", HTTP_GET, [] {
         server.sendHeader("Cache-Control", "no-cache");
         server.send_P(200, "text/html; charset=utf-8", WEB_UI);
+    });
+    server.on("/api/v1/setup/password", HTTP_POST, [] {
+        StaticJsonDocument<512> request;if (!body(request)) return;
+        if (!request["password"].is<const char*>() || !setupAccess::valid(request["password"])) {error(400,"Neues Passwort: 8 bis 63 druckbare ASCII-Zeichen; nicht passwort");return;}
+        if (!setupPasswordRequired && (!request["currentPassword"].is<const char*>() || apPassword != request["currentPassword"].as<const char*>())) {error(403,"Bisheriges Setup-Passwort stimmt nicht");return;}
+        const String password=request["password"].as<const char*>();
+        if (!storageReady || !store.saveSetupPassword(password)) {error(507,"Setup-Passwort konnte nicht gespeichert werden");return;}
+        apPassword=password;setupPasswordRequired=false;
+        restartAp=apActive;restartApAt=millis()+2500;
+        StaticJsonDocument<128> response;response["accepted"]=true;response["reconnectRequired"]=restartAp;sendJson(200,response);
     });
     server.on("/api/v1/status", HTTP_GET, [] {
         const PlayerStatus p = player::status();
@@ -187,7 +207,7 @@ void routes() {
         response["board"] = board::name;
         response["wifiConnected"] = WiFi.status() == WL_CONNECTED;
         response["ip"] = WiFi.localIP().toString();
-        response["setupActive"] = apActive;
+        response["setupActive"] = apActive;response["setupPasswordRequired"] = setupPasswordRequired;
         response["setupSsid"] = apActive ? apName : "";
         response["rssi"] = WiFi.status() == WL_CONNECTED ? WiFi.RSSI() : 0;
         response["audioReady"] = p.ready;
@@ -441,12 +461,22 @@ void routes() {
     });
     server.begin();
 }
+bool resetSetupAccess(){
+    if(!storageReady || !store.resetSetupPassword())return false;
+    apPassword=setupAccess::initialPassword;setupPasswordRequired=true;
+    restartAp=apActive;restartApAt=millis()+2500;if(!apActive)startAp();
+    Serial.println("Setup-Passwort auf passwort zurueckgesetzt; im Browser aendern");
+    return true;
+}
 void serialCommands() {
     while (Serial.available()) {
         const char c = static_cast<char>(Serial.read());
         if (c == '\n') {
             serialLine.trim();
             if (serialLine == "setup") startAp();
+            else if (serialLine == "reset-ap-password") {
+                if(!resetSetupAccess())Serial.println("Setup-Passwort konnte nicht zurueckgesetzt werden");
+            }
             else if (serialLine == "status") {
                 Serial.printf("CM-Radio %s build %s | Flash %u | PSRAM %u | IP %s | Audio %s\n", board::version, board::build, ESP.getFlashChipSize(), ESP.getPsramSize(), WiFi.localIP().toString().c_str(), player::status().ready ? "bereit" : "Fehler");
             } else if (serialLine == "reset-wifi") {
@@ -471,6 +501,7 @@ void setup() {
     pinMode(board::amplifierEnable, OUTPUT);
     digitalWrite(board::amplifierEnable, LOW);
     Serial.begin(115200);
+    pinMode(setupResetPin, INPUT_PULLUP);
     Serial.printf("\nCM-Radio %s build %s | %s\nFlash: %u Bytes | PSRAM: %u Bytes\n", board::version, board::build, board::name, ESP.getFlashChipSize(), ESP.getPsramSize());
     storageReady = store.begin();
     if (!storageReady) diagnostic = "NVS-Speicher nicht verfuegbar";
@@ -482,21 +513,31 @@ void setup() {
     char suffix[7];
     snprintf(suffix, sizeof(suffix), "%06X", static_cast<unsigned>(ESP.getEfuseMac() & 0xffffff));
     apName = "CM-Radio-" + String(suffix);
-    char key[17];
-    snprintf(key, sizeof(key), "%08X%08X", static_cast<unsigned>(esp_random()), static_cast<unsigned>(esp_random()));
-    apPassword = key;
+    apPassword = storageReady ? store.setupPassword() : String(setupAccess::initialPassword);
+    setupPasswordRequired = apPassword == setupAccess::initialPassword;
     if (!psramFound()) diagnostic = "PSRAM fehlt: Audio bleibt deaktiviert";
     else if (ESP.getFlashChipSize() != 8U * 1024U * 1024U) diagnostic = "Flashgroesse passt nicht zur WROVER-N8R8-Konfiguration";
     else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds,settings.bass,settings.treble,settings.balance,settings.loudness)) diagnostic = "Audio-Task konnte nicht gestartet werden";
     else if (settings.autoplay) player::play(settings.stations[settings.selected].url.c_str(), fallbackUrl());
     connectWifi();
     routes();
-    Serial.println("Serielle Befehle: status, setup, reset-wifi (jeweils mit Enter)");
+    Serial.println("Serielle Befehle: status, setup, reset-wifi, reset-ap-password (jeweils mit Enter)");
 }
 
 void loop() {
     const uint32_t now = millis();
     firmwareUpdate::tick();
+    const bool passwordResetPressed=passwordResetButton.tick(digitalRead(setupResetPin)==LOW,now);
+    if(passwordResetPressed && !firmwareUpdate::busy()){
+        if(!resetSetupAccess())Serial.println("Setup-Passwort konnte nicht zurueckgesetzt werden");
+    }
+    if(restartAp && !wifiScan.busy() && !firmwareUpdate::busy() && rules::reached(now,restartApAt)){
+        restartAp=false;
+        if(apActive){
+            dns.stop();WiFi.softAPdisconnect(false);apActive=false;
+            startAp();
+        }
+    }
     wifiScan.tick(now, scanDriver);
     if (stopAfterRestore && (!player::status().ready || player::stop())) stopAfterRestore = false;
     if (!stopAfterRestore) {

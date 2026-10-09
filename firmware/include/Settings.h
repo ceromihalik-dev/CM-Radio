@@ -22,6 +22,9 @@ struct Settings {
 class SettingsStore {
 public:
     bool begin();
+    String setupPassword();
+    bool saveSetupPassword(const String& password);
+    bool resetSetupPassword();
     bool load(Settings& value);
     bool save(const Settings& value);
 private:
