@@ -78,4 +78,4 @@ Build 0a04: Nutzer meldet PASS am 09.10.2026. Die vollständige Hardwareabnahme 
 5. Ersatzsender ebenfalls unerreichbar: keine Wechselkette. Stop und Sleep-Timer beenden die Wiedergabe. Manuelles Play startet erneut mit dem ausgewählten Hauptsender.
 6. WLAN-Unterbrechung allein löst keinen Ersatzwechsel aus. Nach WLAN-Rückkehr erfolgen reguläre Verbindungsversuche.
 
-Hostprüfungen: strikte Sicherungstypen und Grenzen, unbekannte Zugangsdaten ohne Übernahme, Ersatzwechsel-Schwelle, identische URLs, einmaliger Wechsel, Offlinezustand, Timerüberlauf, Stillstand sowie Web-Dateiprüfung/Entwurfsschutz/Dateiwechsel geprüft. Gerätetests: OFFEN.
+Hostprüfungen: strikte Sicherungstypen und Grenzen, unbekannte Zugangsdaten ohne Übernahme, Ersatzwechsel-Schwelle, identische URLs, einmaliger Wechsel, Offlinezustand, Timerüberlauf, Stillstand sowie Web-Dateiprüfung/Entwurfsschutz/Dateiwechsel geprüft. Nutzer bestätigt Build 0a05 am 09.10.2026 um 18:12 Uhr (Europe/Berlin) als PASS. Die Meldung gilt als Buildabnahme; gesonderte Messwerte und Einzelnachweise wurden nicht übermittelt. Vollständige Hardwareabnahme bleibt separat offen.

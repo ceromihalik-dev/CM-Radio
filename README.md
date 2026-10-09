@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.2 · Build 0a05.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; deren Boardtest steht aus. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.2 · Build 0a05.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -80,4 +80,4 @@ CM-Radio ist unter **GPL-3.0-or-later** lizenziert. Die eingebundene Audiobiblio
 
 ### Neuer Stand 0a05
 
-Unter **Gerät** stehen Einstellungssicherung, geprüfte Wiederherstellung und Ersatzsender zur Verfügung. Die Sicherung enthält die derzeit implementierten Sender- und Wiedergabefunktionen; Klang und Zeitpläne sind weiterhin geplant. Build 0a04 wurde vom Nutzer als PASS bestätigt; 0a05 muss noch am Board getestet werden.
+Unter **Gerät** stehen Einstellungssicherung, geprüfte Wiederherstellung und Ersatzsender zur Verfügung. Die Sicherung enthält die derzeit implementierten Sender- und Wiedergabefunktionen; Klang und Zeitpläne sind weiterhin geplant. Build 0a04 wurde vom Nutzer als PASS bestätigt; Build 0a05 wurde am 09.10.2026 vom Nutzer als PASS bestätigt.
