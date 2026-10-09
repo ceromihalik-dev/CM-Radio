@@ -35,5 +35,8 @@ int main(){
  d["settings"]["volume"]=51;assert(!backup::read(d,out,error));d["settings"]["volume"]=50;d["settings"]["volumeLimit"]=51;assert(!backup::read(d,out,error));
  for(int v=0;v<=21;++v){assert(rules::legacyVolume(v)<=50);assert(rules::legacyVolume(v)*21<=v*50);if(v)assert(rules::legacyVolume(v)>rules::legacyVolume(v-1));}
  assert(rules::legacyVolume(0)==0&&rules::legacyVolume(21)==50);
+ deserializeJson(d,fixture);assert(backup::read(d,out,error));assert(std::string(out.deviceName)=="CM-Radio"&&!out.mono&&out.autoRecover);
+ d["settings"]["deviceName"]="Radio Wohnzimmer";d["settings"]["mono"]=true;d["settings"]["autoRecover"]=false;d["settings"]["stations"][0]["directoryId"]="11111111-2222-3333-4444-555555555555";assert(backup::read(d,out,error));assert(out.mono&&!out.autoRecover&&std::string(out.deviceName)=="Radio Wohnzimmer");
+ d["settings"]["mono"]=1;assert(!backup::read(d,out,error));d["settings"]["mono"]=true;d["settings"]["deviceName"]="../bad";assert(!backup::read(d,out,error));d["settings"]["deviceName"]="Radio";d["settings"]["stations"][0]["directoryId"]="invalid";assert(!backup::read(d,out,error));
  puts("Backup schema, roundtrip fields, strict types, missing fields, limits, stream validation and credential isolation: PASS");
 }

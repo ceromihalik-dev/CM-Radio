@@ -1,5 +1,14 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 08 — 09.10.2026
+
+- Gerätename unter Gerät → Name und Audioausgabe ändern (1–24 ASCII-Zeichen). Name, .local-Adresse und Fallback-WLAN folgen der Einstellung; Speicherung und Sicherungsimport integriert. Router können den DHCP-Namen erst bei erneuter Anmeldung aktualisieren.
+- Mono/Stereo dauerhaft umschaltbar. Mono mischt beide Kanäle mit 32-Bit-Zwischensumme vor Klang und Balance; reproduzierbarer Patch für den ungenutzten forceMono-Schalter in AudioI2S 3.0.12. Stereo bleibt Standard.
+- Geräteinformationen zeigen WLAN-Ausfälle, Offlinezeit, Stream-Verbindungsversuche, Unterbrechungen, Laufzeit und letzten Fehler. Zähler gelten seit Neustart; WLAN-Signalbalken bleiben verfügbar.
+- Automatische Senderreparatur nach drei Verbindungsversuchen, höchstens alle zehn Minuten; zusätzlich manuell auslösbar. Radio-Browser-UUID aus Suchergebnissen speichern, alternativ nur exakter eindeutiger Name. Zwei Verzeichnisserver prüfen unterstützte MP3/AAC-Streams; mehrdeutige, ungültige oder unveränderte Ergebnisse ersetzen keine Adresse. Abfrage läuft in eigenem Task auch bei geschlossenem Browser. Verzeichnisabfragen über HTTP enthalten keine WLAN-Zugangsdaten.
+- Verspätete Suchergebnisse nach Benutzeränderungen werden verworfen. Bei aktivem Ersatzsender kein automatischer Rückwechsel; reparierte Adresse gilt beim nächsten Start. Alte Sicherungen erhalten Standardwerte für neue Optionen.
+- Hosttests und Firmwarebuild geprüft; reale Mono-Ausgabe, mDNS/AP-Umbenennung und Senderreparatur am Board noch offen. Bluetooth weiterhin nicht aktiviert.
+
 ## v0.1.3 · Build 07 — 09.10.2026
 
 - Radio bleibt die Startseite beim Neuladen, auch bei aktivem Setup-/Fallback-WLAN. Nach erstem Passwortwechsel zur Radioseite wechseln; Netzwerkbereich bleibt geschlossen und lässt sich gezielt über Gerät bzw. WLAN-Knopf öffnen.

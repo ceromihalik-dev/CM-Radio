@@ -13,6 +13,7 @@
 #include "FirmwareUpdate.h"
 #include "SoundConfig.h"
 #include "SetupPassword.h"
+#include "StationRecovery.h"
 #include "PasswordResetButton.h"
 #include <memory>
 #include <new>
@@ -32,7 +33,10 @@ bool dirty = false;
 bool applyWifi = false;
 bool applyAudioConfig = false;
 bool applyFallback = false;
-bool applySound = false;
+bool applySound = false,applyMono=false,applyName=false;
+uint32_t wifiLosses=0,recoveryEpoch=0,recoveryNextAt=0,stationRevision=0;
+bool recoveryReady=false;String recoveryMessage="Noch keine Adresspruefung";
+String deviceHost="cm-radio",deviceSuffix;
 bool soundPreview = false,previewLoudness=false;
 int previewBass=0,previewTreble=0,previewBalance=0;
 bool stopAfterRestore = false;
@@ -89,6 +93,7 @@ void accepted() {
 bool body(JsonDocument& document) {
     if (setupPasswordRequired && server.uri() != "/api/v1/setup/password") { error(428, "Zuerst das Passwort fuer den Setup-Zugang aendern");return false; }
     if (restartAp) {error(409, "Setup-WLAN wird neu gestartet; kurz warten");return false;}
+    ++recoveryEpoch;
     if (firmwareUpdate::busy()) { error(409, "Firmwareupdate aktiv; Bedienung gesperrt");return false; }
     // Browser writes must come from this device; non-browser local API clients
     // may omit Origin. This is not an authentication mechanism.
@@ -139,6 +144,20 @@ void stopAp() {
     apActive = false;
     WiFi.mode(WIFI_STA);
 }
+void applyDeviceName(){
+    deviceHost=settings.deviceName;deviceHost.toLowerCase();deviceHost.replace(" ","-");deviceHost.replace("_","-");
+    WiFi.setHostname(deviceHost.c_str());
+    if(mdnsActive){MDNS.end();mdnsActive=MDNS.begin(deviceHost.c_str());if(mdnsActive)MDNS.addService("http","tcp",80);}
+    apName=settings.deviceName+"-"+deviceSuffix;
+    if(apActive){restartAp=true;restartApAt=millis()+2500;}
+}
+bool requestRecovery(int index){
+    if(!recoveryReady||wifiScan.busy()||WiFi.status()!=WL_CONNECTED||index<0||index>=int(settings.count))return false;
+    recovery::Job job{};job.epoch=recoveryEpoch;job.index=index;
+    strlcpy(job.name,settings.stations[index].name.c_str(),sizeof(job.name));strlcpy(job.url,settings.stations[index].url.c_str(),sizeof(job.url));strlcpy(job.id,settings.stations[index].directoryId.c_str(),sizeof(job.id));
+    if(!recovery::request(job))return false;
+    recoveryNextAt=millis()+600000;recoveryMessage="Senderadresse wird im Verzeichnis geprueft";return true;
+}
 void connectWifi() {
     WiFi.disconnect(false, false);
     if (!apActive) WiFi.mode(WIFI_STA);
@@ -154,11 +173,12 @@ void writeBackup(JsonDocument& document) {
     document["format"] = "CM-Radio-Backup";document["schema"] = 2;
     document["sourceVersion"] = board::version;document["sourceBuild"] = board::build;
     JsonObject config = document.createNestedObject("settings");
+    config["deviceName"]=settings.deviceName;config["mono"]=settings.mono;config["autoRecover"]=settings.autoRecover;
     config["selected"] = settings.selected;config["volume"] = settings.volume;config["autoplay"] = settings.autoplay;
     config["loudness"]=settings.loudness;config["bass"]=settings.bass;config["treble"]=settings.treble;config["balance"]=settings.balance;
     config["volumeLimit"] = settings.volumeLimit;config["softStartSeconds"] = settings.softStartSeconds;config["fallbackStation"] = settings.fallbackStation;
     JsonArray list = config.createNestedArray("stations");
-    for (size_t i = 0; i < settings.count; ++i) {JsonObject item = list.createNestedObject();item["name"] = settings.stations[i].name;item["url"] = settings.stations[i].url;item["logo"]=settings.stations[i].logo;}
+    for (size_t i = 0; i < settings.count; ++i) {JsonObject item = list.createNestedObject();item["name"] = settings.stations[i].name;item["url"] = settings.stations[i].url;item["logo"]=settings.stations[i].logo;item["directoryId"]=settings.stations[i].directoryId;}
 }
 void restoreBackup(bool validateOnly) {
     DynamicJsonDocument request(24576);if (!body(request)) return;
@@ -170,14 +190,15 @@ void restoreBackup(bool validateOnly) {
         StaticJsonDocument<384> response;response["loudness"]=data->loudness;response["bass"]=data->bass;response["treble"]=data->treble;response["balance"]=data->balance;response["valid"] = true;response["stationCount"] = data->count;response["volume"] = data->volume;response["volumeLimit"] = data->volumeLimit;response["wifiPreserved"] = true;sendJson(200, response);return;
     }
     Settings candidate = settings;
+    candidate.deviceName=data->deviceName;candidate.mono=data->mono;candidate.autoRecover=data->autoRecover;
     candidate.count = data->count;candidate.selected = data->selected;candidate.volume = data->volume;
     candidate.volumeLimit = data->volumeLimit;candidate.softStartSeconds = data->softStartSeconds;
     candidate.loudness=data->loudness;candidate.bass=data->bass;candidate.treble=data->treble;candidate.balance=data->balance;
     candidate.autoplay = data->autoplay;candidate.fallbackStation = data->fallbackStation;
-    for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url,data->stations[i].logo};
+    for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url,data->stations[i].logo,data->stations[i].directoryId};
     if (!persist(candidate)) return;
     soundPreview = false;
-    applyAudioConfig = true;applyFallback = true;applySound = true;stopAfterRestore = true;
+    applyAudioConfig = true;applyFallback = true;applySound = true;applyMono=true;applyName=true;++recoveryEpoch;++stationRevision;stopAfterRestore = true;
     accepted();
 }
 void routes() {
@@ -198,10 +219,12 @@ void routes() {
         restartAp=apActive;restartApAt=millis()+2500;
         StaticJsonDocument<128> response;response["accepted"]=true;response["reconnectRequired"]=restartAp;sendJson(200,response);
     });
+    server.on("/api/v1/station/recover",HTTP_POST,[]{StaticJsonDocument<128> request;if(!body(request))return;if(!requestRecovery(settings.selected)){error(409,"WLAN fehlt oder Adresspruefung bereits aktiv");return;}accepted();});
     server.on("/api/v1/status", HTTP_GET, [] {
         const PlayerStatus p = player::status();
-        DynamicJsonDocument response(3072);
-        response["name"] = "CM-Radio";
+        DynamicJsonDocument response(6144);
+        response["name"] = "CM-Radio";response["deviceName"]=settings.deviceName;response["hostname"]=deviceHost;response["mono"]=settings.mono;response["effectiveMono"]=p.mono;response["autoRecover"]=settings.autoRecover;
+        response["wifiLosses"]=wifiLosses;response["offlineSeconds"]=WiFi.status()==WL_CONNECTED?0:(millis()-offlineSince)/1000;response["connectionAttempts"]=p.connectionAttempts;response["streamBreaks"]=p.streamBreaks;response["streamSeconds"]=p.streamSeconds;response["lastStreamError"]=p.lastError;response["recoveryBusy"]=recovery::busy();response["recoveryMessage"]=recoveryMessage;response["stationRevision"]=stationRevision;
         response["version"] = board::version;
         response["build"] = board::build;
         response["board"] = board::name;
@@ -242,7 +265,7 @@ void routes() {
         response["effectiveBass"]=p.effectiveBass;response["effectiveTreble"]=p.effectiveTreble;
         response["ramping"] = p.ramping;
         response["sleepRemainingSeconds"] = p.sleepRemainingSeconds;
-        response["audioConfigPending"] = applyAudioConfig || applyFallback || applySound;
+        response["audioConfigPending"] = applyAudioConfig || applyFallback || applySound || applyMono;
         response["restoreStopPending"] = stopAfterRestore;
         response["autoplay"] = settings.autoplay;
         response["settingsPending"] = dirty;
@@ -261,7 +284,7 @@ void routes() {
         for (size_t i = 0; i < settings.count; ++i) {
             JsonObject station = list.createNestedObject();
             station["name"] = settings.stations[i].name;
-            station["url"] = settings.stations[i].url;station["logo"]=settings.stations[i].logo;
+            station["url"] = settings.stations[i].url;station["logo"]=settings.stations[i].logo;station["directoryId"]=settings.stations[i].directoryId;
         }
         sendJson(200, response);
     });
@@ -287,7 +310,8 @@ void routes() {
             if (list[i].containsKey("logo")&&!list[i]["logo"].is<const char*>()){error(400,"Logo muss eine HTTPS-Adresse sein");return;}
             String logo=list[i]["logo"]|"";logo.trim();
             if(!rules::validLogo(logo.c_str())){error(400,"Ungueltige HTTPS-Logo-Adresse");return;}
-            candidate.stations[i] = {name, url,logo};
+            if(list[i].containsKey("directoryId")&&(!list[i]["directoryId"].is<const char*>()||!deviceOptions::validId(list[i]["directoryId"]))){error(400,"Ungueltige Radio-Browser-ID");return;}
+            candidate.stations[i] = {name, url,logo,list[i]["directoryId"]|""};
             if (!previousFallback.isEmpty() && url == previousFallback) candidate.fallbackStation = i;
             if (url == current) { candidate.selected = i; currentFound = true; }
         }
@@ -330,6 +354,7 @@ void routes() {
     });
     server.on("/api/v1/config", HTTP_GET, [] {
         StaticJsonDocument<512> response;
+        response["deviceName"]=settings.deviceName;response["mono"]=settings.mono;response["autoRecover"]=settings.autoRecover;
         response["ssid"] = settings.ssid;
         response["autoplay"] = settings.autoplay;
         response["volumeLimit"] = settings.volumeLimit;
@@ -343,7 +368,12 @@ void routes() {
         StaticJsonDocument<512> request;
         if (!body(request)) return;
         Settings candidate = settings;
-        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds") && !request.containsKey("fallbackStation") && !request.containsKey("bass") && !request.containsKey("treble") && !request.containsKey("balance") && !request.containsKey("loudness")) { error(400, "Keine bekannte Einstellung"); return; }
+        if (!request.containsKey("autoplay") && !request.containsKey("volumeLimit") && !request.containsKey("softStartSeconds") && !request.containsKey("fallbackStation") && !request.containsKey("bass") && !request.containsKey("treble") && !request.containsKey("balance") && !request.containsKey("loudness") && !request.containsKey("deviceName") && !request.containsKey("mono") && !request.containsKey("autoRecover")) { error(400, "Keine bekannte Einstellung"); return; }
+        if(request.containsKey("deviceName")){if(!request["deviceName"].is<const char*>()||!deviceOptions::validName(request["deviceName"])){error(400,"Geraetename: 1 bis 24 ASCII-Buchstaben/Ziffern, Leerzeichen, - oder _");return;}candidate.deviceName=request["deviceName"].as<const char*>();}
+        for(const char* key:{"mono","autoRecover"})if(request.containsKey(key)&&!request[key].is<bool>()){error(400,"mono/autoRecover muessen boolesch sein");return;}
+        if(request.containsKey("mono"))candidate.mono=request["mono"];
+        if(request.containsKey("autoRecover"))candidate.autoRecover=request["autoRecover"];
+        const bool monoChanged=candidate.mono!=settings.mono,nameChanged=candidate.deviceName!=settings.deviceName;
         if (request.containsKey("autoplay")) {
             if (!request["autoplay"].is<bool>()) { error(400, "autoplay muss boolesch sein"); return; }
             candidate.autoplay = request["autoplay"].as<bool>();
@@ -372,6 +402,7 @@ void routes() {
         const bool fallbackChanged = candidate.fallbackStation != settings.fallbackStation;
         const bool audioChanged = candidate.volumeLimit != settings.volumeLimit || candidate.softStartSeconds != settings.softStartSeconds;
         if (!persist(candidate)) return;
+        if(monoChanged)applyMono=true;if(nameChanged)applyName=true;
         if (hasSound) soundPreview = false;
         if (soundChanged) applySound = true;
         if (audioChanged) applyAudioConfig = true;
@@ -512,12 +543,13 @@ void setup() {
     WiFi.setAutoReconnect(true);
     char suffix[7];
     snprintf(suffix, sizeof(suffix), "%06X", static_cast<unsigned>(ESP.getEfuseMac() & 0xffffff));
-    apName = "CM-Radio-" + String(suffix);
+    deviceSuffix=suffix;applyDeviceName();
+    recoveryReady=recovery::begin();
     apPassword = storageReady ? store.setupPassword() : String(setupAccess::initialPassword);
     setupPasswordRequired = apPassword == setupAccess::initialPassword;
     if (!psramFound()) diagnostic = "PSRAM fehlt: Audio bleibt deaktiviert";
     else if (ESP.getFlashChipSize() != 8U * 1024U * 1024U) diagnostic = "Flashgroesse passt nicht zur WROVER-N8R8-Konfiguration";
-    else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds,settings.bass,settings.treble,settings.balance,settings.loudness)) diagnostic = "Audio-Task konnte nicht gestartet werden";
+    else if (!player::begin(settings.volume, settings.volumeLimit, settings.softStartSeconds,settings.bass,settings.treble,settings.balance,settings.loudness,settings.mono)) diagnostic = "Audio-Task konnte nicht gestartet werden";
     else if (settings.autoplay) player::play(settings.stations[settings.selected].url.c_str(), fallbackUrl());
     connectWifi();
     routes();
@@ -559,14 +591,28 @@ void loop() {
         applyWifi = false;
         connectWifi();
     }
+    if(applyName&&!firmwareUpdate::busy()){applyDeviceName();applyName=false;}
+    if(applyMono&&!firmwareUpdate::busy()&&player::mono(settings.mono))applyMono=false;
+    recovery::Result result;
+    if(recovery::take(result)){
+        recoveryMessage=result.message;
+        if(result.found && result.job.epoch==recoveryEpoch && !firmwareUpdate::busy() && result.job.index<int(settings.count) && settings.stations[result.job.index].url==result.job.url){
+            Settings candidate=settings;candidate.stations[result.job.index].url=result.url;candidate.stations[result.job.index].directoryId=result.id;
+            if(storageReady&&store.save(candidate)){
+                settings=candidate;dirty=false;++stationRevision;applyFallback=true;
+                auto p=player::status();if(p.requested&&!p.running&&!p.fallbackActive&&settings.selected==size_t(result.job.index))player::play(result.url,fallbackUrl());
+                recoveryMessage="Senderadresse erneuert und gespeichert";
+            }else recoveryMessage="Neue Adresse konnte nicht gespeichert werden";
+        }else if(result.found)recoveryMessage="Adresspruefung wegen zwischenzeitlicher Bedienung verworfen";
+    }
     const bool online = WiFi.status() == WL_CONNECTED;
     if (online && !wasOnline && !wifiScan.busy()) {
-        Serial.printf("WLAN verbunden: http://%s / http://cm-radio.local\n", WiFi.localIP().toString().c_str());
+        Serial.printf("WLAN verbunden: http://%s / http://%s.local\n", WiFi.localIP().toString().c_str(),deviceHost.c_str());
         stopAp();
-        mdnsActive = MDNS.begin("cm-radio");
+        mdnsActive = MDNS.begin(deviceHost.c_str());
         if (mdnsActive) MDNS.addService("http", "tcp", 80);
-    } else if (!online && wasOnline) {
-        offlineSince = now;
+    } else if (!online && wasOnline && !wifiScan.busy()) {
+        ++wifiLosses;offlineSince = now;
         if (mdnsActive) MDNS.end();
         mdnsActive = false;
     }
@@ -578,6 +624,8 @@ void loop() {
             lastConnectAttempt = now;
         }
     }
+    auto recoveryStatus=player::status();
+    if(settings.autoRecover && !setupPasswordRequired && online && !firmwareUpdate::busy() && !recovery::busy() && recoveryStatus.requested && recoveryStatus.consecutiveAttempts>=3 && rules::reached(now,recoveryNextAt))requestRecovery(settings.selected);
     if (dirty && rules::reached(now, saveAt)) {
         if (storageReady && store.save(settings)) {
             dirty = false;

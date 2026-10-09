@@ -8,13 +8,13 @@
 #include <memory>
 
 namespace {
-enum class Operation { Play, Stop, Volume, Configure, Sleep, Fallback, Sound };
-struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; int8_t bass; int8_t treble; int8_t balance; bool loudness; char url[rules::maxUrl]; char fallbackUrl[rules::maxUrl]; };
+enum class Operation { Play, Stop, Volume, Configure, Sleep, Fallback, Sound, Mono };
+struct Command { Operation operation; uint8_t volume; uint8_t limit; uint8_t seconds; uint16_t minutes; int8_t bass; int8_t treble; int8_t balance; bool loudness;bool mono; char url[rules::maxUrl]; char fallbackUrl[rules::maxUrl]; };
 QueueHandle_t commands;
 portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;
 PlayerStatus snapshot;
 bool updateRequested = false;
-bool initialLoudness=false;
+bool initialLoudness=false,initialMono=false;
 int8_t initialBass=0,initialTreble=0,initialBalance=0;
 uint8_t initialLimit = 50, initialSoftStart = 5;
 void message(const char* text) {
@@ -31,6 +31,7 @@ void audioWorker(void*) {
         vTaskDelete(nullptr);
         return;
     }
+    audio->forceMono(initialMono);portENTER_CRITICAL(&stateLock);snapshot.mono=initialMono;portEXIT_CRITICAL(&stateLock);
     audio->setVolumeSteps(rules::maxVolume);
     int bass=initialBass,treble=initialTreble;bool loudness=initialLoudness;
     auto appliedTone=::sound::tone(bass,treble,loudness,snapshot.volume);
@@ -49,7 +50,7 @@ void audioWorker(void*) {
     char requestedUrl[rules::maxUrl] = {};
     bool wanted = false;
     uint32_t nextRetry = 0;
-    unsigned attempts = 0;
+    unsigned attempts = 0;uint32_t startedAt=0,burst=0;
     for (;;) {
         portENTER_CRITICAL(&stateLock);
         const bool updating = updateRequested;
@@ -71,7 +72,8 @@ void audioWorker(void*) {
         portENTER_CRITICAL(&stateLock);snapshot.updating = false;portEXIT_CRITICAL(&stateLock);
         Command c{};
         while (xQueueReceive(commands, &c, 0) == pdTRUE) {
-            if (c.operation == Operation::Sound) {
+            if(c.operation==Operation::Mono){audio->forceMono(c.mono);portENTER_CRITICAL(&stateLock);snapshot.mono=c.mono;portEXIT_CRITICAL(&stateLock);}
+            else if (c.operation == Operation::Sound) {
                 bass=c.bass;treble=c.treble;loudness=c.loudness;audio->setBalance(c.balance);
             } else if (c.operation == Operation::Volume) {
                 envelope.setTarget(c.volume);
@@ -92,7 +94,7 @@ void audioWorker(void*) {
                 else { envelope.stop(); sleepTimer.cancel(); }
                 audio->setVolume(envelope.tick(millis()));
                 strlcpy(requestedUrl, wanted ? c.url : "", sizeof(requestedUrl));
-                attempts = 0;
+                attempts = 0;burst=0;startedAt=0;
                 nextRetry = millis();
                 portENTER_CRITICAL(&stateLock);
                 snapshot.title[0] = '\0';
@@ -113,7 +115,7 @@ void audioWorker(void*) {
             message("Sleep-Timer abgelaufen");
         }
         const bool online = WiFi.status() == WL_CONNECTED;
-        if (!online) fallbackPolicy.offline();
+        if (!online){fallbackPolicy.offline();burst=0;}
         if (!online && audio->isRunning()) {
             digitalWrite(board::amplifierEnable, LOW);
             audio->stopSong();
@@ -132,15 +134,18 @@ void audioWorker(void*) {
             fallbackPolicy.attempted();
             envelope.prepare();
             audio->setVolume(envelope.tick(millis()));
+            ++burst;portENTER_CRITICAL(&stateLock);++snapshot.connectionAttempts;portEXIT_CRITICAL(&stateLock);
             const bool connected = audio->connecttohost(requestedUrl);
             nextRetry = millis() + rules::retryDelay(attempts++);
+            if(!connected){portENTER_CRITICAL(&stateLock);strlcpy(snapshot.lastError,"Stream-Verbindung fehlgeschlagen",sizeof(snapshot.lastError));portEXIT_CRITICAL(&stateLock);}
             if (!connected) message("Stream nicht erreichbar; neuer Versuch folgt");
             else message("Stream verbunden; Audio wird gepuffert");
         }
         audio->loop();
         const bool running = audio->isRunning() && online;
-        if (running && !wasRunning) envelope.start(millis());
-        if (!running && wasRunning) envelope.stop();
+        if (running && !wasRunning){envelope.start(millis());startedAt=millis();}
+        if (!running && wasRunning){envelope.stop();if(wanted){portENTER_CRITICAL(&stateLock);++snapshot.streamBreaks;strlcpy(snapshot.lastError,online?"Stream unterbrochen":"WLAN unterbrochen",sizeof(snapshot.lastError));portEXIT_CRITICAL(&stateLock);}}
+        if(running && millis()-startedAt>=5000)burst=0;
         wasRunning = running;
         const uint8_t effective = envelope.tick(millis());
         const auto tone=::sound::tone(bass,treble,loudness,effective);
@@ -149,6 +154,7 @@ void audioWorker(void*) {
         digitalWrite(board::amplifierEnable, running && online && vol > 0 ? HIGH : LOW);
         if (running && audio->getAudioCurrentTime() > 5) { attempts = 0; fallbackPolicy.stable(); }
         portENTER_CRITICAL(&stateLock);
+        snapshot.consecutiveAttempts=wanted?burst:0;snapshot.streamSeconds=running?(millis()-startedAt)/1000:0;
         snapshot.requested = wanted;
         snapshot.running = running && online;
         snapshot.volume = vol;
@@ -166,9 +172,9 @@ bool enqueue(const Command& command) {
 }
 }
 
-bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds, int8_t bass, int8_t treble, int8_t balance, bool loudness) {
+bool player::begin(uint8_t volume, uint8_t limit, uint8_t softStartSeconds, int8_t bass, int8_t treble, int8_t balance, bool loudness,bool mono) {
     if (!::sound::valid(bass,treble,balance)) return false;
-    initialLoudness=loudness;initialBass=bass;initialTreble=treble;initialBalance=balance;
+    initialMono=mono;initialLoudness=loudness;initialBass=bass;initialTreble=treble;initialBalance=balance;
     initialLimit = limit;
     initialSoftStart = softStartSeconds;
     pinMode(board::amplifierEnable, OUTPUT);
@@ -238,3 +244,5 @@ bool player::sound(int bass,int treble,int balance,bool loudness) {
     Command c{};c.operation=Operation::Sound;c.bass=bass;c.treble=treble;c.balance=balance;c.loudness=loudness;
     return enqueue(c);
 }
+
+bool player::mono(bool enabled){Command c{};c.operation=Operation::Mono;c.mono=enabled;return enqueue(c);}

@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.3 · Build 07
+# Buildstatus – CM-Radio v0.1.3 · Build 08
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,8 +8,8 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.377.977 Bytes / 3.145.728 Bytes (43,8 %) |
-| Statische RAM-Belegung | 52.612 Bytes / 327.680 Bytes (16,1 %) |
+| Programmcode | 1.425.041 Bytes / 3.145.728 Bytes (45,3 %) |
+| Statische RAM-Belegung | 54.136 Bytes / 327.680 Bytes (16,5 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
 | URL-/WLAN-Eingaben | Positivfälle, ungültige Protokolle, Header-Steuerzeichen, Grenzen geprüft |
@@ -84,3 +84,7 @@ Werkseinstellungen über dieselbe BOOT/IO0-Taste: Bei laufendem Radio mindestens
 Build 07: Radio als Startseite auch im Fallback; nach Erstwechsel ebenfalls Radio, Netzwerk geschlossen. Passwort bleibt bei Neuladen und Updates gespeichert. Mindestlänge 8 wegen ESP32-WPA2; vier Zeichen technisch nicht direkt möglich. Gerätetest offen.
 
 Nutzer bestätigt v0.1.3 Build 07 am 09.10.2026 um 20:32 Uhr (Europe/Berlin) als PASS nach angefragter Prüfung von Radio-Startseite und Passworterhalt nach Seitenneuladen und Neustart. Kein gesonderter Nachweis für Tasten-/Werksreset oder vollständige Hardwareabnahme.
+
+## v0.1.3 Build 08
+
+Gerätename, Mono/Stereo, Verbindungsdiagnose und Senderreparatur integriert. Hosttests und Kompilierung geprüft; Hardwareabnahme dieser vier Funktionen offen. Bluetooth nicht aktiviert.

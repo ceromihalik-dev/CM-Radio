@@ -13,3 +13,5 @@ CM-Radio-eigener Quelltext: GPL-3.0-or-later, Lizenztext in `LICENSE`.
 Abhängigkeiten werden beim Build von ihren Quellen bezogen, nicht als eigener CM-Radio-Quelltext ausgegeben. Der öffentliche Projektquelltext mit festgelegtem Buildverfahren gehört zu veröffentlichten Firmware-Binärdateien. Bestehende Lizenzhinweise der Bibliothek und der Decoder dürfen beim Weiterverteilen nicht entfernt werden.
 
 Sonocotta-Boarddateien sind ein separates Herstellerprojekt (Apache-2.0 laut Herstellerrepository). CM-Radio kopiert hier keine Hersteller-CAD-Dateien. Der mitgelieferte Radio-Paradise-Stream ist eine externe, veränderliche Beispieladresse; CM-Radio hostet oder verteilt keine Senderinhalte.
+
+Build 08 ergänzt in AudioI2S 3.0.12 die Anwendung des forceMono-Flags vor Klangfiltern und Balance. scripts/patch_audio.py erzeugt diesen Patch beim Build reproduzierbar und kopiert die CM-Radio-Hilfsfunktion MonoMix.h in die Buildabhängigkeit. Bibliothekslizenzen und Copyright-Hinweise bleiben erhalten.

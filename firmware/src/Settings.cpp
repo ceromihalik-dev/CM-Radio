@@ -19,6 +19,9 @@ bool SettingsStore::load(Settings& s) {
     const JsonArray list = d["stations"].as<JsonArray>();
     if (list.size() == 0 || list.size() > rules::maxStations) return false;
     Settings candidate;
+    if(d.containsKey("deviceName")&&(!d["deviceName"].is<const char*>()||!deviceOptions::validName(d["deviceName"])))return false;
+    for(const char* key:{"mono","autoRecover"})if(d.containsKey(key)&&!d[key].is<bool>())return false;
+    candidate.deviceName=d["deviceName"]|"CM-Radio";candidate.mono=d["mono"]|false;candidate.autoRecover=d["autoRecover"]|true;
     candidate.ssid = ssid;
     candidate.password = password;
     candidate.count = list.size();
@@ -29,7 +32,8 @@ bool SettingsStore::load(Settings& s) {
         if (list[i].containsKey("logo") && !list[i]["logo"].is<const char*>()) return false;
         const String logo = list[i]["logo"] | "";
         if (!rules::validLogo(logo.c_str())) return false;
-        candidate.stations[i] = {name, url, logo};
+        if(list[i].containsKey("directoryId")&&(!list[i]["directoryId"].is<const char*>()||!deviceOptions::validId(list[i]["directoryId"])))return false;
+        candidate.stations[i] = {name, url, logo,list[i]["directoryId"]|""};
     }
     const int selected = d["selected"] | 0;
     const int scale = schema == 1 ? 21 : rules::maxVolume;
@@ -58,7 +62,7 @@ bool SettingsStore::load(Settings& s) {
 }
 bool SettingsStore::save(const Settings& s) {
     DynamicJsonDocument d(24576);
-    d["schema"] = 2;
+    d["schema"] = 2;d["deviceName"]=s.deviceName;d["mono"]=s.mono;d["autoRecover"]=s.autoRecover;
     d["loudness"]=s.loudness;d["bass"]=s.bass;d["treble"]=s.treble;d["balance"]=s.balance;
     d["ssid"] = s.ssid;
     d["password"] = s.password;
@@ -72,7 +76,7 @@ bool SettingsStore::save(const Settings& s) {
     for (size_t i = 0; i < s.count; ++i) {
         JsonObject station = list.createNestedObject();
         station["name"] = s.stations[i].name;
-        station["url"] = s.stations[i].url;station["logo"]=s.stations[i].logo;
+        station["url"] = s.stations[i].url;station["logo"]=s.stations[i].logo;station["directoryId"]=s.stations[i].directoryId;
     }
     if (d.overflowed()) return false;
     String raw;

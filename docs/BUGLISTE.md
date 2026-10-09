@@ -50,3 +50,7 @@ Je Meldung nächste freie CMR-ID, Datum, Version/Build, erwartetes und tatsächl
 Gemeldet am 09.10.2026 um 18:21 Uhr: Sender spielt etwa zehn Sekunden, danach Abbruch oder erneutes Laden. Betroffen laut Nutzer seit Build 0a05. Verdacht: neuer Stillstandswächter stoppt Audio nach 15 Sekunden ohne Änderung der berechneten Audiozeit; diese ist kein verlässlicher Livestream-Verbindungsindikator. Der abweichende gemeldete Zeitraum und die genaue Streamadresse sind noch nicht untersucht.
 
 Status: PASS in Build 0a07, vom Nutzer am 09.10.2026 um 18:26 Uhr bestätigt. Keine gesonderte Dauerangabe übermittelt. Wächter entfernt; reguläre Wiederverbindung und Ersatzsender bleiben. Abnahme: derselbe Sender mindestens zehn Minuten ohne periodisches Neuladen; danach Stop/Play, Sleep-Timer und Ersatzsender prüfen. Frühere allgemeine PASS-Meldung von 0a05 bleibt historisch erhalten.
+
+## CMR-005 – Mono-Schalter der Audiobibliothek ohne Ausgabeänderung
+
+Bei Prüfung von Build 08 entdeckt: AudioI2S 3.0.12 speichert forceMono, verwendet es jedoch nicht beim Ausgeben der Samples. Fix Build 08: reproduzierbarer Patch mischt links/rechts vor Klang und Balance. Hosttests für Überlaufgrenzen und Kanalmischung PASS; tatsächliche Ausgabe am Board offen.

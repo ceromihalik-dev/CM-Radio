@@ -3,9 +3,12 @@
 #include <ArduinoJson.h>
 #include <Preferences.h>
 #include "Validation.h"
+#include "DeviceOptions.h"
 
-struct Station { String name; String url; String logo; };
+struct Station { String name; String url; String logo; String directoryId; };
 struct Settings {
+    String deviceName="CM-Radio";
+    bool mono=false,autoRecover=true;
     String ssid;
     String password;
     Station stations[rules::maxStations];

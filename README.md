@@ -139,3 +139,5 @@ Werkseinstellungen über dieselbe BOOT/IO0-Taste: Bei laufendem Radio mindestens
 Build 07: Radio als Startseite auch im Fallback; nach Erstwechsel ebenfalls Radio, Netzwerk geschlossen. Passwort bleibt bei Neuladen und Updates gespeichert. Mindestlänge 8 wegen ESP32-WPA2; vier Zeichen technisch nicht direkt möglich. Gerätetest offen.
 
 Nutzer bestätigt v0.1.3 Build 07 am 09.10.2026 um 20:32 Uhr (Europe/Berlin) als PASS nach angefragter Prüfung von Radio-Startseite und Passworterhalt nach Seitenneuladen und Neustart. Kein gesonderter Nachweis für Tasten-/Werksreset oder vollständige Hardwareabnahme.
+
+Aktueller Entwicklungsstand: **v0.1.3 Build 08** mit Gerätename, Mono/Stereo, Verbindungsdiagnose und automatischer Senderadressprüfung. Hardwareabnahme der neuen Funktionen offen; siehe docs/TESTPLAN.md. Bluetooth wird von der Firmware noch nicht verwendet.

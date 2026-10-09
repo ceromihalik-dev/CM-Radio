@@ -54,7 +54,7 @@ Die Reihenfolge dient der Umsetzung und kann nach Abhängigkeiten angepasst werd
 
 ## Versions- und Pflegekonvention
 
-Aktuell **v0.1.3 · Build 07**. Weitere Builds innerhalb dieser Version: **07, 08 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
+Aktuell **v0.1.3 · Build 08**. Weitere Builds innerhalb dieser Version: **07, 08 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
 
 Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualisieren. Für Fehler stabile CMR-IDs verwenden; gelöste Einträge bleiben mit Fix-Build und Nachweis erhalten. Änderungen an Firmware müssen kompilieren und die passenden Prüfungen bestehen. Ein öffentlicher Release wird erst als vollständig hardwaregetestet bezeichnet, wenn seine Abnahmekriterien nachgewiesen sind.
 
@@ -71,3 +71,14 @@ Werkseinstellungen über dieselbe BOOT/IO0-Taste: Bei laufendem Radio mindestens
 Build 07: Radio als Startseite auch im Fallback; nach Erstwechsel ebenfalls Radio, Netzwerk geschlossen. Passwort bleibt bei Neuladen und Updates gespeichert. Mindestlänge 8 wegen ESP32-WPA2; vier Zeichen technisch nicht direkt möglich. Gerätetest offen.
 
 Nutzer bestätigt v0.1.3 Build 07 am 09.10.2026 um 20:32 Uhr (Europe/Berlin) als PASS nach angefragter Prüfung von Radio-Startseite und Passworterhalt nach Seitenneuladen und Neustart. Kein gesonderter Nachweis für Tasten-/Werksreset oder vollständige Hardwareabnahme.
+
+## v0.1.3 Build 08
+
+Gerätename, Mono/Stereo, Verbindungsdiagnose und Senderreparatur integriert. Hosttests und Kompilierung geprüft; Hardwareabnahme dieser vier Funktionen offen. Bluetooth nicht aktiviert.
+
+| ID | Funktion | Stand |
+| --- | --- | --- |
+| RM-30 | Gerätename ändern | Build 08 implementiert; Boardtest offen |
+| RM-31 | Mono/Stereo | Build 08 implementiert; Boardtest offen |
+| RM-32 | Verbindungsqualität anzeigen | Build 08 implementiert; Boardtest offen |
+| RM-33 | Sender automatisch wiederfinden | Build 08 implementiert; Boardtest offen |
