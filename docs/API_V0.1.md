@@ -60,3 +60,7 @@ Die Weboberfläche fragt Radio-Browser direkt im Handy-/PC-Browser ab; keine zus
 Schema 1: 1–10 Sender, Namen maximal 63 UTF-8-Bytes und nicht leer, HTTP(S)-URLs maximal 383 Bytes ohne Zugangsdaten/Steuerzeichen; Auswahl gültig; Lautstärke 0–21 und höchstens Grenze; sanfter Start 0–30 Sekunden; Autoplay strikt Boolean. Alle genannten Einstellungsfelder sind Pflichtfelder. Unbekannte Felder werden nicht übernommen. Künftige Klang-/Zeitplanfunktionen sind noch kein Bestandteil der Sicherung.
 
 Ersatzwechsel: drei Verbindungsversuche ohne stabilen Stream, nur bei verbundenem WLAN, höchstens einmal bis zum nächsten Play/Stop. Identische URLs lösen keinen Wechsel aus. Ein laufender Ersatz wird bei Änderung seiner Konfiguration nicht unmittelbar umgeschaltet. 15 Sekunden ohne Fortschritt der Audiozeit lösen einen neuen Verbindungsversuch aus.
+
+## Ergänzung Build 0a06
+
+Status ergänzt `playingStationIndex`: Senderindex des im Audiotask aktuell angeforderten Streams, anhand der tatsächlichen URL auf die gespeicherte Sammlung abgebildet; `-1`, wenn kein Stream angefordert oder keine passende gespeicherte Adresse vorhanden ist. Die Oberfläche markiert diesen Index nur bei `state:"streaming"`. `stationIndex` bleibt die dauerhaft gewählte Hauptsenderauswahl; `fallbackStation` die konfigurierte Ersatzsenderauswahl. Mehrere Einträge mit gleicher URL markieren den ersten Treffer. Schnellwahl verwendet die bestehende Play-API, Reihenfolge die bestehende Stations-PUT-API; keine Schemaänderung.

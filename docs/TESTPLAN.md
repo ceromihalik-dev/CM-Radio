@@ -79,3 +79,13 @@ Build 0a04: Nutzer meldet PASS am 09.10.2026. Die vollständige Hardwareabnahme 
 6. WLAN-Unterbrechung allein löst keinen Ersatzwechsel aus. Nach WLAN-Rückkehr erfolgen reguläre Verbindungsversuche.
 
 Hostprüfungen: strikte Sicherungstypen und Grenzen, unbekannte Zugangsdaten ohne Übernahme, Ersatzwechsel-Schwelle, identische URLs, einmaliger Wechsel, Offlinezustand, Timerüberlauf, Stillstand sowie Web-Dateiprüfung/Entwurfsschutz/Dateiwechsel geprüft. Nutzer bestätigt Build 0a05 am 09.10.2026 um 18:12 Uhr (Europe/Berlin) als PASS. Die Meldung gilt als Buildabnahme; gesonderte Messwerte und Einzelnachweise wurden nicht übermittelt. Vollständige Hardwareabnahme bleibt separat offen.
+
+## Build 0a06 – Schnellwahl und Changelog
+
+1. Radioansicht: alle gespeicherten Sender als große Kacheln sichtbar, ein Tipp startet den richtigen Sender. Markierung nur bei tatsächlich laufendem Stream, auch beim Ersatzsender. Stoppen entfernt die Markierung.
+2. Unter Sender Reihenfolge ändern: erste/letzte Position dürfen nicht über Grenzen verschoben werden. Vor Speichern bleibt die Schnellwahl unverändert; nach Speichern und Stromneustart bleibt die neue Reihenfolge erhalten. Auswahl und Ersatzsender bleiben dem ursprünglichen Stream zugeordnet.
+3. Ungespeicherte Wiedergabeeinstellungen zuerst speichern, bevor Sender umgeordnet werden. Fehlgeschlagene Speicherung darf keine neue Schnellwahl anzeigen.
+4. Bei nicht erreichbarem Gerät oder nicht bereitem Audio sind Kacheln gesperrt; nach Wiederverbindung bedienbar. Mit einem zweiten Browser die gespeicherte Sammlung ändern: für neue Kacheln Seite neu laden.
+5. Unter Gerät Changelog aufklappen: Build 0a06 und die bisherigen Einträge müssen auch ohne Internet am Handy/PC lesbar sein.
+
+Hosttests: direkte Senderwahl, Offline-Sperre, sichere Textdarstellung, Entwurfstrennung, gespeicherte Reihenfolge, Grenzbuttons, Schutz offener Wiedergabeeinstellungen und tatsächliche Ersatzsender-Markierung PASS. Changelog-Synchronität und eingebettete UI geprüft. Gerätetest 0a06 OFFEN.

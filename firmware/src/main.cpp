@@ -185,6 +185,9 @@ void routes() {
         response["running"] = p.running;
         response["state"] = !p.ready ? "error" : !p.requested ? "stopped" : !p.running ? "connecting" : "streaming";
         response["stationIndex"] = settings.selected;
+        int playingStationIndex = -1;
+        if (p.requested) for (size_t i = 0; i < settings.count; ++i) if (settings.stations[i].url == p.actualUrl) {playingStationIndex = i;break;}
+        response["playingStationIndex"] = playingStationIndex;
         String audibleName = settings.stations[settings.selected].name;
         if (p.fallbackActive) {
             audibleName = "Ersatzsender";

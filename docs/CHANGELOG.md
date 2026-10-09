@@ -1,12 +1,20 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a06 — 09.10.2026
+
+- Schnellwahl: große Senderkacheln starten gespeicherte Sender direkt. Der tatsächlich aktive Haupt- oder Ersatzsender wird gekennzeichnet. Offline oder bei nicht bereitem Audio sind die Kacheln gesperrt.
+- Reihenfolge unter Sender mit Nach oben/Nach unten ändern und dauerhaft speichern. Haupt- und Ersatzsenderzuordnung bleibt anhand der Streamadresse erhalten. Ungespeicherte Entwürfe verändern die Schnellwahl nicht.
+- Vollständiger bisheriger Projekt-Changelog unter Gerät, offline vom Radio verfügbar. Inhalte werden aus docs/CHANGELOG.md erzeugt und beim Hostcheck auf Übereinstimmung geprüft.
+- Build 0a05 vom Nutzer als PASS bestätigt. Gerätetest für 0a06 offen.
+
+
 ## v0.1.2 · Build 0a05 — 09.10.2026
 
 - Versionierte JSON-Sicherung der vorhandenen Sender und Wiedergabeeinstellungen. WLAN-Zugangsdaten und laufende Timer bleiben ausgeschlossen.
 - Wiederherstellung mit serverseitiger Prüfung, Vorschau und eigener Übernahme. Ungültige Dateien verändern keine Einstellungen. Übernahme erhält das Heim-WLAN, stoppt Audio und hebt den Sleep-Timer auf.
 - Ersatzsender nach drei erfolglosen Streamversuchen bei verfügbarem WLAN. Pro Wiedergabestart höchstens ein Wechsel; kein automatischer Rückwechsel. Identische Streamadressen werden übersprungen.
 - Stillstehende Audiozeit löst nach 15 Sekunden einen neuen Verbindungsversuch aus. Stoppen und Sleep-Timer bleiben wirksam.
-- Hosttests für Schema/Typen/Grenzen, Ersatzsender und Webübernahme ergänzt. Gerätetest für 0a05 offen. Build 0a04 vom Nutzer als PASS bestätigt.
+- Hosttests für Schema/Typen/Grenzen, Ersatzsender und Webübernahme ergänzt. Nutzer bestätigt Build 0a05 als PASS. Build 0a04 vom Nutzer als PASS bestätigt.
 
 
 ## v0.1.2 · Build 0a04 – 9. Oktober 2026

@@ -137,3 +137,7 @@ Update weiterhin ausschließlich `firmware.bin` an `0x10000` schreiben, ohne Fla
 **Sicherung herunterladen** exportiert gespeicherte Sender und vorhandene Wiedergabeeinstellungen ohne WLAN-Zugangsdaten. Zum Wiederherstellen Datei auswählen, **Datei prüfen**, Zusammenfassung kontrollieren, anschließend **Geprüfte Sicherung übernehmen**. Übernahme ersetzt diese Einstellungen, stoppt Audio und beendet den Timer; Heim-WLAN bleibt erhalten. Danach manuell starten. Künftige Klang- und Zeitplanfunktionen sind noch nicht enthalten.
 
 Ersatzsender wird nach drei erfolglosen Verbindungsversuchen bei vorhandenem WLAN aktiviert. Die Wartezeit hängt von Stream-Timeouts ab. Ein automatischer Rückwechsel erfolgt nicht; manuelles Play beginnt erneut mit dem ausgewählten Sender. Bei WLAN-Ausfall allein erfolgt kein Wechsel. Bei Änderung eines bereits laufenden Ersatzsenders wird die neue Auswahl beim nächsten Wiedergabestart verwendet.
+
+## Build 0a06 testen
+
+Nach dem Firmwareupdate die Seite mit Strg+F5 neu laden. Unter Radio startet ein Tipp auf eine Schnellwahlkachel den gespeicherten Sender. Unter Sender ändern Nach oben/Nach unten die Reihenfolge als Entwurf; Änderungen speichern übernimmt sie dauerhaft. Der Ersatzsender wird dabei anhand seiner Streamadresse erhalten. Unter Gerät stehen aktuelle und bisherige Änderungen zum Aufklappen bereit, ohne Internetverbindung zum Changelog.
