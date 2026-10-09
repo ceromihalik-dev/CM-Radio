@@ -27,15 +27,22 @@ Diese Datei ist die verbindliche Projekt-Roadmap. Fehler und deren Abnahme stehe
 | 2 | RM-12 | Hardware-Testprotokoll und Release-Abnahme abschließen | Offene Kriterien aus TESTPLAN erfüllen und konkrete Version/Build dokumentieren; CI-Ergebnis prüfen | Offen |
 | 2 | RM-13 | Wandgehäuse praktisch prüfen | Lochraster, Anschlüsse, Wandmontage, Temperatur und WLAN nach Einbau | Offen |
 
-## Danach
+## Funktionserweiterungen vor der Android-App
 
-| Ziel | ID | Umfang | Fertig, wenn … | Status |
+Verbindliche Wünsche vom **09.10.2026**. Die folgenden Funktionen werden zunächst in Firmware und Weboberfläche integriert und geprüft. Versionsziele außer dem aktuellen Stand sind vorläufig; es sind keine festen Termine zugesagt.
+
+| Reihenfolge | ID | Umfang | Fertig, wenn … | Status |
 | --- | --- | --- | --- | --- |
-| v0.2 | RM-14 | Radio-Browser-Sendersuche und Favoriten | Gefundene Sender übernehmen; bestehende Sender bleiben bei Ausfall des Suchdiensts nutzbar | Geplant |
-| Nach stabiler API | RM-15 | Android-App | Gerät im Heimnetz finden und Sender, Lautstärke, Play/Stop bedienen; Browser-Setup bleibt verfügbar | Geplant |
-| Später | RM-16 | Lokal abgesicherte OTA-Updates | Update prüfen, Einstellungen erhalten und fehlgeschlagenen Start sicher behandeln | Geplant |
+| 1 | RM-17 | GUI deutlich aufwerten | Moderne, übersichtliche Oberfläche für Handy und Desktop; klare Navigation für Wiedergabe, Sender, Klang, Netzwerk, Updates und Infos; gut lesbare Zustände und verständliche Rückmeldungen | Geplant |
+| 2 | RM-18 | Netzwerkstärke grafisch anzeigen | WLAN-Empfang als Balken von Grün über Gelb bis Rot darstellen; dBm-Wert und Text ergänzen; getrennte Anzeige für offline und laufende Verbindung; Anzeige regelmäßig aktualisieren | Geplant |
+| 3 | RM-14 | Radiosender international, national und lokal suchen; Favoriten | Radio-Browser als vorgesehene Quelle; Suche nach Name und Land sowie lokalen/regionalen Sendern über Ort/Region oder Suchbegriffe, soweit Verzeichnisdaten das ermöglichen; Ergebnisse abspielen und speichern; Suchdienstausfall blockiert bestehende Sender nicht | Geplant |
+| 4 | RM-19 | Klangeigenschaften: Höhen, Bässe, Loudness und Balance | Regler mit neutraler Grundeinstellung, Rücksetzen und Speicherung; hörbare Wirkung ohne störende Übersteuerung; CPU-/Speicherbedarf und echte Links-/Rechts-Balance am Board prüfen | Geplant; technische Umsetzung in der Audiokette prüfen |
+| 5 | RM-16 | Updatefunktion in der Weboberfläche | Firmware lokal über den Browser aktualisieren; Zielhardware und Version/Build prüfen, Fortschritt/Ergebnis anzeigen und Einstellungen erhalten; Zugriff absichern und Rückweg bei fehlgeschlagenem Start vorsehen | Geplant; OTA statt ausschließlich USB |
+| 6 | RM-20 | Erstellerinformationen und Unterstützungslink integrieren | Infobereich mit abgestimmten Erstellerangaben, Projekt-/GitHub-Link und frei aufrufbarem Unterstützungslink; Zieladresse vor Integration festlegen | Geplant; Erstellerangaben und Unterstützungsadresse noch festzulegen |
+| 7 | RM-21 | Changelog in der Oberfläche integrieren | Aktuelle Version/Build und Änderungen direkt am Gerät anzeigen; ältere Einträge nachvollziehbar erhalten; veröffentlichte Angaben stimmen mit Repository und Paket überein | Geplant |
+| Danach | RM-15 | Android-App, sobald alle vorgesehenen Funktionen integriert sind | RM-14 und RM-16 bis RM-21 integriert und geprüft, stabile API vorhanden; App findet das Gerät und bedient Wiedergabe, Sender, Klang sowie Netzwerk-/Updateinformationen; Browser-Setup bleibt verfügbar | Geplant; Beginn erst nach Funktionsintegration |
 
-Keine festen Termine zugesagt. Weitere Funktionen richten sich nach tatsächlicher Nutzung.
+Die Reihenfolge dient der Umsetzung und kann nach Abhängigkeiten angepasst werden. **Die Android-App beginnt erst nach Integration und Prüfung der oben vorgesehenen Funktionen.** RM-08 bis RM-13 zur Stabilität und Hardwareabnahme laufen weiter. Wünsche werden als Roadmap-Einträge geführt und nicht als bestätigte Bugs.
 
 ## Versions- und Pflegekonvention
 

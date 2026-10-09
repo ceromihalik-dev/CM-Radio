@@ -15,7 +15,7 @@ Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 - Handy-Weboberfläche unter `http://cm-radio.local` oder der Geräte-IP, ohne externe Dateien.
 - Lokale `/api/v1/...`-API für die spätere Android-App.
 
-Die eigenständige Android-App, Radio-Browser-Sendersuche und OTA-Updates folgen nach den Hardware-Grundtests. Das Handy kann V0.1 bereits im Browser bedienen. Für die Erstinstallation ist USB vorgesehen.
+Geplant sind eine deutlich aufgewertete GUI, grafische WLAN-Stärke, internationale/nationale/lokale Sendersuche, Klangregler, Browser-Updates, Erstellerinfos mit Unterstützungslink und ein integrierter Changelog. Die Android-App folgt nach Integration und Prüfung dieser Funktionen. Das Handy kann V0.1 bereits im Browser bedienen. Für die Erstinstallation ist USB vorgesehen.
 
 ## Sofort starten
 
