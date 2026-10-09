@@ -1,5 +1,13 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 04 — 09.10.2026
+
+- Gerät kompakter gegliedert: sieben aufklappbare Bereiche für Wiedergabe, Klang, Sicherung, Firmwareupdate, Projektinfos, Changelog und technische Diagnose. Standardmäßig geschlossen; mehrere Bereiche können gleichzeitig geöffnet bleiben.
+- Desktop zeigt zwei Spalten, Smartphone eine Spalte. Kürzere Abstände, kompakte Hilfetexte und vollständige Schaltflächen mit ausreichend großen Touch-Flächen. Gerätestatus mit Version/Build, WLAN und Speicherzustand bleibt oben sichtbar.
+- Bestehende Formularwerte, direkte Klangvorschau, Speicherung, Sicherung und Updateablauf bleiben erhalten. Aufklappen benötigt keinen Netzwerkzugriff.
+- Nutzer bestätigt Build 03 am 09.10.2026 um 19:49 Uhr als PASS. Passwortschutz für Updates und Änderungen auf Nutzerwunsch vorerst zurückgestellt.
+- Gerätetest der neuen Anordnung auf Smartphone und Desktop für Build 04 offen.
+
 ## v0.1.3 · Build 03 — 09.10.2026
 
 - Infobereich unter Gerät mit Ersteller C. Mihalik, öffentlichem GitHub-Projektlink und freiwilligem PayPal-Unterstützungslink. Angaben aus ABOUT.txt des CM IR Viewers / CM-ThermoViewer 2.7 Build0017 übernommen.

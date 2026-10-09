@@ -163,3 +163,13 @@ Nutzerabnahme v0.1.3 Build 02 am 09.10.2026 um 19:38 Uhr (Europe/Berlin): PASS n
 - Ohne Internet bleibt der Infotext verfügbar; externe Seiten benötigen Internet.
 
 Gerätetest: offen.
+
+## v0.1.3 Build 04 – Geräteoberfläche
+
+- Build 03: Nutzer meldet PASS am 09.10.2026 um 19:49 Uhr (Europe/Berlin).
+- Nach Browserupdate Strg+F5: Version/Build, WLAN und Speicherzustand oben prüfen.
+- Desktop: zwei Spalten; Smartphone: eine Spalte ohne horizontales Scrollen. Alle sieben Bereiche per Maus, Touch und Tastatur öffnen/schließen.
+- Klangvorschau, Speichern, Neutral und Zurücksetzen prüfen. Ungespeicherte Werte bleiben beim Schließen/Öffnen erhalten.
+- Wiedergabeeinstellungen, Sicherungsdownload, Wiederherstellungsvorschau, Projektlinks, Changelog und Diagnose erreichbar; Audio läuft beim Aufklappen weiter.
+
+Gerätetest Build 04: offen.
