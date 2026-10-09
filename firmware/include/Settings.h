@@ -25,6 +25,7 @@ public:
     String setupPassword();
     bool saveSetupPassword(const String& password);
     bool resetSetupPassword();
+    bool factoryReset();
     bool load(Settings& value);
     bool save(const Settings& value);
 private:

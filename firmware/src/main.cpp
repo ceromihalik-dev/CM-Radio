@@ -527,8 +527,15 @@ void setup() {
 void loop() {
     const uint32_t now = millis();
     firmwareUpdate::tick();
-    const bool passwordResetPressed=passwordResetButton.tick(digitalRead(setupResetPin)==LOW,now);
-    if(passwordResetPressed && !firmwareUpdate::busy()){
+    if(firmwareUpdate::busy())passwordResetButton.inhibit();
+    const PasswordResetButton::Action resetAction=firmwareUpdate::busy()?PasswordResetButton::None:passwordResetButton.tick(digitalRead(setupResetPin)==LOW,now);
+    if(resetAction==PasswordResetButton::Factory && !firmwareUpdate::busy()){
+        if(storageReady && store.factoryReset()){
+            dirty=false;Serial.println("Werkseinstellungen wiederhergestellt; Neustart");ESP.restart();return;
+        }
+        Serial.println("Werkseinstellungen konnten nicht wiederhergestellt werden");
+    }
+    if(resetAction==PasswordResetButton::Password && !firmwareUpdate::busy()){
         if(!resetSetupAccess())Serial.println("Setup-Passwort konnte nicht zurueckgesetzt werden");
     }
     if(restartAp && !wifiScan.busy() && !firmwareUpdate::busy() && rules::reached(now,restartApAt)){

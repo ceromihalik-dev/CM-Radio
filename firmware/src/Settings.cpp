@@ -88,3 +88,5 @@ bool SettingsStore::saveSetupPassword(const String& password){
  return setupAccess::valid(password.c_str())&&preferences.putString("ap-password",password)==password.length();
 }
 bool SettingsStore::resetSetupPassword(){return !preferences.isKey("ap-password")||preferences.remove("ap-password");}
+
+bool SettingsStore::factoryReset(){return preferences.clear();}

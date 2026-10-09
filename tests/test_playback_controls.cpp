@@ -3,8 +3,13 @@
 #include <cassert>
 #include <cstdio>
 int main(){
- PasswordResetButton button;assert(!button.tick(true,0));assert(!button.tick(true,15000));assert(!button.tick(false,15001));assert(!button.tick(true,16000));assert(!button.tick(true,25999));assert(button.tick(true,26000));assert(!button.tick(true,40000));assert(!button.tick(false,40001));assert(!button.tick(true,50000));assert(!button.tick(false,51000));assert(!button.tick(true,60000));assert(!button.tick(true,69999));assert(button.tick(true,70000));
- PasswordResetButton rollover;rollover.tick(false,0);rollover.tick(true,0xfffffff0U);assert(!rollover.tick(true,9983));assert(rollover.tick(true,9984));
+ PasswordResetButton button;assert(button.tick(true,0)==PasswordResetButton::None);assert(button.tick(true,40000)==PasswordResetButton::None);assert(button.tick(false,40001)==PasswordResetButton::None);
+ assert(button.tick(true,50000)==PasswordResetButton::None);assert(button.tick(false,59999)==PasswordResetButton::None);
+ button.tick(true,60000);assert(button.tick(true,70000)==PasswordResetButton::None);assert(button.tick(false,70000)==PasswordResetButton::Password);assert(button.tick(false,70001)==PasswordResetButton::None);
+ button.tick(true,80000);assert(button.tick(false,139999)==PasswordResetButton::Password);
+ button.tick(true,150000);assert(button.tick(true,210000)==PasswordResetButton::None);assert(button.tick(false,210000)==PasswordResetButton::Factory);assert(button.tick(false,210001)==PasswordResetButton::None);
+ button.tick(true,220000);button.inhibit();assert(button.tick(true,300000)==PasswordResetButton::None);assert(button.tick(false,300001)==PasswordResetButton::None);
+ PasswordResetButton rollover;rollover.tick(false,0);rollover.tick(true,0xfffffff0U);assert(rollover.tick(false,9984)==PasswordResetButton::Password);
  SleepTimer timer;assert(timer.remaining(0)==0);assert(!timer.set(0,181));
  assert(timer.set(1000,1));assert(timer.remaining(1000)==60);assert(!timer.expired(60999));assert(timer.expired(61000));assert(!timer.expired(61001));
  timer.set(100,30);timer.set(200,15);assert(timer.remaining(200)==900);timer.cancel();assert(!timer.expired(999999));
