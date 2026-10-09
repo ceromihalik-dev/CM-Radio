@@ -1,7 +1,7 @@
 {
   "version": "0.1",
   "unit": "mm",
-  "board_basis": "Sonocotta Loud-ESP32, ESP32-WROVER; manufacturer Gerber revisions E2 and E3; delivered revision still to be verified",
+  "board_basis": "Delivered Loud-ESP32 revision E3; dimensions and hole positions confirmed by user on 2026-10-09",
   "case_x": 104.0,
   "case_y": 80.0,
   "base_height": 30.0,
@@ -9,18 +9,18 @@
   "wall": 2.4,
   "floor": 2.4,
   "corner_radius": 5.0,
-  "board_x": 85.032342,
-  "board_y": 55.9999896,
+  "board_x": 85.0,
+  "board_y": 56.0,
   "board_offset_x": 9.0,
   "board_offset_y": 3.2,
   "board_thickness_assumed": 1.6,
   "board_hole_x": [
-    3.5110674,
-    61.5119674
+    3.5,
+    61.5
   ],
   "board_hole_y": [
-    3.4999676,
-    52.4991076
+    3.5,
+    52.5
   ],
   "board_hole_diameter_reference": 2.6924,
   "standoff_height": 7.0,
@@ -65,8 +65,8 @@
   "vent_width": 2.4,
   "vent_length": 14.0,
   "engraving_depth": 0.5,
-  "prototype_notice": "USB height, PCB thickness, underside and component heights are assumptions. Print a fit test and verify the actual board before final use.",
-  "revision": "W1 - Wandmontage",
+  "prototype_notice": "Board outline, hole raster, underside envelope, component height and USB/cable envelope confirmed. PCB thickness remains assumed 1.6 mm; connector positions, physical fit and load tests remain open.",
+  "revision": "W2 - E3 Boardmasse bestaetigt",
   "cable_tie_anchors": [
     [
       68.0,
@@ -93,5 +93,16 @@
   "wall_mount_screw_shank_min": 3.5,
   "wall_mount_screw_head_max": 8.0,
   "wall_mount_screw_head_height_max": 3.0,
-  "wall_mount_head_underside_gap": 5.5
+  "wall_mount_head_underside_gap": 5.5,
+  "underside_clearance_measured": 2.5,
+  "component_height_above_pcb_measured": 11.0,
+  "usb_height_above_pcb_measured": [
+    0.0,
+    3.0
+  ],
+  "usb_plug_envelope_measured": [
+    7.0,
+    12.0
+  ],
+  "speaker_cable_diameter_measured": 3.0
 }

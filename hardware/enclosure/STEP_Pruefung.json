@@ -1,22 +1,17 @@
 {
-  "revision": "W1 - Wandmontage",
-  "CM-Radio_Unterteil_V0.1": {
-    "valid": true,
-    "solids": 1,
-    "volume_mm3": 46506.87275993273,
-    "relative_volume_difference": 2.83172840918651e-14,
-    "STL_relative_volume_difference": 5.121267021070526e-05
-  },
   "CM-Radio_Deckel_V0.1": {
     "valid": true,
     "solids": 1,
-    "volume_mm3": 20022.30717949058,
-    "relative_volume_difference": 1.8169628377383995e-16,
-    "STL_relative_volume_difference": 6.826428407493091e-06
+    "volume_mm3": 20022.30717949058
+  },
+  "CM-Radio_Unterteil_V0.1": {
+    "valid": true,
+    "solids": 1,
+    "volume_mm3": 46506.8727599328
   },
   "CM-Radio_Baugruppe_V0.1": {
     "valid": true,
     "solids": 2,
-    "volume_mm3": 66529.18006847212
+    "volume_mm3": 66529.18006847218
   }
 }

@@ -1,0 +1,21 @@
+CM-Radio Gehaeuse V0.1 / W2 - 09.10.2026
+
+Geliefertes Loud-ESP32, Revision E3: vom Nutzer bestaetigt.
+Platine: 85 x 56 mm. Lochraster: 58 x 49 mm.
+Lochmitten: X 3,5 / 61,5; Y 3,5 / 52,5 mm.
+X-Bezug: gerade Seitenkante gegenueber den Lautsprecherklemmen.
+Zweite Lochreihe liegt 23,5 mm vor der gegenueberliegenden Aussenkante.
+Unterseitiger Platzbedarf: 2,5 mm; Bauteilhoehe ueber PCB: 11 mm.
+USB-Buchse: 0 bis 3 mm ueber PCB; Steckerhuelle: 7 x 12 mm.
+Lautsprecherkabel: Durchmesser 3 mm.
+
+Die Stuetzen bleiben 7 mm hoch. USB-Fenster und Kabelausgaenge bleiben
+bewusst grosszuegig; ein Druck-/Stecktest ist noch erforderlich.
+PCB-Dicke weiterhin angenommen 1,6 mm: nicht als gemessen freigegeben.
+Gehaeuse bleibt 104 x 80 x 32,4 mm; Wandraster 60 mm, Einhaengeweg 7 mm.
+
+Die vorhandene PDF-Anleitung und Vorschau zeigen den W1-Ausgangsentwurf.
+Dieses Messblatt und parameter.json ergaenzen bzw. ersetzen dort die
+Angaben zur unbekannten Boardrevision und zu inzwischen gemessenen Hoehen.
+STL und STEP wurden fuer W2 neu erzeugt. Zuerst Lochraster-Probe drucken.
+Mechanische Passung, Schraubenhalt, Temperatur und WLAN im Gehaeuse: OFFEN.

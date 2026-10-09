@@ -1,3 +1,6 @@
+AKTUELL: W2, 09.10.2026. Zuerst MESSWERTE_E3_W2.txt lesen.
+Nachfolgend die W1-Grundanleitung; W2-Messwerte haben Vorrang.
+
 CM-Radio - Gehaeuse V0.1 / W1 Wandmontage
 Stand: 07.10.2026
 

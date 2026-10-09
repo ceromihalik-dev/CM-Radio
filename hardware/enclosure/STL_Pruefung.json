@@ -1,50 +1,17 @@
 {
-  "CM-Radio_Unterteil_V0.1": {
-    "boundary_or_nonmanifold_edges": 0,
-    "connected_regions": 1,
-    "triangles": 9992,
-    "mesh_volume_mm3": 46504.49101879423,
-    "bounds_min_mm": [
-      -8.881784197001252e-16,
-      -8.881784197001252e-16,
-      0.0
-    ],
-    "bounds_max_mm": [
-      104.0,
-      80.0,
-      30.0
-    ]
-  },
   "CM-Radio_Deckel_V0.1": {
     "boundary_or_nonmanifold_edges": 0,
-    "connected_regions": 1,
     "triangles": 22508,
-    "mesh_volume_mm3": 20022.44386033709,
-    "bounds_min_mm": [
-      -8.881784197001252e-16,
-      0.0,
-      -6.112874255887531e-16
-    ],
-    "bounds_max_mm": [
-      104.0,
-      80.0,
-      15.644294738769531
-    ]
+    "mesh_volume_mm3": 20022.443860337007
+  },
+  "CM-Radio_Unterteil_V0.1": {
+    "boundary_or_nonmanifold_edges": 0,
+    "triangles": 9992,
+    "mesh_volume_mm3": 46504.4908163741
   },
   "CM-Radio_Lochraster_Probe_V0.1": {
     "boundary_or_nonmanifold_edges": 0,
-    "connected_regions": 1,
     "triangles": 3420,
-    "mesh_volume_mm3": 1561.4147513411385,
-    "bounds_min_mm": [
-      0.0006065697525627911,
-      0.0003580742049962282,
-      0.0
-    ],
-    "bounds_max_mm": [
-      64.4009017944336,
-      55.398780822753906,
-      4.5
-    ]
+    "mesh_volume_mm3": 1561.4139473972796
   }
 }
