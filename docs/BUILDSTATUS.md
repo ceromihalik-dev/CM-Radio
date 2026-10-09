@@ -1,4 +1,4 @@
-# Buildstatus – CM-Radio v0.1.3 · Build 02
+# Buildstatus – CM-Radio v0.1.3 · Build 03
 
 Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E3-Board ist beim Nutzer angekommen; hier kein direkter USB-Zugriff. USB-Flash und Boot von V0.1.1 sowie das Schreiben von V0.1.2 sind durch Nutzer-Screenshots bestätigt. Nutzer meldet abgelehnten WLAN-Suchstart in V0.1.2 ohne Buildkennung. Die Korrektur in Build 0a01 wurde vom Nutzer bestätigt. Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und Autostart nach Stromunterbrechung sind ebenfalls bestätigt; vollständige Hardwareabnahme bleibt offen.
 
@@ -8,7 +8,7 @@ Datum: **9. Oktober 2026**. Lokal geprüft auf Linux x86_64 / Python 3.12. Das E
 | Arduino-ESP32 / Framework | 2.0.17 / 3.20017.241212+sha.dcc1105b |
 | ESP32-audioI2S | Tag 3.0.12, Commit `928c420d49fce2a09fa91f490b9fcabed6447c67` |
 | ArduinoJson | 6.21.5 |
-| Programmcode | 1.359.005 Bytes / 3.145.728 Bytes (43,2 %) |
+| Programmcode | 1.360.461 Bytes / 3.145.728 Bytes (43,2 %) |
 | Statische RAM-Belegung | 52.564 Bytes / 327.680 Bytes (16,0 %) |
 | Anwendung / Bootloader | Chip ESP32, 8 MB, 40 MHz, DIO; Checksum/Validierungshash gültig |
 | Flashlayout | Keine Überlappung; zwei 3-MiB-Slots, Gesamtgröße 8 MB |
@@ -58,3 +58,7 @@ Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS n
 v0.1.3 Build 02: PlatformIO und Hosttests PASS. Logo-URL-/Typprüfung, Migration alter Sicherungen, Suchtreffer-Logoübernahme, Metadatentrennung/sichere Textanzeige, Bildfehler/Platzhalter und alte Ladeereignisse geprüft. Logos werden nur im Browser geladen. Sender-/Sicherungs-JSON-Puffer auf 24 KiB, Anfrage-/NVS-Grenze auf 16 KiB erweitert; dynamische Heapbelegung mit großer Sammlung am Board prüfen. USB-Anleitung bleibt enthalten. Wecker/Zeitpläne auf Nutzerwunsch gestrichen. Reale Logo-/Metadatenprüfung offen.
 
 Nutzerabnahme v0.1.3 Build 02 am 09.10.2026 um 19:38 Uhr (Europe/Berlin): PASS nach angefragtem Test von Logos, Titelanzeige und Senderwechsel. Keine gesonderten Einzelnachweise übermittelt; vollständige Hardwareabnahme bleibt separat.
+
+## v0.1.3 Build 03
+
+Infobereich mit C. Mihalik, GitHub und PayPal-Unterstützungslink aus ABOUT.txt des CM-ThermoViewer 2.7 Build0017. Browserupdate und Prüfung der Linkziele am Gerät offen; Build 02 vom Nutzer als PASS bestätigt.

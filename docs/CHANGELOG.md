@@ -1,5 +1,11 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 03 — 09.10.2026
+
+- Infobereich unter Gerät mit Ersteller C. Mihalik, öffentlichem GitHub-Projektlink und freiwilligem PayPal-Unterstützungslink. Angaben aus ABOUT.txt des CM IR Viewers / CM-ThermoViewer 2.7 Build0017 übernommen.
+- Externe Links öffnen erst beim Anklicken einen neuen Tab; keine automatische Abfrage des Spendenanbieters. Infotext und Changelog bleiben lokal auf dem Radio verfügbar.
+- Nutzer bestätigt v0.1.3 Build 02 als PASS. Prüfung des Infobereichs und der Linkziele am Gerät für Build 03 offen.
+
 ## v0.1.3 · Build 02 — 09.10.2026
 
 - Senderlogos in Hauptansicht und Schnellwahl. Radiosendersuche übernimmt geeignete HTTPS-Favicons; eigene Logo-Adresse unter Sender möglich. Speichern, Neustart und Sicherung erhalten Logos; alte Daten laden ohne Logo.

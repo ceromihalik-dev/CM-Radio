@@ -154,3 +154,12 @@ Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS n
 Hosttests: HTTPS-Logo-/Typprüfung, Migration alter Sicherungen, Metadatentrennung/Textdarstellung, Fehlerplatzhalter, alte Ladeereignisse und Wiederholungsunterdrückung PASS. Physische Logo-/Metadatenabnahme offen. Wecker/Zeitpläne werden nicht mehr als Abnahmekriterien geführt.
 
 Nutzerabnahme v0.1.3 Build 02 am 09.10.2026 um 19:38 Uhr (Europe/Berlin): PASS nach angefragtem Test von Logos, Titelanzeige und Senderwechsel. Keine gesonderten Einzelnachweise übermittelt; vollständige Hardwareabnahme bleibt separat.
+
+## v0.1.3 Build 03 – Infobereich
+
+- Browserupdate aus demselben Paket durchführen; nach Neustart Strg+F5 und Build 03 prüfen.
+- Unter Gerät Ersteller C. Mihalik sowie GitHub- und PayPal-Link prüfen; beide Ziele öffnen in einem neuen Tab. Keine Spende für den Test erforderlich.
+- Wiedergabe bleibt beim Aufrufen des Infobereichs und Öffnen der Links aktiv.
+- Ohne Internet bleibt der Infotext verfügbar; externe Seiten benötigen Internet.
+
+Gerätetest: offen.
