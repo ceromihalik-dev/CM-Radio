@@ -1,6 +1,6 @@
 # CM-Radio – Bugliste
 
-Stand: **9. Oktober 2026 · v0.1.2 · Build 0a01**.
+Stand: **9. Oktober 2026 · v0.1.2 · Build 0a03**.
 
 Status: **OFFEN** = ungelöst; **FIXED** = Korrektur implementiert, Gerätetest offen; **PASS** = Nutzer bestätigt Korrektur am Board; **WORKAROUND** = umgehbar, Verbesserung offen. Priorität P1 blockiert die Inbetriebnahme, P2 behindert die Nutzung, P3 verbessert Komfort/Diagnose.
 

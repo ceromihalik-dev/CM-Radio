@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.2 · Build 0a02.** Neue Weboberfläche und grafische WLAN-Anzeige sind implementiert; deren Boardtest steht aus. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.2 · Build 0a03.** Radiosendersuche ist implementiert; deren Boardtest steht aus. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -15,7 +15,7 @@ Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 - Handy-Weboberfläche unter `http://cm-radio.local` oder der Geräte-IP, ohne externe Dateien.
 - Lokale `/api/v1/...`-API für die spätere Android-App.
 
-Geplant sind eine deutlich aufgewertete GUI, grafische WLAN-Stärke, internationale/nationale/lokale Sendersuche, Klangregler, Browser-Updates, Erstellerinfos mit Unterstützungslink und ein integrierter Changelog. Die Android-App folgt nach Integration und Prüfung dieser Funktionen. Das Handy kann V0.1 bereits im Browser bedienen. Für die Erstinstallation ist USB vorgesehen.
+Neue GUI und grafische WLAN-Stärke sind integriert; internationale/nationale/lokale Sendersuche ist als erster Stand umgesetzt. Geplant bleiben Klangregler, Browser-Updates, Erstellerinfos mit Unterstützungslink, integrierter Changelog und weitere Komfortfunktionen. Die Android-App folgt nach Integration und Prüfung dieser Funktionen. Das Handy kann V0.1 bereits im Browser bedienen. Für die Erstinstallation ist USB vorgesehen.
 
 ## Sofort starten
 

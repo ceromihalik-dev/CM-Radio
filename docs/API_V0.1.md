@@ -36,3 +36,7 @@ V0.1.1 ergänzt `/status` um `minFreeHeap` (Bytes) und `resetReason` (numerische
 `POST /api/v1/wifi/scan` mit `{}` startet asynchron (202). `GET /api/v1/wifi/scan` liefert `scanning` und `networks` mit `ssid`, `rssi`, `channel`, `secure`. Während der Suche erneut abfragen; fehlgeschlagene oder nicht gestartete Suche: 503. Maximal 20 unterschiedliche sichtbare SSIDs, stärkste zuerst. Versteckte Netzwerke manuell eingeben. Kein Passwort wird zurückgegeben.
 
 Build 0a01 ergänzt `/status` um `build`. Die WLAN-Suche pausiert Wiederverbindung, bereitet den Start 300 ms vor und wiederholt abgelehnte Starts höchstens dreimal. Zeitlimit 12 Sekunden. Speichern während der Suche: 409.
+
+## Sendersuche (Build 0a03)
+
+Die Weboberfläche fragt Radio-Browser direkt im Handy-/PC-Browser ab; keine zusätzliche Suchroute auf dem ESP32. Übernahme nutzt weiterhin `PUT /api/v1/stations`. Namen sind auf 63 UTF-8-Bytes begrenzt, Streamadressen auf 383. Änderungen werden erst nach explizitem Speichern geschrieben. Eine spätere Android-App muss die Verzeichnissuche ebenfalls integrieren. API-Quelle: https://docs.radio-browser.info/ .

@@ -39,3 +39,17 @@ Nutzerbestätigungen für v0.1.2 · Build 0a01: WLAN-Suche funktioniert; Ton aus
 Navigation Radio/Sender/Netzwerk/Gerät auf Handy und Desktop prüfen; WLAN-Balken mit dBm und Setup-/Offlinezustand vergleichen; Play/Stop, Lautstärke, Senderverwaltung und WLAN-Suche erneut prüfen. Status: OFFEN.
 
 Dauertest Build 0a01: Nutzer am 09.10.2026 um 17:05 Uhr (Europe/Berlin) meldet „scheint erfolgreich“. Bislang unauffällig; RUN-01 bleibt bis Bestätigung von mindestens 60 Minuten und Endstatus offen.
+
+## Build 0a02 – Nutzerabnahme
+
+09.10.2026: Nutzer bestätigt „Build 0a02 pass“. Grundabnahme der neuen Oberfläche dokumentiert; Langzeit-/Stereo-Spezialtests bleiben separat offen.
+
+## Build 0a03 – Sendersuche (offen)
+
+1. National / Deutschland: „Deutschlandfunk“ suchen, Treffer übernehmen, speichern, unter Radio auswählen und hören.
+2. International: Sendername suchen; Landfilter darf nicht wirken.
+3. Lokal / regional: z. B. „Berlin“ suchen; Ergebnisse anhand der Namen/Regionsdaten beurteilen, keine Umkreisgarantie.
+4. Weitere Länder laden und Auswahl prüfen.
+5. Mehrere Treffer hinzufügen, doppelte Adresse nicht mehrfach übernehmen, maximal zehn Sender.
+6. Suche bei ausgefallenem Verzeichnis/fehlendem Browserinternet prüfen; bestehende Sammlung und Wiedergabe bleiben nutzbar.
+7. Stromneustart: neu gespeicherter Sender bleibt vorhanden.

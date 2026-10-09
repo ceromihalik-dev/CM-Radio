@@ -1,6 +1,6 @@
 # CM-Radio – Roadmap
 
-Stand: **9. Oktober 2026 · v0.1.2 · Build 0a02**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
+Stand: **9. Oktober 2026 · v0.1.2 · Build 0a03**. Referenzhardware: geliefertes Loud-ESP32 E3 / ESP32-WROVER-N8R8, zwei 3-W-/8-Ω-Lautsprecher.
 
 Diese Datei ist die verbindliche Projekt-Roadmap. Fehler und deren Abnahme stehen in [BUGLISTE.md](BUGLISTE.md), einzelne Hardwarekriterien im [TESTPLAN.md](TESTPLAN.md). Aussagen im Chat werden bei der nächsten Projektaktualisierung hier mit Datum und Nachweis übernommen. Ein bestandener Teiltest ersetzt keine vollständige Hardwareabnahme.
 
@@ -33,9 +33,9 @@ Verbindliche Wünsche vom **09.10.2026**. Die folgenden Funktionen werden zunäc
 
 | Reihenfolge | ID | Umfang | Fertig, wenn … | Status |
 | --- | --- | --- | --- | --- |
-| 1 | RM-17 | GUI deutlich aufwerten | Moderne, übersichtliche Oberfläche für Handy und Desktop; klare Navigation für Wiedergabe, Sender, Klang, Netzwerk, Updates und Infos; gut lesbare Zustände und verständliche Rückmeldungen | Erste Umsetzung in Build 0a02; Bedienabnahme am Board offen |
-| 2 | RM-18 | Netzwerkstärke grafisch anzeigen | WLAN-Empfang als Balken von Grün über Gelb bis Rot darstellen; dBm-Wert und Text ergänzen; getrennte Anzeige für offline und laufende Verbindung; Anzeige regelmäßig aktualisieren | Implementiert in Build 0a02, Hosttests PASS; Gerätetest offen |
-| 3 | RM-14 | Radiosender international, national und lokal suchen; Favoriten | Radio-Browser als vorgesehene Quelle; Suche nach Name und Land sowie lokalen/regionalen Sendern über Ort/Region oder Suchbegriffe, soweit Verzeichnisdaten das ermöglichen; Ergebnisse abspielen und speichern; Suchdienstausfall blockiert bestehende Sender nicht | Geplant |
+| 1 | RM-17 | GUI deutlich aufwerten | Moderne, übersichtliche Oberfläche für Handy und Desktop; klare Navigation für Wiedergabe, Sender, Klang, Netzwerk, Updates und Infos; gut lesbare Zustände und verständliche Rückmeldungen | Erste Umsetzung in Build 0a02, Nutzerabnahme PASS; weitere Bereiche mit kommenden Funktionen ergänzen |
+| 2 | RM-18 | Netzwerkstärke grafisch anzeigen | WLAN-Empfang als Balken von Grün über Gelb bis Rot darstellen; dBm-Wert und Text ergänzen; getrennte Anzeige für offline und laufende Verbindung; Anzeige regelmäßig aktualisieren | Implementiert in Build 0a02, Hosttests PASS; Nutzerabnahme des Builds PASS |
+| 3 | RM-14 | Radiosender international, national und lokal suchen; Favoriten | Radio-Browser als vorgesehene Quelle; Suche nach Name und Land sowie lokalen/regionalen Sendern über Ort/Region oder Suchbegriffe, soweit Verzeichnisdaten das ermöglichen; Ergebnisse abspielen und speichern; Suchdienstausfall blockiert bestehende Sender nicht | Erste Umsetzung in Build 0a03, Softwaretests PASS; Suche/Übernahme am Gerät offen |
 | 4 | RM-19 | Klangeigenschaften: Höhen, Bässe, Loudness und Balance | Regler mit neutraler Grundeinstellung, Rücksetzen und Speicherung; hörbare Wirkung ohne störende Übersteuerung; CPU-/Speicherbedarf und echte Links-/Rechts-Balance am Board prüfen | Geplant; technische Umsetzung in der Audiokette prüfen |
 | 5 | RM-16 | Updatefunktion in der Weboberfläche | Firmware lokal über den Browser aktualisieren; Zielhardware und Version/Build prüfen, Fortschritt/Ergebnis anzeigen und Einstellungen erhalten; Zugriff absichern und Rückweg bei fehlgeschlagenem Start vorsehen | Geplant; OTA statt ausschließlich USB |
 | 6 | RM-20 | Erstellerinformationen und Unterstützungslink integrieren | Infobereich mit abgestimmten Erstellerangaben, Projekt-/GitHub-Link und frei aufrufbarem Unterstützungslink; Zieladresse vor Integration festlegen | Geplant; Erstellerangaben und Unterstützungsadresse noch festzulegen |
@@ -54,6 +54,6 @@ Die Reihenfolge dient der Umsetzung und kann nach Abhängigkeiten angepasst werd
 
 ## Versions- und Pflegekonvention
 
-Aktuell **v0.1.2 · Build 0a02**. Weitere Entwicklungsstände derselben Version: **0a03, 0a04 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
+Aktuell **v0.1.2 · Build 0a03**. Weitere Entwicklungsstände derselben Version: **0a04, 0a05 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
 
 Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualisieren. Für Fehler stabile CMR-IDs verwenden; gelöste Einträge bleiben mit Fix-Build und Nachweis erhalten. Änderungen an Firmware müssen kompilieren und die passenden Prüfungen bestehen. Ein öffentlicher Release wird erst als vollständig hardwaregetestet bezeichnet, wenn seine Abnahmekriterien nachgewiesen sind.

@@ -1,5 +1,14 @@
 # CM-Radio – Änderungen
 
+## v0.1.2 · Build 0a03 – 9. Oktober 2026
+
+- Radiosendersuche im Senderbereich: international, national nach Land und lokal über Namen/Regionsangaben. Lokale Suche benötigt einen Begriff; keine GPS-/Umkreissuche.
+- Länderliste nachladen; bis zu 30 geeignete Treffer anzeigen. MP3/AAC und HTTP(S) berücksichtigen, bekannte andere Codecs/HLS sowie doppelte Streamadressen ausfiltern.
+- Treffer als Entwurf zur Sammlung hinzufügen; bestehende Entwürfe erhalten. Erst „Änderungen speichern“ schreibt die Sammlung aufs Gerät; Grenze bleibt zehn Sender.
+- Suchanfragen laufen ausschließlich im Browser über HTTPS zu Radio-Browser. Serverliste wird bei Bedarf geladen; Zeitlimits und Wechsel auf andere Verzeichnisserver vorgesehen. Suche sendet Suchbegriff/Land, keine WLAN-Zugangsdaten.
+- Build/Hosttests PASS; echte Verzeichnisabfrage mit CORS erfolgreich. Vollständiger Browser-/Boardtest der Suche offen.
+- Nutzerabnahme von Build 0a02 am 09.10.2026: PASS.
+
 ## v0.1.2 · Build 0a02 – 9. Oktober 2026
 
 - Neue responsive Weboberfläche mit Navigation für Radio, Sender, Netzwerk und Gerät; größere Wiedergabebedienung und sichtbar beschriftete Senderfelder.

@@ -113,3 +113,11 @@ Build 0a01 behebt abgelehnte WLAN-Suchstarts bei parallelen Verbindungsversuchen
 ## Build 0a02 – neue Oberfläche
 
 Nach dem Update die Seite vollständig neu laden. „Radio“ enthält Wiedergabe und WLAN-Balken, „Sender“ die Verwaltung, „Netzwerk“ die Einrichtung, „Gerät“ Autostart und Diagnose. Die Signalbalken sind eine Orientierung: ab −55 dBm vier grüne, ab −67 dBm drei grüne, ab −75 dBm zwei gelbe, darunter ein roter Balken. Offlinezustände zeigen keine Empfangsbalken.
+
+## Build 0a03 – Radiosender suchen
+
+„Sender“ öffnen und Suchbereich wählen: „International“ weltweit, „National“ im gewählten Land oder „Lokal / regional“ nach Ort/Region bzw. Sendernamen. Weitere Länder lassen sich nachladen. Ohne Suchbegriff werden bei international/national beliebte Sender angezeigt. Lokale Suchbegriffe werden gegen Sendernamen und Regionsangaben abgefragt; eine Entfernungssuche gibt es noch nicht.
+
+„Sender suchen“ benötigt Internet im Handy-/PC-Browser. Einen Treffer über „Zur Sammlung hinzufügen“ übernehmen und anschließend „Änderungen speichern“ drücken. Danach unter „Radio“ auswählen und abspielen. Maximal zehn Sender bleiben gespeichert; bestehende Entwürfe bleiben erhalten. Eine Verzeichnisstörung beeinträchtigt die gespeicherte Sammlung nicht. Senderdaten können veraltet sein; Hörprobe erforderlich.
+
+Suchbegriff und Land werden an Radio-Browser übertragen; WLAN-Passwörter werden nicht übertragen. Quelle und API: https://docs.radio-browser.info/ .
