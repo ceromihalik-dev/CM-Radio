@@ -143,3 +143,12 @@ Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach a
 Hosttests: Loudness aus/bei 0/bei 1/bei 15, maximale EQ-Grenzen über alle Lautstärkestufen, strikte boolesche Sicherungswerte und UI-Vorschau/Speichern geprüft. Hörprobe, Update und vollständige USB-Erstinstallation dieses Pakets OFFEN.
 
 Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS nach angefragtem Loudness-Hörtest und Prüfung gespeicherter Werte nach Neustart. Keine gesonderten Messwerte übermittelt. USB-Erstinstallation dieses Pakets und vollständige Hardwareabnahme nicht gesondert bestätigt.
+
+## v0.1.3 · Build 02
+
+1. Browserupdate und Strg+F5. Bestehende Sender bleiben ohne Logo erhalten. Radiosender mit gültiger HTTPS-Logoquelle suchen, hinzufügen und speichern; Hauptansicht/Schnellwahl zeigen Bild.
+2. Unter Sender eigene HTTPS-Logo-Adresse speichern; Neustart und Sicherung/Wiederherstellung erhalten sie. Altes Backup ohne Logo lädt leer.
+3. Logoquelle defekt oder Browser ohne Internet: Platzhalter, Audio läuft weiter. Senderwechsel während Bild lädt: altes Bild/Fehler überschreibt neue Anzeige nicht. Beim Ersatzsender muss dessen Logo erscheinen.
+4. Sender mit Interpret - Titel: getrennte Zeilen, Sonderzeichen als Text; ohne Format kompletter Titel, ohne Metadaten klare Ersatzanzeige. Streammeldungen getrennt. Manuelles Stop/Play und Dauertest prüfen.
+
+Hosttests: HTTPS-Logo-/Typprüfung, Migration alter Sicherungen, Metadatentrennung/Textdarstellung, Fehlerplatzhalter, alte Ladeereignisse und Wiederholungsunterdrückung PASS. Physische Logo-/Metadatenabnahme offen. Wecker/Zeitpläne werden nicht mehr als Abnahmekriterien geführt.

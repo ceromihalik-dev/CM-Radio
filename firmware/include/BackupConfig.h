@@ -3,7 +3,7 @@
 #include "Validation.h"
 #include "SoundConfig.h"
 namespace backup {
-struct Station {char name[rules::maxName]={};char url[rules::maxUrl]={};};
+struct Station {char name[rules::maxName]={};char url[rules::maxUrl]={};char logo[rules::maxUrl]={};};
 struct Data {
  Station stations[rules::maxStations];int count=0,selected=0,volume=5,volumeLimit=21,softStartSeconds=5,fallbackStation=-1;bool autoplay=true,loudness=false;int bass=0,treble=0,balance=0;
 };
@@ -28,6 +28,8 @@ inline bool read(const JsonDocument& document,Data& out,const char*& error){
   const char* name=station["name"],*url=station["url"];bool nonblank=false;
   for(const char* p=name;*p;++p)if(static_cast<unsigned char>(*p)>32)nonblank=true;
   if(!nonblank||strlen(name)>=rules::maxName||!rules::validUrl(url)){error="Ungueltiger Sendername oder Stream in Sicherung";return false;}
+  if(station.as<JsonObjectConst>().containsKey("logo")&&!station["logo"].is<const char*>())return false;
+  const char* logo=station["logo"]|"";if(!rules::validLogo(logo)){error="Ungueltige HTTPS-Logo-Adresse";return false;}strcpy(out.stations[i].logo,logo);
   strcpy(out.stations[i].name,name);strcpy(out.stations[i].url,url);
  }
  out.selected=config["selected"];out.volume=config["volume"];out.volumeLimit=config["volumeLimit"];out.softStartSeconds=config["softStartSeconds"];out.fallbackStation=config["fallbackStation"];out.autoplay=config["autoplay"];

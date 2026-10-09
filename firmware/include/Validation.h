@@ -21,6 +21,7 @@ inline bool validUrl(const char* url) {
         if (*p == '@') return false;
     return true;
 }
+inline bool validLogo(const char* url){return url && (!*url || (strncmp(url,"https://",8)==0 && validUrl(url)));}
 inline bool validWifi(const char* ssid, const char* password) {
     if (!ssid || !password || !*ssid || strlen(ssid) > 32) return false;
     const size_t n = strlen(password);

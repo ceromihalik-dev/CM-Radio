@@ -2,7 +2,7 @@
 
 WLAN-Internetradio für das **Loud-ESP32 mit ESP32-WROVER-N8R8**, gesteuert über eine lokale Weboberfläche und eine versionierte API. Zwei vorhandene **3-W-/8-Ω-Deckenlautsprecher** werden direkt an die eingebauten Stereo-Verstärker angeschlossen.
 
-**Stand: v0.1.3 · Build 01.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
+**Stand: v0.1.3 · Build 02.** Sleep-Timer, sanfter Start und Lautstärkegrenze sind implementiert; Build 0a04 wurde vom Nutzer als PASS bestätigt. Radiosendersuche wurde in Build 0a03 vom Nutzer abgenommen. Neue Weboberfläche und grafische WLAN-Anzeige wurden in Build 0a02 vom Nutzer abgenommen. Die grundlegende Inbetriebnahme am gelieferten E3-Board ist bestätigt: WLAN-Suche, Ton aus beiden Lautsprechern, Lautstärke/Stop/Play und automatischer Start nach Stromunterbrechung. Getrennte Stereo-Kanäle, Dauerbetrieb und weitere Abnahmekriterien bleiben offen. Ergebnisse stehen im [Testplan](docs/TESTPLAN.md) und [Buildstatus](docs/BUILDSTATUS.md).
 
 Projektstand: [Roadmap](docs/ROADMAP.md) · [Bugliste](docs/BUGLISTE.md).
 
@@ -80,7 +80,7 @@ CM-Radio ist unter **GPL-3.0-or-later** lizenziert. Die eingebundene Audiobiblio
 
 ### Neuer Stand 0a05
 
-Unter **Gerät** stehen Einstellungssicherung, geprüfte Wiederherstellung und Ersatzsender zur Verfügung. Die Sicherung enthält die derzeit implementierten Sender- und Wiedergabefunktionen; Klang und Zeitpläne sind weiterhin geplant. Build 0a04 wurde vom Nutzer als PASS bestätigt; Build 0a05 wurde am 09.10.2026 vom Nutzer als PASS bestätigt.
+Unter **Gerät** stehen Einstellungssicherung, geprüfte Wiederherstellung und Ersatzsender zur Verfügung. Die Sicherung enthält die derzeit implementierten Sender- und Wiedergabefunktionen; Klang wurde später ergänzt; Wecker und Zeitpläne entfallen. Build 0a04 wurde vom Nutzer als PASS bestätigt; Build 0a05 wurde am 09.10.2026 vom Nutzer als PASS bestätigt.
 
 ### Neuer Stand 0a06
 
@@ -107,3 +107,7 @@ Nutzerabnahme Build 0a0a am 09.10.2026 um 18:59 Uhr (Europe/Berlin): PASS nach a
 Loudness lässt sich unter Gerät direkt vorhören und dauerhaft speichern. Die Zusatzanhebung nimmt mit der tatsächlichen Lautstärke ab und ist ab Stufe 15 ausgeschaltet; Bass/Höhen bleiben auf insgesamt +6 dB begrenzt. Alte Einstellungen laden Loudness aus. Jedes Firmware-ZIP enthält die ausführliche USB_ERSTINSTALLATION.txt mit automatisch passenden Paketdaten. Browserupdate nutzt manifest.json und firmware.bin. Gerätetest dieses neuen Stands offen.
 
 Nutzerabnahme v0.1.3 Build 01 am 09.10.2026 um 19:10 Uhr (Europe/Berlin): PASS nach angefragtem Loudness-Hörtest und Prüfung gespeicherter Werte nach Neustart. Keine gesonderten Messwerte übermittelt. USB-Erstinstallation dieses Pakets und vollständige Hardwareabnahme nicht gesondert bestätigt.
+
+### v0.1.3 · Build 02
+
+Senderlogos aus der Radiosendersuche oder eigener HTTPS-Adresse unter Sender werden gespeichert und in Sicherungen übernommen. Browser lädt Logos; ohne Bild bleibt ein Platzhalter. Titel/Interpret aus üblichen Streammetadaten erscheinen getrennt; bei fehlenden Daten bleibt eine klare Ersatzanzeige. Wecker/Zeitpläne wurden auf Nutzerwunsch gestrichen. USB_ERSTINSTALLATION.txt bleibt in jedem Paket enthalten. Gerätetest Build 02 offen.

@@ -28,5 +28,6 @@ int main(){
  deserializeJson(d,fixture);assert(backup::read(d,out,error));assert(!out.loudness);d["settings"]["loudness"]=true;assert(backup::read(d,out,error));assert(out.loudness);d["settings"]["loudness"]=1;assert(!backup::read(d,out,error));d["settings"]["loudness"]="true";assert(!backup::read(d,out,error));
  for(int volume=0;volume<=21;++volume){auto t=sound::tone(6,6,true,volume);assert(t.bass<=6&&t.treble<=6);auto off=sound::tone(-3,2,false,volume);assert(off.bass==-3&&off.treble==2);}
  auto quiet=sound::tone(0,0,true,1);assert(quiet.bass==4&&quiet.treble==2);auto loud=sound::tone(0,0,true,15);assert(loud.bass==0&&loud.treble==0);auto muted=sound::tone(0,0,true,0);assert(muted.bass==0&&muted.treble==0);
+ deserializeJson(d,fixture);d["settings"]["stations"][0]["logo"]="https://example.org/logo.png";assert(backup::read(d,out,error));assert(std::string(out.stations[0].logo)=="https://example.org/logo.png");deserializeJson(d,fixture);assert(backup::read(d,out,error));assert(out.stations[0].logo[0]==0);d["settings"]["stations"][0]["logo"]="http://example.org/logo.png";assert(!backup::read(d,out,error));d["settings"]["stations"][0]["logo"]=true;assert(!backup::read(d,out,error));
  puts("Backup schema, roundtrip fields, strict types, missing fields, limits, stream validation and credential isolation: PASS");
 }

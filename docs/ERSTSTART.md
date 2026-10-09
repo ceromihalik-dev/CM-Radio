@@ -136,7 +136,7 @@ Update wie zuvor mit `firmware.bin` an 0x10000 ohne Löschen. Vorhandene Sender/
 
 Update weiterhin ausschließlich `firmware.bin` an `0x10000` schreiben, ohne Flash zu löschen. Unter **Gerät** Ersatzsender aus der gespeicherten Liste auswählen und Wiedergabeeinstellungen speichern. Bei ungespeicherten Senderentwürfen zuerst die Sammlung speichern.
 
-**Sicherung herunterladen** exportiert gespeicherte Sender und vorhandene Wiedergabeeinstellungen ohne WLAN-Zugangsdaten. Zum Wiederherstellen Datei auswählen, **Datei prüfen**, Zusammenfassung kontrollieren, anschließend **Geprüfte Sicherung übernehmen**. Übernahme ersetzt diese Einstellungen, stoppt Audio und beendet den Timer; Heim-WLAN bleibt erhalten. Danach manuell starten. Künftige Klang- und Zeitplanfunktionen sind noch nicht enthalten.
+**Sicherung herunterladen** exportiert gespeicherte Sender und vorhandene Wiedergabeeinstellungen ohne WLAN-Zugangsdaten. Zum Wiederherstellen Datei auswählen, **Datei prüfen**, Zusammenfassung kontrollieren, anschließend **Geprüfte Sicherung übernehmen**. Übernahme ersetzt diese Einstellungen, stoppt Audio und beendet den Timer; Heim-WLAN bleibt erhalten. Danach manuell starten. Klang wurde später ergänzt; Wecker/Zeitpläne entfallen auf Nutzerwunsch.
 
 Ersatzsender wird nach drei erfolglosen Verbindungsversuchen bei vorhandenem WLAN aktiviert. Die Wartezeit hängt von Stream-Timeouts ab. Ein automatischer Rückwechsel erfolgt nicht; manuelles Play beginnt erneut mit dem ausgewählten Sender. Bei WLAN-Ausfall allein erfolgt kein Wechsel. Bei Änderung eines bereits laufenden Ersatzsenders wird die neue Auswahl beim nächsten Wiedergabestart verwendet.
 
@@ -165,3 +165,7 @@ Erster Test: Das Paket 0a08 nochmals über den Browser installieren und Neustart
 ## v0.1.3 · Build 01
 
 Update über Browser mit manifest.json und firmware.bin, dann Strg+F5. Loudness bei leiser Wiedergabe unter Gerät ein-/ausschalten; direkt hörbare Vorschau. Klang dauerhaft speichern übernimmt die Wahl. Zur USB-Erstinstallation die beigefügte USB_ERSTINSTALLATION.txt verwenden.
+
+## v0.1.3 · Build 02
+
+Nach Browserupdate Strg+F5. Logos für neue Suchtreffer werden bei vorhandener geeigneter HTTPS-Favicon-Adresse übernommen. Für bestehende Sender Logo-Adresse unter Sender ergänzen und Änderungen speichern. Bei fehlendem/defektem Logo erscheint ein CM-Platzhalter, Audio bleibt unabhängig. Bilder werden vom Handy/PC geladen und brauchen dessen Internetzugang. Interpret/Titel werden aus gängigen Streammetadaten getrennt; nicht jeder Sender liefert sie.

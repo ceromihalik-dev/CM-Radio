@@ -1,5 +1,15 @@
 # CM-Radio – Änderungen
 
+## v0.1.3 · Build 02 — 09.10.2026
+
+- Senderlogos in Hauptansicht und Schnellwahl. Radiosendersuche übernimmt geeignete HTTPS-Favicons; eigene Logo-Adresse unter Sender möglich. Speichern, Neustart und Sicherung erhalten Logos; alte Daten laden ohne Logo.
+- Bilder lädt ausschließlich der Browser, mit unterdrücktem Referrer. Fehlende/ungültige/defekte Hauptlogos bzw. acht Sekunden Ladezeit zeigen den CM-Platzhalter; derselbe Fehler wird nicht bei jeder Statusabfrage erneut angefordert. Ersatzsender nutzt seine tatsächliche Logo-Zuordnung.
+- Titelanzeige trennt gängige Metadaten im Format Interpret - Titel (auch Gedankenstrich); andere Angaben bleiben als kompletter Titel erhalten. Technische Streammeldung getrennt anzeigen; fehlende Titel ausdrücklich kennzeichnen. Sendermetadaten werden als Text angezeigt.
+- Sender-/Sicherungsdaten dürfen nun bis 16 KiB enthalten; Speicherpuffer für Logo-URLs erweitert. Logo-Adressen optional und auf HTTPS ohne Zugangsdaten begrenzt.
+- Wecker und Zeitpläne entfallen auf Nutzerwunsch. RM-23 bleibt als gestrichene historische Referenz, blockiert Android-Voraussetzungen nicht mehr.
+- v0.1.3 Build 01 vom Nutzer als PASS bestätigt. Logo-/Metadaten-Hörtest für Build 02 offen.
+
+
 ## v0.1.3 · Build 01 — 09.10.2026
 
 - Neue Versions-/Buildkennung nach Nutzerwunsch: v0.1.3, Build 01; folgende Builds 02, 03 usw.

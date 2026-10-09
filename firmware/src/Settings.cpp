@@ -7,8 +7,8 @@ bool SettingsStore::load(Settings& s) {
     s.stations[0] = {"Radio Paradise (Teststream)", "http://stream.radioparadise.com/mp3-128"};
     const String raw = preferences.getString("config", "");
     if (raw.isEmpty()) return true;
-    if (raw.length() > 8192) return false;
-    DynamicJsonDocument d(12288);
+    if (raw.length() > 16384) return false;
+    DynamicJsonDocument d(24576);
     if (deserializeJson(d, raw)) return false;
     const int schema = d["schema"] | 0;
     if (schema != 1) return false;
@@ -25,7 +25,10 @@ bool SettingsStore::load(Settings& s) {
         const String name = list[i]["name"] | "";
         const String url = list[i]["url"] | "";
         if (name.isEmpty() || name.length() >= rules::maxName || !rules::validUrl(url.c_str())) return false;
-        candidate.stations[i] = {name, url};
+        if (list[i].containsKey("logo") && !list[i]["logo"].is<const char*>()) return false;
+        const String logo = list[i]["logo"] | "";
+        if (!rules::validLogo(logo.c_str())) return false;
+        candidate.stations[i] = {name, url, logo};
     }
     const int selected = d["selected"] | 0;
     const int volume = d["volume"] | 5;
@@ -52,7 +55,7 @@ bool SettingsStore::load(Settings& s) {
     return true;
 }
 bool SettingsStore::save(const Settings& s) {
-    DynamicJsonDocument d(12288);
+    DynamicJsonDocument d(24576);
     d["schema"] = 1;
     d["loudness"]=s.loudness;d["bass"]=s.bass;d["treble"]=s.treble;d["balance"]=s.balance;
     d["ssid"] = s.ssid;
@@ -67,7 +70,7 @@ bool SettingsStore::save(const Settings& s) {
     for (size_t i = 0; i < s.count; ++i) {
         JsonObject station = list.createNestedObject();
         station["name"] = s.stations[i].name;
-        station["url"] = s.stations[i].url;
+        station["url"] = s.stations[i].url;station["logo"]=s.stations[i].logo;
     }
     if (d.overflowed()) return false;
     String raw;

@@ -88,7 +88,7 @@ bool body(JsonDocument& document) {
         error(403, "Fremder Browser-Ursprung");
         return false;
     }
-    if (server.arg("plain").length() > 8192) {
+    if (server.arg("plain").length() > 16384) {
         error(413, "Anfrage zu gross");
         return false;
     }
@@ -148,10 +148,10 @@ void writeBackup(JsonDocument& document) {
     config["loudness"]=settings.loudness;config["bass"]=settings.bass;config["treble"]=settings.treble;config["balance"]=settings.balance;
     config["volumeLimit"] = settings.volumeLimit;config["softStartSeconds"] = settings.softStartSeconds;config["fallbackStation"] = settings.fallbackStation;
     JsonArray list = config.createNestedArray("stations");
-    for (size_t i = 0; i < settings.count; ++i) {JsonObject item = list.createNestedObject();item["name"] = settings.stations[i].name;item["url"] = settings.stations[i].url;}
+    for (size_t i = 0; i < settings.count; ++i) {JsonObject item = list.createNestedObject();item["name"] = settings.stations[i].name;item["url"] = settings.stations[i].url;item["logo"]=settings.stations[i].logo;}
 }
 void restoreBackup(bool validateOnly) {
-    DynamicJsonDocument request(12288);if (!body(request)) return;
+    DynamicJsonDocument request(24576);if (!body(request)) return;
     std::unique_ptr<backup::Data> data(new(std::nothrow) backup::Data);
     if (!data) {error(503, "Zu wenig Speicher fuer Wiederherstellung");return;}
     const char* reason = nullptr;
@@ -164,7 +164,7 @@ void restoreBackup(bool validateOnly) {
     candidate.volumeLimit = data->volumeLimit;candidate.softStartSeconds = data->softStartSeconds;
     candidate.loudness=data->loudness;candidate.bass=data->bass;candidate.treble=data->treble;candidate.balance=data->balance;
     candidate.autoplay = data->autoplay;candidate.fallbackStation = data->fallbackStation;
-    for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url};
+    for (size_t i = 0; i < candidate.count; ++i) candidate.stations[i] = {data->stations[i].name, data->stations[i].url,data->stations[i].logo};
     if (!persist(candidate)) return;
     soundPreview = false;
     applyAudioConfig = true;applyFallback = true;applySound = true;stopAfterRestore = true;
@@ -180,7 +180,7 @@ void routes() {
     });
     server.on("/api/v1/status", HTTP_GET, [] {
         const PlayerStatus p = player::status();
-        DynamicJsonDocument response(2048);
+        DynamicJsonDocument response(3072);
         response["name"] = "CM-Radio";
         response["version"] = board::version;
         response["build"] = board::build;
@@ -205,6 +205,8 @@ void routes() {
             for (size_t i = 0; i < settings.count; ++i) if (settings.stations[i].url == p.actualUrl) {audibleName = settings.stations[i].name;break;}
         }
         response["station"] = audibleName;
+        const int logoIndex=p.requested?playingStationIndex:static_cast<int>(settings.selected);
+        response["stationLogo"]=logoIndex>=0?settings.stations[logoIndex].logo:"";
         response["requestedStation"] = settings.stations[settings.selected].name;
         response["loudness"]=settings.loudness;response["previewLoudness"]=soundPreview?previewLoudness:settings.loudness;response["bass"]=settings.bass;response["treble"]=settings.treble;response["balance"]=settings.balance;
         response["soundPreview"]=soundPreview;response["previewBass"]=soundPreview?previewBass:settings.bass;response["previewTreble"]=soundPreview?previewTreble:settings.treble;response["previewBalance"]=soundPreview?previewBalance:settings.balance;
@@ -234,17 +236,17 @@ void routes() {
         sendJson(200, response);
     });
     server.on("/api/v1/stations", HTTP_GET, [] {
-        DynamicJsonDocument response(12288);
+        DynamicJsonDocument response(24576);
         JsonArray list = response.createNestedArray("stations");
         for (size_t i = 0; i < settings.count; ++i) {
             JsonObject station = list.createNestedObject();
             station["name"] = settings.stations[i].name;
-            station["url"] = settings.stations[i].url;
+            station["url"] = settings.stations[i].url;station["logo"]=settings.stations[i].logo;
         }
         sendJson(200, response);
     });
     server.on("/api/v1/stations", HTTP_PUT, [] {
-        DynamicJsonDocument request(12288);
+        DynamicJsonDocument request(24576);
         if (!body(request)) return;
         if (!request["stations"].is<JsonArray>()) { error(400, "stations muss ein Array sein"); return; }
         JsonArray list = request["stations"];
@@ -262,7 +264,10 @@ void routes() {
             String url = list[i]["url"].as<String>();
             name.trim(); url.trim();
             if (name.isEmpty() || name.length() >= rules::maxName || !rules::validUrl(url.c_str())) { error(400, "Ungueltiger Sendername oder HTTP(S)-Stream"); return; }
-            candidate.stations[i] = {name, url};
+            if (list[i].containsKey("logo")&&!list[i]["logo"].is<const char*>()){error(400,"Logo muss eine HTTPS-Adresse sein");return;}
+            String logo=list[i]["logo"]|"";logo.trim();
+            if(!rules::validLogo(logo.c_str())){error(400,"Ungueltige HTTPS-Logo-Adresse");return;}
+            candidate.stations[i] = {name, url,logo};
             if (!previousFallback.isEmpty() && url == previousFallback) candidate.fallbackStation = i;
             if (url == current) { candidate.selected = i; currentFound = true; }
         }
@@ -367,7 +372,7 @@ void routes() {
         soundPreview=false;accepted();
     });
     server.on("/api/v1/backup", HTTP_GET, [] {
-        DynamicJsonDocument response(12288);writeBackup(response);
+        DynamicJsonDocument response(24576);writeBackup(response);
         if (response.overflowed()) {error(503, "Sicherung konnte nicht erstellt werden");return;}
         sendJson(200, response);
     });

@@ -4,7 +4,7 @@
 #include <Preferences.h>
 #include "Validation.h"
 
-struct Station { String name; String url; };
+struct Station { String name; String url; String logo; };
 struct Settings {
     String ssid;
     String password;
