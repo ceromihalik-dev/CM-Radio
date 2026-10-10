@@ -55,10 +55,14 @@ jobs:
                       out.write(item, item.name)
           with open(os.environ['GITHUB_ENV'], 'a') as env:
               env.write(f'RELEASE_TAG={tag}\nRELEASE_ARCHIVE={archive}\n')
+          tested = version == '0.1.3' and build == '09'
+          hardware_note = ('Favicon-Anzeige von Build 09 am 10.10.2026 durch Nutzer als PASS bestätigt; '
+                           'übrige Firmwarefunktionen zuvor mit Build 08 abgenommen.' if tested else
+                           'Die Abnahme dieses Builds am Gerät steht noch aus.')
           pathlib.Path('release-notes.md').write_text(
               f'CM-Radio **v{version} · Build {build}** für Loud-ESP32 WROVER-N8R8.\n\n'
               'Firmware-Kompilierung und automatische Softwaretests bestanden. '
-              'Die Abnahme dieses Builds am Gerät steht noch aus.\n\n'
+              f'{hardware_note}\n\n'
               'Update: ZIP entpacken; unter **Gerät → Firmwareupdate** '
               '**manifest.json** und **firmware.bin** auswählen.\n\n'
               'Für die Erstinstallation per USB liegt **USB_ERSTINSTALLATION.txt** bei. '

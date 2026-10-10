@@ -3,6 +3,7 @@
 ## v0.1.3 · Build 09 — 10.10.2026
 
 - Eigenes Favicon: weißes Radio auf petrolfarbenem Hintergrund, Antenne, Lautsprecher und gelber Abstimmknopf. SVG direkt in der Weboberfläche eingebettet, ohne externe Abrufe; skalierbar und für Browser-Tabs geeignet.
+- Favicon in Build 09 vom Nutzer am 10.10.2026 als PASS bestätigt.
 - Build 08 vom Nutzer am 10.10.2026 vollständig als PASS bestätigt; Gehäusepassung separat offen.
 
 ## v0.1.3 · Build 08 — 09.10.2026

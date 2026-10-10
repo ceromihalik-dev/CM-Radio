@@ -92,3 +92,5 @@ Gerätename, Mono/Stereo, Verbindungsdiagnose und Senderreparatur integriert. Ho
 Nutzerabnahme 09.10.2026: Build-08-Installation PASS (21:04 Europe/Berlin), 60-Minuten-Dauertest PASS und Passwortreset per BOOT PASS (21:05–21:06). Die vier neuen Funktionen und Werkseinstellungen sind damit nicht pauschal hardwareabgenommen.
 
 Build 09: Favicon eingebettet; Hosttests einschließlich Abgleich der eingebetteten Grafik mit favicon.svg PASS. PlatformIO-Firmwarebuild PASS (1.426.385 Bytes Programmcode, 54.136 Bytes statisches RAM). Hardwareabnahme von Build 08 durch Nutzer am 10.10.2026 bestätigt; Favicon-Darstellung von Build 09 im realen Browser noch offen.
+
+Nutzerabnahme v0.1.3 Build 09 am 10.10.2026: Favicon-Anzeige PASS. Firmware- und Hosttests PASS; Build-08-Funktionen zuvor vollständig durch Nutzer abgenommen.
