@@ -11,7 +11,7 @@ import subprocess
 import sys
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
-parser.add_argument('--output', type=Path, default=ROOT/'dist/CM-Radio-V0.1.3-08')
+parser.add_argument('--output', type=Path, default=ROOT/'dist/CM-Radio-V0.1.3-09')
 args = parser.parse_args()
 build = ROOT/'firmware/.pio/build/loud_wrover'
 out = args.output.resolve()
@@ -30,7 +30,7 @@ shutil.copy2(ROOT/'scripts/smoke_test.py', out/'smoke_test.py')
 shutil.copy2(ROOT/'LICENSE', out/'LICENSE')
 shutil.copy2(ROOT/'THIRD_PARTY.md', out/'THIRD_PARTY.md')
 shutil.copy2(ROOT/'docs/ERSTSTART.md', out/'ERSTSTART.md')
-manifest = {'name':'CM-Radio','version':'0.1.3','build':'08','target':'Loud-ESP32 ESP32-WROVER-N8R8','chip':'esp32','flashSize':8388608,'flashOffset':0,'firmwareFile':'CM-Radio-V0.1.3-full.bin','partitions':{name:hex(offset) for name,offset in files},'hardwareTested':False}
+manifest = {'name':'CM-Radio','version':'0.1.3','build':'09','target':'Loud-ESP32 ESP32-WROVER-N8R8','chip':'esp32','flashSize':8388608,'flashOffset':0,'firmwareFile':'CM-Radio-V0.1.3-full.bin','partitions':{name:hex(offset) for name,offset in files},'hardwareTested':False}
 guide=(ROOT/'docs/USB_ERSTINSTALLATION.txt').read_text().replace('{VERSION}',manifest['version']).replace('{BUILD}',manifest['build']).replace('{FULL_IMAGE}',manifest['firmwareFile'])
 (out/'USB_ERSTINSTALLATION.txt').write_text(guide,encoding='utf-8')
 manifest['update'] = {'file':'firmware.bin','size':(out/'firmware.bin').stat().st_size,'sha256':hashlib.sha256((out/'firmware.bin').read_bytes()).hexdigest(),'target':'CM-Radio-WROVER-N8R8'}

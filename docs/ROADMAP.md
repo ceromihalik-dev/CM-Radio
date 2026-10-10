@@ -54,7 +54,7 @@ Die Reihenfolge dient der Umsetzung und kann nach Abhängigkeiten angepasst werd
 
 ## Versions- und Pflegekonvention
 
-Aktuell **v0.1.3 · Build 08**. Weitere Builds innerhalb dieser Version: **07, 08 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
+Aktuell **v0.1.3 · Build 09**. Weitere Builds innerhalb dieser Version: **10, 11 …**. Firmware, Status-API, Weboberfläche und Paketmanifest führen dieselbe Kennung. Jedes neue Firmware-ZIP enthält eine ausführliche USB-Erstinstallationsanleitung. Reine Dokumentationsänderungen erhöhen den Firmware-Build nicht.
 
 Bei Änderungen Roadmap, Bugliste und betroffene Testkriterien zusammen aktualisieren. Für Fehler stabile CMR-IDs verwenden; gelöste Einträge bleiben mit Fix-Build und Nachweis erhalten. Änderungen an Firmware müssen kompilieren und die passenden Prüfungen bestehen. Ein öffentlicher Release wird erst als vollständig hardwaregetestet bezeichnet, wenn seine Abnahmekriterien nachgewiesen sind.
 
@@ -78,13 +78,15 @@ Gerätename, Mono/Stereo, Verbindungsdiagnose und Senderreparatur integriert. Ho
 
 | ID | Funktion | Stand |
 | --- | --- | --- |
-| RM-30 | Gerätename ändern | Build 08 implementiert; Boardtest offen |
-| RM-31 | Mono/Stereo | Build 08 implementiert; Boardtest offen |
-| RM-32 | Verbindungsqualität anzeigen | Build 08 implementiert; Boardtest offen |
-| RM-33 | Sender automatisch wiederfinden | Build 08 implementiert; Boardtest offen |
+| RM-30 | Gerätename ändern | Build 08 implementiert; Nutzerabnahme PASS (10.10.2026) |
+| RM-31 | Mono/Stereo | Build 08 implementiert; Nutzerabnahme PASS (10.10.2026) |
+| RM-32 | Verbindungsqualität anzeigen | Build 08 implementiert; Nutzerabnahme PASS (10.10.2026) |
+| RM-33 | Sender automatisch wiederfinden | Build 08 implementiert; Nutzerabnahme PASS (10.10.2026) |
 
 Nutzerabnahme 09.10.2026: Build-08-Installation PASS (21:04 Europe/Berlin), 60-Minuten-Dauertest PASS und Passwortreset per BOOT PASS (21:05–21:06). Die vier neuen Funktionen und Werkseinstellungen sind damit nicht pauschal hardwareabgenommen.
 
 Gehäuse V0.2/W3: versenkter IO0-Druckknopf, Halteplatte und Führung; Platine 1,7 mm / Tasterhöhe 2,0 mm berücksichtigt. Sichtbare Versionsgravur entfernt. Wandaufnahmen erhalten. CAD/STL/STEP-Prüfung PASS; gedruckte Passprobe und Tasterweg offen.
 
 Gehäuse V0.2/W4: Kabeldurchführungen nominal 3,0 mm; Schlüsselloch-Materialstärke 3,2 statt 5,2 mm. Empfohlener Abstand Kopfunterseite/Wand 3,5 mm, Kopf maximal 3 mm hoch. Unterteil/Deckel neu drucken; IO0-Bauteile unverändert. CAD/STL/STEP-Prüfung PASS; Druckpassung und Lastprüfung offen.
+
+Build 09: eigenes eingebettetes Radio-Favicon. Build-08-Firmwareprüfungen vom Nutzer am 10.10.2026 als PASS bestätigt. Gehäuseprüfung separat offen.
