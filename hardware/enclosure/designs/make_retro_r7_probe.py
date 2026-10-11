@@ -7,7 +7,7 @@ import make_designs as md
 m=md.m
 
 
-def export(root):
+def export(root,revision='R7'):
     out=Path(root)/'Retro/OPTIONAL_EINSATZPROBE';out.mkdir(parents=True,exist_ok=True)
     strip=m.rounded_box(52,16,2.4,1.5)
     strip=strip.cut(cq.Workplane('XY').polyline([(0,0),(3,0),(0,3)]).close().extrude(2.5))
@@ -17,7 +17,7 @@ def export(root):
         strip=strip.cut(m.cyl(x,8,9.4-depth,dia/2,depth+.1))
         specs.append({'x_mm':x,'pilot_diameter_mm':dia,'depth_mm':depth,'boss_diameter_mm':boss,'insert':model})
     strip=strip.clean();s=strip.val();assert s.isValid() and len(s.Solids())==1
-    stl=out/'CM-Radio_Einsatzprobe_R7.stl';step=out/'CM-Radio_Einsatzprobe_R7.step'
+    stl=out/f'CM-Radio_Einsatzprobe_{revision}.stl';step=out/f'CM-Radio_Einsatzprobe_{revision}.step'
     cq.exporters.export(strip,str(stl),tolerance=.025,angularTolerance=.08);cq.exporters.export(strip,str(step))
     mesh=trimesh.load_mesh(stl);assert mesh.is_watertight and mesh.is_winding_consistent and len(mesh.split())==1
     rt=cq.importers.importStep(str(step)).val();assert rt.isValid() and len(rt.Solids())==1 and abs(rt.Volume()-s.Volume())<.01
@@ -30,7 +30,7 @@ def export(root):
     (out/'Probe_Masse_Pruefung.json').write_text(json.dumps({'result':'PASS','bbox_mm':[52,16,9.4],
         'optional':True,'orientation':'Chamfered corner at left; 3.2 / 3.3 / 4.0 / 4.1 mm',
         'bores':specs,'purpose':'Check actual dimensions and thermal installation before enclosure.'},indent=2)+'\n')
-    print('R7 optionale Einsatzprobe PASS',flush=True)
+    print(f'{revision} optionale Einsatzprobe PASS',flush=True)
 
 
 if __name__=='__main__':

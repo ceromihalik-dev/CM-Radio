@@ -1,4 +1,21 @@
-Aktueller Druckstand für Modell 3: **V0.3 R7 ohne Display**.
+Aktueller Druckstand für Modell 3: **V0.3 R8 ohne Display**.
+Offene Lüftungsschlitze; R7-Schutzhauben und innere Prallwand entfernt.
+Glatte Front zum Aufkleben mit 0,2 mm Klebespalt; keine Laschen oder Frontbügel.
+Fünf Druckteile, zehn ruthex-Messinggewinde (4 M3 SHORT / 6 M2).
+JLC3DP: 3201PA-F SLS Grauschwarz / 3301PA SLS Weiß, keine Lackierung.
+Außenmaß **104 × 80 × 36 mm**, Platinenraster 58 × 49 mm.
+Siehe [RETRO_R8_MONTAGE.md](RETRO_R8_MONTAGE.md). Physische R8-Abnahme steht aus.
+
+```sh
+python hardware/enclosure/designs/make_retro_r8.py output/Retro_R8
+python hardware/enclosure/designs/check_retro_r4.py output/Retro_R8
+python hardware/enclosure/designs/check_retro_r8.py output/Retro_R8
+python hardware/enclosure/designs/check_front.py output/Retro_R8 --design Retro
+python hardware/enclosure/designs/make_retro_r8_probe.py output/Retro_R8
+python hardware/enclosure/designs/render_retro_r8.py output/Retro_R8
+```
+
+Zurückgestellter Vorgänger: **V0.3 R7 ohne Display**.
 Zwölf nachträglich einzusetzende ruthex-Messinggewinde (4 M3 SHORT / 8 M2),
 wechselbarer Fronteinsatz mit zwei verdeckten Haltebügeln, seitliche nach
 unten offene Lüftungshauben und innere Prallwand vor den unteren Schlitzen.

@@ -89,16 +89,16 @@ def build():
     return p,d,parts
 
 
-def export(root):
+def export(root,builder=build,revision='R7'):
     import trimesh
     out=Path(root)/'Retro';out.mkdir(parents=True,exist_ok=True)
     for folder in ('STL_DRUCK','STEP_EINZELTEILE','PRUEFUNG'):(out/folder).mkdir(exist_ok=True)
-    p,d,parts=build()
-    report={'revision':'V0.3 R7','printed_fit_tested':False,'parts':{},'collisions_mm3':{},'physical_thermal_tested':False}
+    p,d,parts=builder()
+    report={'revision':f'V0.3 {revision}','printed_fit_tested':False,'parts':{},'collisions_mm3':{},'physical_thermal_tested':False}
     for name,part in parts.items():
         s=part.val();assert s.isValid() and len(s.Solids())==1,(name,'solid')
         x0,y0,z0,x1,y1,z1=m.exact_bounds(s);pp=part.translate((-x0,-y0,-z0))
-        stem=f'CM-Radio_Retro_{name}_V03_R7'
+        stem=f'CM-Radio_Retro_{name}_V03_{revision}'
         stl=out/'STL_DRUCK'/(stem+'.stl');step=out/'STEP_EINZELTEILE'/(stem+'.step')
         cq.exporters.export(pp,str(stl),tolerance=.025,angularTolerance=.08)
         cq.exporters.export(pp,str(step))
@@ -111,16 +111,17 @@ def export(root):
     for a,b in itertools.combinations(parts,2):
         v=parts[a].val().intersect(parts[b].val()).Volume()
         report['collisions_mm3'][a+' / '+b]=v;assert v<1e-5,(a,b,v)
-    for name in ('Unterteil','Deckel','Reset_Halteplatte','Front_Halter_links','Front_Halter_rechts','Fronteinsatz'):
-        assert parts[name].val().intersect(d['pcb_reference'].val()).Volume()<1e-5,(name,'PCB')
+    for name in parts:
+        if name!='Resetknopf':
+            assert parts[name].val().intersect(d['pcb_reference'].val()).Volume()<1e-5,(name,'PCB')
     pressed=parts['Resetknopf'].translate((0,0,-p['reset_stroke']))
     for n in parts:
         if n!='Resetknopf':assert pressed.val().intersect(parts[n].val()).Volume()<1e-5,('pressed',n)
-    ass=cq.Assembly(name='CM-Radio_Retro_R7')
+    ass=cq.Assembly(name=f'CM-Radio_Retro_{revision}')
     for n,s in parts.items():ass.add(s,name=n,color=cq.Color(*((.94,.94,.92) if n=='Fronteinsatz' else (.22,.23,.24))))
     ass.export(str(out/'BAUGRUPPE_NICHT_DRUCKEN.step'))
     # Hardware is only a sizing reference, intentionally omitted from prints.
-    refs=cq.Assembly(name='CM-Radio_Retro_R7_Hardware_Referenzen')
+    refs=cq.Assembly(name=f'CM-Radio_Retro_{revision}_Hardware_Referenzen')
     for n,s in parts.items():refs.add(s,name=n,color=cq.Color(*((.94,.94,.92) if n=='Fronteinsatz' else (.22,.23,.24))))
     for i,j in enumerate(p['insert_joints']):
         x,y=j['xy'];spec=p['insert_specs'][j['model']]
@@ -133,8 +134,8 @@ def export(root):
     refs.add(d['pcb_reference'],name='PCB_Referenz',color=cq.Color(.2,.5,.25))
     refs.export(str(out/'HARDWARE_REFERENZEN_NICHT_DRUCKEN.step'))
     (out/'parameter.json').write_text(json.dumps(p,indent=2)+'\n')
-    (out/'PRUEFUNG/Geometrie_R7.json').write_text(json.dumps(report,indent=2)+'\n')
-    print('Retro R7: 7 solids, meshes, STEP, 21 part pairs, PCB and pressed reset PASS',flush=True)
+    (out/f'PRUEFUNG/Geometrie_{revision}.json').write_text(json.dumps(report,indent=2)+'\n')
+    print(f'Retro {revision}: {len(parts)} solids, meshes, STEP, {len(report["collisions_mm3"])} part pairs, PCB and pressed reset PASS',flush=True)
     return out
 
 
