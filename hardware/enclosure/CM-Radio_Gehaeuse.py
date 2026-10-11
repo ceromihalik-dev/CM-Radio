@@ -72,7 +72,8 @@ def make_models(p, engraving=True):
     # Ports are open to the rim of the base; lid tongues close the upper part.
     # This avoids wide horizontal bridges when printing the base upright.
     low = p["usb_bottom_z_assumed"]
-    port_high = h+5
+    usb_closed = p.get("usb_opening_style", "rim") == "closed"
+    port_high = p["usb_top_z_assumed"] if usb_closed else h+5
     base = base.cut(front_profile_cut(usb_x,(low+port_high)/2,p["usb_width"],port_high-low,
                                     p["usb_lower_corner_radius"],w+1,w+3))
     cd, cz = p["cable_exit_diameter"], p["cable_exit_center_z"]
@@ -81,9 +82,11 @@ def make_models(p, engraving=True):
         raise ValueError("cable_exit_side must be rear or usb")
     cable_ymax = w+1 if cable_side == "usb" else y+1
     cable_cut_y = -1 if cable_side == "usb" else y-w-1
+    cable_bores = p.get("cable_opening_style", "split") == "bore"
     for cx in p["cable_exit_x"]:
         base = base.cut(side_circle(cx,cz,cd/2,cable_ymax,w+3))
-        base = base.cut(box_at(cx-cd/2,cable_cut_y,cz,cd,w+3,h-cz+1))
+        if not cable_bores:
+            base = base.cut(box_at(cx-cd/2,cable_cut_y,cz,cd,w+3,h-cz+1))
     if p.get("ir_enabled", False):
         # Outside mouth at Y=0; taper through the wall towards the receiver.
         ir_x = usb_x + p["ir_offset_right_of_usb_centre"]
@@ -98,6 +101,13 @@ def make_models(p, engraving=True):
         cone = cone.union(side_circle(ir_x,ir_z,ir_inner,w+0.21,0.22))
         base = base.cut(cone)
     for ax,ay in p["cable_tie_anchors"]:
+        if p.get("cable_tie_anchor_style", "bridge") == "side_eyelet":
+            # Cable lies beside the eyelet, on the floor, not on its roof.
+            # Side-accessible 3.2 x 2 mm tie tunnel; roof 1.7 mm thick.
+            anchor = box_at(ax-2.5,ay-3.2,f-0.05,5,6.4,6.4-f+0.05)
+            tunnel = box_at(ax-3,ay-1.6,2.7,6,3.2,2.0)
+            base = base.union(anchor.cut(tunnel))
+            continue
         # Internal cable-tie bridge: a 4 mm horizontal tunnel, 2.5 mm high.
         anchor = box_at(ax-4,ay-3,f-0.05,8,6,5.05)
         tunnel = box_at(ax-2,ay-4,f+1,4,8,2.5)
@@ -136,21 +146,25 @@ def make_models(p, engraving=True):
                              h-p["lip_height"]-0.1).translate((li,li,0)))
     for hx,hy in lid_holes:
         lip = lip.cut(cyl(hx,hy,h-5,p["lid_boss_diameter"]/2+0.65,6))
-    lip = lip.cut(box_at(usb_x-p["usb_width"]/2-1,-1,h-6,p["usb_width"]+2,w+5,8))
-    for cx in p["cable_exit_x"]:
-        lip_y = -1 if cable_side == "usb" else y-w-4
-        lip = lip.cut(box_at(cx-cd/2-1,lip_y,h-6,cd+2,w+5,8))
+    if not usb_closed:
+        lip = lip.cut(box_at(usb_x-p["usb_width"]/2-1,-1,h-6,p["usb_width"]+2,w+5,8))
+    if not cable_bores:
+        for cx in p["cable_exit_x"]:
+            lip_y = -1 if cable_side == "usb" else y-w-4
+            lip = lip.cut(box_at(cx-cd/2-1,lip_y,h-6,cd+2,w+5,8))
     lid = lid.union(lip)
     tw=p["port_tongue_thickness"]
     tc=p["port_tongue_clearance"]
     top=p["usb_top_z_assumed"]
-    lid = lid.union(box_at(usb_x-p["usb_width"]/2+tc,(w-tw)/2,top,
-                          p["usb_width"]-2*tc,tw,h-top+0.05))
-    for cx in p["cable_exit_x"]:
-        tongue_y = (w-tw)/2 if cable_side == "usb" else y-w+(w-tw)/2
-        tongue = box_at(cx-cd/2+tc,tongue_y,cz,cd-2*tc,tw,h-cz+0.05)
-        tongue = tongue.cut(side_circle(cx,cz,cd/2,cable_ymax,w+3))
-        lid = lid.union(tongue)
+    if not usb_closed:
+        lid = lid.union(box_at(usb_x-p["usb_width"]/2+tc,(w-tw)/2,top,
+                              p["usb_width"]-2*tc,tw,h-top+0.05))
+    if not cable_bores:
+        for cx in p["cable_exit_x"]:
+            tongue_y = (w-tw)/2 if cable_side == "usb" else y-w+(w-tw)/2
+            tongue = box_at(cx-cd/2+tc,tongue_y,cz,cd-2*tc,tw,h-cz+0.05)
+            tongue = tongue.cut(side_circle(cx,cz,cd/2,cable_ymax,w+3))
+            lid = lid.union(tongue)
     for hx,hy in lid_holes:
         lid = lid.cut(cyl(hx,hy,h-1,p["lid_clearance_hole"]/2,lt+2))
     reset_x=p["board_offset_x"]+p.get("reset_x_from_board_left",0)

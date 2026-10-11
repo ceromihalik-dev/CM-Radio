@@ -8,8 +8,13 @@
     "speaker_cable_exit_diameter_requested_mm": 4.5,
     "supersedes_speaker_cable_exit_diameter_mm": 3.0,
     "usb_opening": "Keep existing USB opening; diameter request applies to the two round speaker cable exits",
+    "r3_cable_requirement": "Two simple full round bores below the PCB plane; no split openings or lid tongues",
+    "r3_cable_centre_z_mm": 6.2,
+    "r3_cable_upper_z_mm": 8.45,
+    "r3_usb_requirement": "Complete bounded cutout in base; remove lid closing tongue",
+    "r3_strain_relief": "Relocate to low side eyelets at X=73/92, Y=14, top Z=6.4 mm; route cable beside eyelet on floor",
     "existing_location": "USB on CAD Y=0 edge; two speaker cable exits on opposite CAD Y=80 edge",
-    "status": "Confirmed location and 4.5 mm diameter incorporated into W5 mechanical fit prototype; physical verification pending before final Retro revision"
+    "status": "W5 prototype superseded by requested Retro V0.3 R3 changes: low full cable bores, bounded USB cutout and revised nearby strain relief. Physical verification pending."
   },
   "source": "User measurements; height and USB photographs inspected locally",
   "photos": [

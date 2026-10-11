@@ -2,7 +2,7 @@ from pathlib import Path
 import numpy as np,cadquery as cq
 from PIL import Image,ImageDraw,ImageFont
 import argparse
-ap=argparse.ArgumentParser();ap.add_argument('root');args=ap.parse_args()
+ap=argparse.ArgumentParser();ap.add_argument('root');ap.add_argument('--design',choices=['Retro','Wave','all'],default='all');args=ap.parse_args()
 root=Path(args.root)
 font='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 def view(nodes,elev,azim):
@@ -30,7 +30,9 @@ def view(nodes,elev,azim):
    shade=b0*vertex_shade[idx[0]]+b1*vertex_shade[idx[1]]+b2*vertex_shade[idx[2]];region[mask]=depth[mask];rgb[y0:y1+1,x0:x1+1][mask]=np.clip(shade[mask,None]*color,0,255)
  return Image.fromarray(rgb)
 comparison=Image.new('RGB',(1860,970),'#f7f7f7');dc=ImageDraw.Draw(comparison)
-dc.text((40,25),'CM-Radio | Tatsächliche CAD-Modelle V0.3 R2',font=ImageFont.truetype(font,36),fill='#172929')
-for col,style in enumerate(('Retro','Wave')):
- a=cq.Assembly.importStep(str(root/style/'BAUGRUPPE_NICHT_DRUCKEN.step'));im=Image.new('RGB',(1860,1010),'#f7f7f7');d=ImageDraw.Draw(im);d.text((40,25),'CM-Radio '+style+' | V0.3 R2',font=ImageFont.truetype(font,36),fill='#172929');front=view(a.children,58,-70);im.paste(front,(20,100));im.paste(view(a.children,-65,-70),(940,100));d.text((70,930),'Tatsächliches CAD – Front',font=ImageFont.truetype(font,24),fill='#172929');d.text((990,930),'Rückwand und Schlüssellochaufnahmen',font=ImageFont.truetype(font,24),fill='#172929');im.save(root/style/'CAD_Vorschau.png');comparison.paste(front,(20+920*col,100));dc.text((70+920*col,910),'Modell '+str(col+3)+' – '+style,font=ImageFont.truetype(font,28),fill='#172929');print(style,'rendered',flush=True)
-comparison.save(root/'CM-Radio_Designvergleich_V03_R2.png')
+dc.text((40,25),'CM-Radio | Tatsächliche CAD-Modelle V0.3',font=ImageFont.truetype(font,36),fill='#172929')
+for col,style in enumerate(('Retro','Wave') if args.design=='all' else (args.design,)):
+ import json
+ params=json.loads((root/style/'parameter.json').read_text());revision=params['revision'].split()[-1]
+ a=cq.Assembly.importStep(str(root/style/'BAUGRUPPE_NICHT_DRUCKEN.step'));im=Image.new('RGB',(1860,1010),'#f7f7f7');d=ImageDraw.Draw(im);d.text((40,25),'CM-Radio '+style+' | V0.3 '+revision,font=ImageFont.truetype(font,36),fill='#172929');front=view(a.children,58,-70);im.paste(front,(20,100));im.paste(view(a.children,-65,-70),(940,100));d.text((70,930),'Tatsächliches CAD – Front',font=ImageFont.truetype(font,24),fill='#172929');d.text((990,930),'Rückwand und Schlüssellochaufnahmen',font=ImageFont.truetype(font,24),fill='#172929');im.save(root/style/'CAD_Vorschau.png');comparison.paste(front,(20+920*col,100));dc.text((70+920*col,910),'Modell '+str(3 if style=='Retro' else 4)+' – '+style,font=ImageFont.truetype(font,28),fill='#172929');print(style,'rendered',flush=True)
+if args.design=='all':comparison.save(root/'CM-Radio_Designvergleich_V03_R2.png')

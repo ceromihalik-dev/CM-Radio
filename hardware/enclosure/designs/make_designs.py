@@ -64,7 +64,9 @@ def wave_envelope():
     assert solid.isValid() and len(solid.Solids())==1
     return cq.Workplane(obj=solid)
 
-def make(style):
+def make(style,revision='R2'):
+    if revision not in ('R2','R3') or (revision=='R3' and style!='Retro'):
+        raise ValueError('R3 is available for Retro only')
     p=json.loads((ROOT.parent/'parameter.json').read_text())
     p.update(version='0.3',revision=style+' JLC R2',corner_radius=7.0,
              lid_thickness=3.6 if style=='Retro' else 6.0,
@@ -75,14 +77,24 @@ def make(style):
     # SLS/MJF guidance avoids small deep blind bores. Shallow printed pilot
     # pockets are drilling guides: complete the screw holes after delivery.
     p['lid_pilot_depth']=6.0;p['board_pilot_depth']=5.0
+    if revision=='R3':
+        p.update(revision='Retro JLC R3',cable_exit_side='usb',
+                 cable_opening_style='bore',cable_exit_diameter=4.5,
+                 cable_exit_center_z=6.2,usb_opening_style='closed',
+                 cable_tie_anchors=[[73.0,14.0],[92.0,14.0]],
+                 cable_tie_anchor_style='side_eyelet',ir_enabled=True,
+                 ir_offset_right_of_usb_centre=14.5,ir_height_above_pcb=5.0,
+                 ir_inner_diameter=6.0,ir_outer_diameter=8.0,
+                 ir_dimensions_provisional=True)
     d=m.make_models(p,False);base,lid=d['base'],d['lid'];h=p['base_height'];top=h+p['lid_thickness']
     rx=p['board_offset_x']+p['reset_x_from_board_left'];ry=p['board_offset_y']+p['reset_y_from_board_front']
     # Round only exterior front edges; do not alter bores or mating faces.
     exterior=[e for e in lid.edges().vals() if abs(e.BoundingBox().zmin-top)<1e-6 and abs(e.BoundingBox().zmax-top)<1e-6 and min(e.Center().x,104-e.Center().x,e.Center().y,80-e.Center().y)<3.0]
     if style=='Retro':
         lid=lid.newObject(exterior).fillet(1.2)
-    for ax,ay in p['cable_tie_anchors']:
-        base=base.union(m.box_at(ax-4,ay-3,7.35,8,6,0.55))
+    if p.get('cable_tie_anchor_style','bridge')=='bridge':
+        for ax,ay in p['cable_tie_anchors']:
+            base=base.union(m.box_at(ax-4,ay-3,7.35,8,6,0.55))
     # Strengthen retaining-plate mounting bosses (outside the PCB components
     # reference envelope); retain their shallow 2 mm printed drill guides.
     plate_top=p['reset_collar_top_z']-p['reset_collar_thickness']-p['reset_stroke']
@@ -147,16 +159,16 @@ def make(style):
     d.update(base=pieces['Unterteil'],lid=pieces['Deckel'])
     return p,d,pieces
 
-def export(style,out):
+def export(style,out,revision='R2'):
     import trimesh
-    p,d,parts=make(style);out=Path(out)/style;out.mkdir(parents=True,exist_ok=True)
+    p,d,parts=make(style,revision);out=Path(out)/style;out.mkdir(parents=True,exist_ok=True)
     for folder in ('STL_DRUCK','STEP_EINZELTEILE','PRUEFUNG'): (out/folder).mkdir(exist_ok=True)
-    report={'design':style,'revision':'V0.3-R2','unit':'mm','printed_fit_tested':False,'parts':{},'collisions_mm3':{}}
+    report={'design':style,'revision':'V0.3-'+revision,'unit':'mm','printed_fit_tested':False,'parts':{},'collisions_mm3':{}}
     for name,part in parts.items():
         shape=part.val();assert shape.isValid() and len(shape.Solids())==1,(style,name)
         x0,y0,z0,x1,y1,z1=m.exact_bounds(shape)
         # Print data: one closed component, min Z=0; no multi-part assembly.
-        printpart=part.translate((-x0,-y0,-z0));stem=f'CM-Radio_{style}_{name}_V03_R2'
+        printpart=part.translate((-x0,-y0,-z0));stem=f'CM-Radio_{style}_{name}_V03_{revision}'
         stl=out/'STL_DRUCK'/(stem+'.stl');step=out/'STEP_EINZELTEILE'/(stem+'.step')
         cq.exporters.export(printpart,str(stl),tolerance=0.025,angularTolerance=0.08)
         cq.exporters.export(printpart,str(step))
@@ -179,7 +191,7 @@ def export(style,out):
             v=pressed.val().intersect(parts[name].val()).Volume();assert v<1e-5,(name,'pressed',v)
             report['collisions_mm3']['Reset gedrueckt / '+name]=v
     maxhead=p['wall_mount_head_underside_gap']+p['wall_mount_screw_head_height_max']
-    report['mechanics']={'wall_mm':2.4,'floor_mm':2.4,'min_deck_design_mm':2.2 if style=='Retro' else 2.6,'lip_mm':2.0,'lid_clearance_per_side_mm':0.6,'reset_radial_clearance_mm':0.6,'reset_gap_mm':0.3,'reset_travel_mm':0.6,'pcb_hole_spacing_mm':[58,49],'pcb_bottom_z_mm':9.4,'pcb_thickness_mm':1.7,'screw_head_top_z_max_mm':maxhead,'screw_head_to_pcb_bottom_vertical_margin_mm':9.4-maxhead,'cable_diameter_mm':3.0,'mount_screw_spacing_mm':60.0}
+    report['mechanics']={'wall_mm':2.4,'floor_mm':2.4,'min_deck_design_mm':2.2 if style=='Retro' else 2.6,'lip_mm':2.0,'lid_clearance_per_side_mm':0.6,'reset_radial_clearance_mm':0.6,'reset_gap_mm':0.3,'reset_travel_mm':0.6,'pcb_hole_spacing_mm':[58,49],'pcb_bottom_z_mm':9.4,'pcb_thickness_mm':1.7,'screw_head_top_z_max_mm':maxhead,'screw_head_to_pcb_bottom_vertical_margin_mm':9.4-maxhead,'cable_diameter_mm':p['cable_exit_diameter'],'mount_screw_spacing_mm':60.0}
     report['design_details']={'ribs':10,'rib_width_mm':2.6,'rib_height_mm':2.15,'rib_top_radius_mm':1.1,'plaque_mm':[80,32,3.0]} if style=='Retro' else {'surface':'cubic B-spline','wave_height_difference_mm':2.0,'transition_width_10_90_mm':8.8,'perimeter_roll_mm':1.2,'perimeter_band_mm':3.0}
     ass=cq.Assembly(name='CM-Radio_'+style)
     colors={'Unterteil':(0.44,0.52,0.41) if style=='Retro' else (0.18,0.19,0.21),'Deckel':(0.44,0.52,0.41) if style=='Retro' else (0.05,0.43,0.48),'Fronteinsatz':(0.93,0.90,0.79),'Resetknopf':(0.18,0.19,0.21),'Reset_Halteplatte':(0.5,0.5,0.5)}
@@ -191,5 +203,6 @@ def export(style,out):
     return p,d,parts,report
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('--out',default=str(ROOT/'export'));ap.add_argument('--design',choices=['Retro','Wave','all'],default='all');args=ap.parse_args()
-    for s in (['Retro','Wave'] if args.design=='all' else [args.design]):export(s,args.out)
+    ap=argparse.ArgumentParser();ap.add_argument('--out',default=str(ROOT/'export'));ap.add_argument('--design',choices=['Retro','Wave','all'],default='all');ap.add_argument('--revision',choices=['R2','R3'],default='R2');args=ap.parse_args()
+    if args.revision=='R3' and args.design!='Retro':ap.error('R3 requires --design Retro')
+    for s in (['Retro','Wave'] if args.design=='all' else [args.design]):export(s,args.out,args.revision)

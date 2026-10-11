@@ -1,4 +1,24 @@
-# CM-Radio Retro und Wave – V0.3 R2
+# CM-Radio – Retro V0.3 R3 und Wave V0.3 R2
+
+Retro R3 setzt die am 11.10.2026 bestätigten Anschlussmaße um: zwei komplette
+Ø-4,5-mm-Kabelbohrungen in der unteren USB-Kante, Oberkante 0,95 mm unter der
+PCB-Unterseite; USB als geschlossener Ausschnitt vollständig im Unterteil,
+ohne Deckelzungen. Neue niedrige seitliche Kabelbinderösen liegen nahe den
+Kabelbohrungen. Die Kabel werden daneben auf dem Boden geführt. IR erhält
+einen vorläufigen 8/6-mm-Trichter an der gemessenen Position. Ausführliche
+Maße und Montagehinweise: [RETRO_R3_MONTAGE.md](RETRO_R3_MONTAGE.md).
+
+```sh
+python hardware/enclosure/designs/make_designs.py --design Retro --revision R3 --out output/Retro_R3
+python hardware/enclosure/designs/check_retro_r3.py output/Retro_R3
+python hardware/enclosure/designs/check_front.py output/Retro_R3 --design Retro
+python hardware/enclosure/designs/render_designs.py output/Retro_R3 --design Retro
+```
+
+Ohne `--revision R3` bleibt die bisherige R2-Geometrie reproduzierbar.
+Wave R2 wird durch die Retro-R3-Anschlussänderungen nicht verändert.
+
+## Bestehende R2-Referenz
 
 Parametrische Gehäusevarianten für das gelieferte Loud-ESP32 E3, mit denselben
 Platinen- und Anschlusskoordinaten wie V0.2 W4. Die Designbilder sind optische

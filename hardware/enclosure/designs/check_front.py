@@ -49,5 +49,5 @@ def check_front(root,style):
     print(style,'surface PASS',report,flush=True)
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('root');args=ap.parse_args()
-    for style in ('Retro','Wave'):check_front(args.root,style)
+    ap=argparse.ArgumentParser();ap.add_argument('root');ap.add_argument('--design',choices=['Retro','Wave','all'],default='all');args=ap.parse_args()
+    for style in (('Retro','Wave') if args.design=='all' else (args.design,)):check_front(args.root,style)
