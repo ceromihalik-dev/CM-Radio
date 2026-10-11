@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -r hardware/enclosure/requirements.txt reportlab==4.4.3 pypdf==6.1.1
+      - run: pip install -r hardware/enclosure/requirements.txt
       - run: python scripts/package_enclosure.py
       - uses: actions/upload-artifact@v4
         with:
