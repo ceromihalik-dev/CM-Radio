@@ -76,9 +76,27 @@ def make_models(p, engraving=True):
     base = base.cut(front_profile_cut(usb_x,(low+port_high)/2,p["usb_width"],port_high-low,
                                     p["usb_lower_corner_radius"],w+1,w+3))
     cd, cz = p["cable_exit_diameter"], p["cable_exit_center_z"]
+    cable_side = p.get("cable_exit_side", "rear")
+    if cable_side not in ("rear", "usb"):
+        raise ValueError("cable_exit_side must be rear or usb")
+    cable_ymax = w+1 if cable_side == "usb" else y+1
+    cable_cut_y = -1 if cable_side == "usb" else y-w-1
     for cx in p["cable_exit_x"]:
-        base = base.cut(side_circle(cx,cz,cd/2,y+1,w+3))
-        base = base.cut(box_at(cx-cd/2,y-w-1,cz,cd,w+3,h-cz+1))
+        base = base.cut(side_circle(cx,cz,cd/2,cable_ymax,w+3))
+        base = base.cut(box_at(cx-cd/2,cable_cut_y,cz,cd,w+3,h-cz+1))
+    if p.get("ir_enabled", False):
+        # Outside mouth at Y=0; taper through the wall towards the receiver.
+        ir_x = usb_x + p["ir_offset_right_of_usb_centre"]
+        ir_z = pcb_bottom + p["board_thickness_assumed"] + p["ir_height_above_pcb"]
+        ir_outer = p["ir_outer_diameter"]/2
+        ir_inner = p["ir_inner_diameter"]/2
+        if not ir_outer >= ir_inner > 0:
+            raise ValueError("IR funnel needs positive diameters, outer >= inner")
+        cone = cq.Workplane(obj=cq.Solid.makeCone(ir_outer, ir_inner, w,
+                             cq.Vector(ir_x,0,ir_z), cq.Vector(0,1,0)))
+        cone = cone.union(side_circle(ir_x,ir_z,ir_outer,0.01,0.21))
+        cone = cone.union(side_circle(ir_x,ir_z,ir_inner,w+0.21,0.22))
+        base = base.cut(cone)
     for ax,ay in p["cable_tie_anchors"]:
         # Internal cable-tie bridge: a 4 mm horizontal tunnel, 2.5 mm high.
         anchor = box_at(ax-4,ay-3,f-0.05,8,6,5.05)
@@ -120,7 +138,8 @@ def make_models(p, engraving=True):
         lip = lip.cut(cyl(hx,hy,h-5,p["lid_boss_diameter"]/2+0.65,6))
     lip = lip.cut(box_at(usb_x-p["usb_width"]/2-1,-1,h-6,p["usb_width"]+2,w+5,8))
     for cx in p["cable_exit_x"]:
-        lip = lip.cut(box_at(cx-cd/2-1,y-w-4,h-6,cd+2,w+5,8))
+        lip_y = -1 if cable_side == "usb" else y-w-4
+        lip = lip.cut(box_at(cx-cd/2-1,lip_y,h-6,cd+2,w+5,8))
     lid = lid.union(lip)
     tw=p["port_tongue_thickness"]
     tc=p["port_tongue_clearance"]
@@ -128,8 +147,9 @@ def make_models(p, engraving=True):
     lid = lid.union(box_at(usb_x-p["usb_width"]/2+tc,(w-tw)/2,top,
                           p["usb_width"]-2*tc,tw,h-top+0.05))
     for cx in p["cable_exit_x"]:
-        tongue = box_at(cx-cd/2+tc,y-w+(w-tw)/2,cz,cd-2*tc,tw,h-cz+0.05)
-        tongue = tongue.cut(side_circle(cx,cz,cd/2,y+1,w+3))
+        tongue_y = (w-tw)/2 if cable_side == "usb" else y-w+(w-tw)/2
+        tongue = box_at(cx-cd/2+tc,tongue_y,cz,cd-2*tc,tw,h-cz+0.05)
+        tongue = tongue.cut(side_circle(cx,cz,cd/2,cable_ymax,w+3))
         lid = lid.union(tongue)
     for hx,hy in lid_holes:
         lid = lid.cut(cyl(hx,hy,h-1,p["lid_clearance_hole"]/2,lt+2))
@@ -172,8 +192,8 @@ def make_models(p, engraving=True):
         actuator={"button":button.clean(),"button_print":button_print.clean(),"retainer":retainer.clean(),"retainer_print":retainer_print.clean(),"tip_z":tip,"stroke":p["reset_stroke"]}
     if engraving:
         texts=[("CM-Radio",10.0,x/2,y/2-9),
-               ("USB-C",3.0,usb_x,7.0),("L",3.0,p["cable_exit_x"][0],y-6),
-               ("R",3.0,p["cable_exit_x"][1],y-6)]
+               ("USB-C",3.0,usb_x,7.0),("L",3.0,p["cable_exit_x"][0],7 if cable_side == "usb" else y-6),
+               ("R",3.0,p["cable_exit_x"][1],7 if cable_side == "usb" else y-6)]
         if p.get("reset_enabled",False):
             texts.append(("RESET",2.5,reset_x,reset_y-8))
         for txt,size,tx,ty in texts:

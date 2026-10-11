@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-11",
+  "reference_print": "CM-Radio V0.2 W4",
+  "target_enclosure": "Model 3 Retro",
+  "source": "User measurement and two photographs",
+  "photos": [
+    "grafik(20261011-081409).png",
+    "grafik(20261011-081438).png"
+  ],
+  "ir_receiver": {
+    "wall": "USB side",
+    "horizontal_offset_right_of_usb_mm": 10.0,
+    "horizontal_datum": "Confirmed by user: right metal edge of USB socket to IR receiver centre",
+    "usb_socket_width_measured_mm": 9.0,
+    "derived_offset_right_of_usb_centre_mm": 14.5,
+    "centre_height_above_pcb_mm": 5.0,
+    "height_datum": "Interpreted as top surface of PCB",
+    "receiver_optical_face_size_mm": null,
+    "required_aperture": true,
+    "aperture_shape_requested": "Funnel-shaped",
+    "aperture_shape_interpretation": "Flared outside entrance tapering towards the receiver on the inside",
+    "aperture_inner_and_outer_dimensions_mm": {
+      "inner_diameter": 6.0,
+      "outer_diameter": 8.0,
+      "status": "Provisional engineering choice for W5 fit prototype; not a receiver size measurement"
+    }
+  },
+  "existing_cad_reference": {
+    "pcb_bottom_z_mm": 9.4,
+    "pcb_thickness_mm": 1.7,
+    "pcb_top_z_mm": 11.1,
+    "derived_ir_centre_z_mm": 16.1,
+    "usb_centre_x_mm": 20.2,
+    "derived_ir_centre_x_mm": 34.7,
+    "usb_opening_width_mm": 18.0
+  },
+  "status": "Horizontal datum confirmed. IR centre is 14.5 mm right of USB centre, derived from 9 mm socket width and 10 mm right-edge offset; CAD gives X=34.7 mm and Z=16.1 mm. W5 fit prototype uses a provisional 8 mm outside / 6 mm inside funnel. Verify visibility and reception at the board; receiver face dimensions remain unmeasured. Existing W4 and R2 default geometry retained."
+}
