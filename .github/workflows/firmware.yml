@@ -25,6 +25,8 @@ jobs:
         with:
           node-version: '22'
       - run: pip install -r requirements-dev.txt
+      - name: Generate UI and changelog from current sources
+        run: python scripts/embed_web.py
       - run: python -m platformio run -d firmware
       - run: python scripts/check_project.py
       - run: python scripts/package_firmware.py
