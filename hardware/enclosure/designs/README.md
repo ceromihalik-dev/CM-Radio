@@ -1,10 +1,26 @@
-Aktueller Display-Prototyp für Modell 3: **V0.3 R5 Display**.
+Aktueller Druckstand für Modell 3: **V0.3 R6 ohne Display**.
+R4-Anschlussgeometrie mit bestätigten Kabelauslässen; Platinen-Piloten jetzt
+Ø 2,0 × 5 mm, Reset-Piloten Ø 2,0 × 5 mm statt nur 3 mm tief.
+M3-Piloten Ø 2,5 × 6 mm, nachzuschneidendes Gewinde. Alle zehn Kernlöcher
+am reimportierten STEP vermessen; CAD-Prüfung ersetzt keine Schrauben-Passprobe.
+Siehe [RETRO_R6_MONTAGE.md](RETRO_R6_MONTAGE.md).
+
+```sh
+python hardware/enclosure/designs/make_designs.py --design Retro --revision R6 --out output/Retro_R6
+python hardware/enclosure/designs/check_retro_r4.py output/Retro_R6
+python hardware/enclosure/designs/check_retro_r6_screws.py output/Retro_R6
+python hardware/enclosure/designs/check_front.py output/Retro_R6 --design Retro
+python hardware/enclosure/designs/make_retro_r6_probe.py output/Retro_R6
+python hardware/enclosure/designs/render_retro_r6.py output/Retro_R6
+```
+
+**V0.3 R5 Display** ist als separater Prototyp zurückgestellt.
 Neuer Deckel, Fronteinsatz und U-Displayhalter; R4-Unterteil unverändert.
 Elecrow-Flex: ca. 50 mm freie Kabellänge vom Anwender bestätigt. Panelmaß
 nach verlinkter Zeichnung; 0,7-mm-Zeichnungsvariante nicht mit dem 0,5-mm-Board
 verwechseln. Siehe [RETRO_R5_DISPLAY_MONTAGE.md](RETRO_R5_DISPLAY_MONTAGE.md).
 
-Aktueller Retro-Stand: **V0.3 R4** – linker Kabelauslass um 10 mm
+Displayfreie Referenz: **V0.3 R4** – linker Kabelauslass um 10 mm
 nach rechts versetzt, Kabel rechts an der linken Öse vorbei; kompletter Kabelweg kollisionsgeprüft.
 Siehe [RETRO_R4_MONTAGE.md](RETRO_R4_MONTAGE.md). R3 ist durch R4 ersetzt.
 

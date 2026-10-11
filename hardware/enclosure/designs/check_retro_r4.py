@@ -8,7 +8,8 @@ import cadquery as cq
 def check(root):
     out=Path(root)/'Retro'
     p=json.loads((out/'parameter.json').read_text())
-    assert p['revision']=='Retro JLC R4'
+    assert p['revision'] in ('Retro JLC R4','Retro JLC R6')
+    revision=p['revision'].split()[-1]
     ass=cq.Assembly.importStep(str(out/'BAUGRUPPE_NICHT_DRUCKEN.step'))
     parts={n.name:(n.obj.val() if isinstance(n.obj,cq.Workplane) else n.obj) for n in ass.children}
     base,lid=parts['Unterteil'],parts['Deckel']
@@ -72,7 +73,7 @@ def check(root):
     oldvolume=oldroute.intersect(offendingpost).Volume()
     assert oldvolume>0
     report={
-        'revision':'Retro V0.3 R4','result':'PASS',
+        'revision':'Retro V0.3 '+revision,'result':'PASS',
         'cable_openings':'Two full round bores, no rim slots or lid tongues',
         'cable_centres_x_mm':p['cable_exit_x'],
         'full_cable_route_y_mm':[-1,23],
@@ -95,8 +96,8 @@ def check(root):
         'all_electronic_components_modelled':False,'physical_fit_required':True,
         'checks':'STEP solid point containment and simplified cable/plug volume intersections'
     }
-    (out/'PRUEFUNG/Anschluesse_Zugentlastung_R4.json').write_text(json.dumps(report,indent=2)+'\n')
-    print('Retro R4 Anschlüsse und Zugentlastung PASS',flush=True)
+    (out/f'PRUEFUNG/Anschluesse_Zugentlastung_{revision}.json').write_text(json.dumps(report,indent=2)+'\n')
+    print('Retro '+revision+' Anschlüsse und Zugentlastung PASS',flush=True)
 
 
 if __name__=='__main__':
