@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-11",
+  "module": "Elecrow PIAOLED SH1106 30-pin",
+  "user_confirmed_free_fpc_length_approx_mm": 50,
+  "length_includes_panel": false,
+  "cable_outlets_R4_user_status": "PASS",
+  "panel_dimensions_mm_reference": [
+    34.5,
+    23,
+    1.4
+  ],
+  "panel_dimensions_confirmed_for_elecrow": false,
+  "reference_drawing_fpc_pitch_mm": 0.7,
+  "elecrow_and_E3_fpc_pitch_mm": 0.5,
+  "physical_R5_fit_status": "PENDING"
+}

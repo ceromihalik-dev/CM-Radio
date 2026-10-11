@@ -1,3 +1,9 @@
+Aktueller Display-Prototyp für Modell 3: **V0.3 R5 Display**.
+Neuer Deckel, Fronteinsatz und U-Displayhalter; R4-Unterteil unverändert.
+Elecrow-Flex: ca. 50 mm freie Kabellänge vom Anwender bestätigt. Panelmaß
+nach verlinkter Zeichnung; 0,7-mm-Zeichnungsvariante nicht mit dem 0,5-mm-Board
+verwechseln. Siehe [RETRO_R5_DISPLAY_MONTAGE.md](RETRO_R5_DISPLAY_MONTAGE.md).
+
 Aktueller Retro-Stand: **V0.3 R4** – linker Kabelauslass um 10 mm
 nach rechts versetzt, Kabel rechts an der linken Öse vorbei; kompletter Kabelweg kollisionsgeprüft.
 Siehe [RETRO_R4_MONTAGE.md](RETRO_R4_MONTAGE.md). R3 ist durch R4 ersetzt.

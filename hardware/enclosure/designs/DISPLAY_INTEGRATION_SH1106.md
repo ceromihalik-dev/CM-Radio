@@ -1,3 +1,13 @@
+## Aktualisierung 11.10.2026 – R5 Display-Prototyp
+
+Deckel mit Fenster, U-Halter und Kabelraum ist umgesetzt. Elecrow-Flexkabel:
+ca. 50 mm **freie Kabellänge ab Modul**, vom Anwender bestätigt. Konstruktion
+und Prüfung siehe `RETRO_R5_DISPLAY_MONTAGE.md`, `make_retro_display.py` und
+`check_retro_display_step.py`. Die neu verlinkte SparkFun-Zeichnung liefert
+Panel 34,5×23×1,4 mm, gehört aber zur **0,7-mm-FPC-Variante**; Elecrow/E3
+verwendet 0,5 mm. Panelmaßgleichheit und echte Passung bleiben zu prüfen.
+Die nachfolgende ursprüngliche Vorprüfung bleibt als historische Referenz.
+
 # CM-Radio Retro – Prüfung SH1106-Display
 
 Stand 11.10.2026; Gehäusebasis V0.3 R4. Ergebnis: elektrisch grundsätzlich
