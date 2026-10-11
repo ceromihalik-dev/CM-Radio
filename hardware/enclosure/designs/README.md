@@ -6,6 +6,11 @@ JLC3DP: 3201PA-F SLS Grauschwarz / 3301PA SLS Weiß, keine Lackierung.
 Außenmaß **104 × 80 × 36 mm**, Platinenraster 58 × 49 mm.
 Siehe [RETRO_R8_MONTAGE.md](RETRO_R8_MONTAGE.md). Physische R8-Abnahme steht aus.
 
+Explosionszeichnung mit Schrauben- und Einsatzreferenzen:
+`render_retro_r8_exploded.py`. Materialliste:
+[MATERIALLISTE_R8.md](MATERIALLISTE_R8.md), 10 Schrauben und 10 Messinggewinde.
+Explosionsabstände sind Darstellungsabstände; Explosions-STEP nicht drucken.
+
 ```sh
 python hardware/enclosure/designs/make_retro_r8.py output/Retro_R8
 python hardware/enclosure/designs/check_retro_r4.py output/Retro_R8
@@ -13,6 +18,7 @@ python hardware/enclosure/designs/check_retro_r8.py output/Retro_R8
 python hardware/enclosure/designs/check_front.py output/Retro_R8 --design Retro
 python hardware/enclosure/designs/make_retro_r8_probe.py output/Retro_R8
 python hardware/enclosure/designs/render_retro_r8.py output/Retro_R8
+python hardware/enclosure/designs/render_retro_r8_exploded.py output/Retro_R8
 ```
 
 Zurückgestellter Vorgänger: **V0.3 R7 ohne Display**.
