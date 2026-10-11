@@ -64,7 +64,7 @@ def wave_envelope():
     assert solid.isValid() and len(solid.Solids())==1
     return cq.Workplane(obj=solid)
 
-def make(style,revision='R2'):
+def make(style,revision='R2',overrides=None):
     if revision not in ('R2','R3','R4','R6') or (revision in ('R3','R4','R6') and style!='Retro'):
         raise ValueError('R3/R4/R6 are available for Retro only')
     p=json.loads((ROOT.parent/'parameter.json').read_text())
@@ -98,6 +98,8 @@ def make(style,revision='R2'):
                                           'diameter_mm':2.5,'length_mm':6.0},
                                   'lid':{'type':'M3x0.5, 90-degree countersunk',
                                          'length_mm':8.0,'head_diameter_max_mm':5.6}})
+    if overrides:
+        p.update(overrides)
     d=m.make_models(p,False);base,lid=d['base'],d['lid'];h=p['base_height'];top=h+p['lid_thickness']
     rx=p['board_offset_x']+p['reset_x_from_board_left'];ry=p['board_offset_y']+p['reset_y_from_board_front']
     # Round only exterior front edges; do not alter bores or mating faces.

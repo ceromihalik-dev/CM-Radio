@@ -1,4 +1,21 @@
-Aktueller Druckstand für Modell 3: **V0.3 R6 ohne Display**.
+Aktueller Druckstand für Modell 3: **V0.3 R7 ohne Display**.
+Zwölf nachträglich einzusetzende ruthex-Messinggewinde (4 M3 SHORT / 8 M2),
+wechselbarer Fronteinsatz mit zwei verdeckten Haltebügeln, seitliche nach
+unten offene Lüftungshauben und innere Prallwand vor den unteren Schlitzen.
+JLC3DP-Materialfarben: 3201PA-F SLS Grauschwarz / 3301PA SLS Weiß, keine Lackierung.
+Körper 104 × 80 × 36 mm, Gesamtmaß mit Hauben **114 × 80 × 36 mm**.
+Siehe [RETRO_R7_MONTAGE.md](RETRO_R7_MONTAGE.md). Physische R7-Abnahme steht aus.
+
+```sh
+python hardware/enclosure/designs/make_retro_r7.py output/Retro_R7
+python hardware/enclosure/designs/check_retro_r4.py output/Retro_R7
+python hardware/enclosure/designs/check_retro_r7.py output/Retro_R7
+python hardware/enclosure/designs/check_front.py output/Retro_R7 --design Retro
+python hardware/enclosure/designs/make_retro_r7_probe.py output/Retro_R7
+python hardware/enclosure/designs/render_retro_r7.py output/Retro_R7
+```
+
+Displayfreie Vorgängerversion: **V0.3 R6 ohne Display**.
 R4-Anschlussgeometrie mit bestätigten Kabelauslässen; Platinen-Piloten jetzt
 Ø 2,0 × 5 mm, Reset-Piloten Ø 2,0 × 5 mm statt nur 3 mm tief.
 M3-Piloten Ø 2,5 × 6 mm, nachzuschneidendes Gewinde. Alle zehn Kernlöcher

@@ -8,7 +8,7 @@ import cadquery as cq
 def check(root):
     out=Path(root)/'Retro'
     p=json.loads((out/'parameter.json').read_text())
-    assert p['revision'] in ('Retro JLC R4','Retro JLC R6')
+    assert p['revision'] in ('Retro JLC R4','Retro JLC R6','Retro JLC R7')
     revision=p['revision'].split()[-1]
     ass=cq.Assembly.importStep(str(out/'BAUGRUPPE_NICHT_DRUCKEN.step'))
     parts={n.name:(n.obj.val() if isinstance(n.obj,cq.Workplane) else n.obj) for n in ass.children}
@@ -66,7 +66,7 @@ def check(root):
                     cq.Vector(p['board_offset_x']+bx,p['board_offset_y']+by,p['floor']),cq.Vector(0,0,1))
                 assert route.intersect(post).Volume()<1e-5
                 distances.append(route.distance(post))
-    assert min(distances)>2.3
+    assert min(distances)>(1.8 if revision=='R7' else 2.3)
     # Regression proof: the old left route really intersects the R3 front post.
     oldroute=cq.Solid.makeCylinder(radius,24,cq.Vector(68,-1,6.2),cq.Vector(0,1,0))
     offendingpost=cq.Solid.makeCylinder(2.9,7,cq.Vector(70.5,6.7,2.4),cq.Vector(0,0,1))

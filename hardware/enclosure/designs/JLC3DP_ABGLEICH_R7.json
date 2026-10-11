@@ -1,0 +1,33 @@
+{
+  "checked_date": "2026-10-11",
+  "project": "CM-Radio Retro V0.3 R7",
+  "native_color_selection": {
+    "body": {"material": "3201PA-F Nylon", "process": "SLS", "supplier_color": "Grayish Black", "source": "https://jlc3dp.com/help/article/3201pa-f-nylon"},
+    "front": {"material": "3301PA Nylon", "process": "SLS", "supplier_color": "White", "source": "https://jlc3dp.com/help/article/3301pa-nylon"},
+    "painting_required": false,
+    "RAL_match_claimed": false
+  },
+  "spray_painting": {
+    "source": "https://jlc3dp.com/help/article/questions-about-jlc3dp-spray-painting",
+    "page_last_updated": "2026-07-24",
+    "listed_colors": ["Sky Blue", "Silver", "White", "Red", "Black"],
+    "nylon_finish": "Matte only",
+    "single_color_per_part": true,
+    "custom_colors_supported": false,
+    "sage_green_and_ivory_confirmed": false
+  },
+  "insert_selection": {
+    "installation": "Own post-print thermal installation; not provider-standard insert service",
+    "M3": {"product": "ruthex RX-M3Sx4.0 SHORT", "outside_diameter_mm": 4.6, "length_mm": 4.0, "recommended_hole_mm": 4.0, "recommended_min_depth_mm": 5.0, "recommended_min_wall_mm": 1.6, "CAD_hole_depth_mm": 6.0, "source": "https://www.ruthex.de/products/ruthex-gewindeeinsatz-m3s-100stuck-rx-m3x4-0-short-messing-gewindebuchsen-fur-3d-druck"},
+    "M2": {"product": "ruthex RX-M2x4", "outside_diameter_mm": 3.6, "length_mm": 4.0, "recommended_hole_mm": 3.2, "recommended_min_depth_mm": 5.0, "recommended_min_wall_mm": 1.3, "CAD_hole_depth_mm": 5.0, "source": "https://www.ruthex.de/collections/gewindeeinsatze/products/ruthex-gewindeeinsatz-m2-70-stuck-rx-m2x4-messing-gewindebuchsen"},
+    "dimensions_basis": "Manufacturer product-package dimensional drawings, checked against manufacturer STEP bounding boxes",
+    "physical_installation_in_selected_nylons_tested": false
+  },
+  "provider_insert_service": {
+    "source": "https://jlc3dp.com/help/article/threaded-insert-service",
+    "supported_threads": ["M3", "M4", "M5"],
+    "min_hole_wall_mm": 3.0,
+    "min_flat_mounting_area_mm": [14, 14],
+    "compatible_with_this_R7_ruthex_design": false
+  }
+}
