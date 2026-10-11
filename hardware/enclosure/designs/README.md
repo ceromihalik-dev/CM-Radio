@@ -10,6 +10,9 @@ Explosionszeichnung mit Schrauben- und Einsatzreferenzen:
 `render_retro_r8_exploded.py`. Materialliste:
 [MATERIALLISTE_R8.md](MATERIALLISTE_R8.md), 10 Schrauben und 10 Messinggewinde.
 Explosionsabstände sind Darstellungsabstände; Explosions-STEP nicht drucken.
+Material- und Bestellangaben: [DRUCKMATERIALIEN_R8.md](DRUCKMATERIALIEN_R8.md).
+Jedem Release aktuelle Explosion, Materialliste, Druckmaterialangaben,
+Montageanleitung und ausführliche USB-Erstinstallationsanleitung beilegen.
 
 ```sh
 python hardware/enclosure/designs/make_retro_r8.py output/Retro_R8
