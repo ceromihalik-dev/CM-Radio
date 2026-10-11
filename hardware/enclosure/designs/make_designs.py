@@ -65,8 +65,8 @@ def wave_envelope():
     return cq.Workplane(obj=solid)
 
 def make(style,revision='R2'):
-    if revision not in ('R2','R3') or (revision=='R3' and style!='Retro'):
-        raise ValueError('R3 is available for Retro only')
+    if revision not in ('R2','R3','R4') or (revision in ('R3','R4') and style!='Retro'):
+        raise ValueError('R3/R4 are available for Retro only')
     p=json.loads((ROOT.parent/'parameter.json').read_text())
     p.update(version='0.3',revision=style+' JLC R2',corner_radius=7.0,
              lid_thickness=3.6 if style=='Retro' else 6.0,
@@ -77,7 +77,7 @@ def make(style,revision='R2'):
     # SLS/MJF guidance avoids small deep blind bores. Shallow printed pilot
     # pockets are drilling guides: complete the screw holes after delivery.
     p['lid_pilot_depth']=6.0;p['board_pilot_depth']=5.0
-    if revision=='R3':
+    if revision in ('R3','R4'):
         p.update(revision='Retro JLC R3',cable_exit_side='usb',
                  cable_opening_style='bore',cable_exit_diameter=4.5,
                  cable_exit_center_z=6.2,usb_opening_style='closed',
@@ -86,6 +86,9 @@ def make(style,revision='R2'):
                  ir_offset_right_of_usb_centre=14.5,ir_height_above_pcb=5.0,
                  ir_inner_diameter=6.0,ir_outer_diameter=8.0,
                  ir_dimensions_provisional=True)
+    if revision=='R4':
+        p.update(revision='Retro JLC R4',cable_exit_x=[78.0,87.0],
+                 cable_tie_anchors=[[73.0,14.0],[92.0,14.0]])
     d=m.make_models(p,False);base,lid=d['base'],d['lid'];h=p['base_height'];top=h+p['lid_thickness']
     rx=p['board_offset_x']+p['reset_x_from_board_left'];ry=p['board_offset_y']+p['reset_y_from_board_front']
     # Round only exterior front edges; do not alter bores or mating faces.
@@ -203,6 +206,6 @@ def export(style,out,revision='R2'):
     return p,d,parts,report
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('--out',default=str(ROOT/'export'));ap.add_argument('--design',choices=['Retro','Wave','all'],default='all');ap.add_argument('--revision',choices=['R2','R3'],default='R2');args=ap.parse_args()
-    if args.revision=='R3' and args.design!='Retro':ap.error('R3 requires --design Retro')
+    ap=argparse.ArgumentParser();ap.add_argument('--out',default=str(ROOT/'export'));ap.add_argument('--design',choices=['Retro','Wave','all'],default='all');ap.add_argument('--revision',choices=['R2','R3','R4'],default='R2');args=ap.parse_args()
+    if args.revision in ('R3','R4') and args.design!='Retro':ap.error('R3/R4 require --design Retro')
     for s in (['Retro','Wave'] if args.design=='all' else [args.design]):export(s,args.out,args.revision)

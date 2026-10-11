@@ -1,3 +1,7 @@
+Aktueller Retro-Stand: **V0.3 R4** – linker Kabelauslass um 10 mm
+nach rechts versetzt, Kabel rechts an der linken Öse vorbei; kompletter Kabelweg kollisionsgeprüft.
+Siehe [RETRO_R4_MONTAGE.md](RETRO_R4_MONTAGE.md). R3 ist durch R4 ersetzt.
+
 # CM-Radio – Retro V0.3 R3 und Wave V0.3 R2
 
 Retro R3 setzt die am 11.10.2026 bestätigten Anschlussmaße um: zwei komplette
