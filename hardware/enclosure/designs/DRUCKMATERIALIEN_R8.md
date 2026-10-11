@@ -1,6 +1,15 @@
 # CM-Radio Retro R8 - JLC3DP-Druckmaterialien
 
-Aktuelle Auswahl für **V0.3 R8 ohne Display**, Herstellerangaben geprüft
+Aktuelle Nutzerfertigung für **V0.3 R8 ohne Display**: alle fünf Teile aus
+Resin. Konkrete Resin-Sorten/Farben sind nicht für alle Teile bestätigt;
+den tatsächlichen Auftrag abgleichen. `RESIN_HINWEIS_R8.md` beachten:
+keine thermische Montage, keine Resin-Freigabe der unveränderten R8-Piloten.
+
+Zollbeschreibung:
+`3D-printed resin (plastic) enclosure parts. No electronic components included.`
+
+Die nachfolgenden Angaben beschreiben die **bisherige Thermoplast-Referenz**,
+keine aktuelle Resin-Bestellung. Herstellerangaben geprüft
 am **11.10.2026**. Alle fünf Einzelteile je einmal bestellen; Einheit mm,
 Maßstab 100 %. Farbe ist die dokumentierte Materialfarbe, keine RAL-Zuordnung.
 

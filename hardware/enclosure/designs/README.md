@@ -2,7 +2,11 @@ Aktueller Druckstand für Modell 3: **V0.3 R8 ohne Display**.
 Offene Lüftungsschlitze; R7-Schutzhauben und innere Prallwand entfernt.
 Glatte Front zum Aufkleben mit 0,2 mm Klebespalt; keine Laschen oder Frontbügel.
 Fünf Druckteile, zehn ruthex-Messinggewinde (4 M3 SHORT / 6 M2).
-JLC3DP: 3201PA-F SLS Grauschwarz / 3301PA SLS Weiß, keine Lackierung.
+Aktueller Nutzerauftrag: Resin; genaue Sorten und Farben nicht bestätigt.
+Bisherige Referenzauslegung: 3201PA-F / 3301PA SLS-Nylon.
+**Resin nicht thermisch mit Einsätzen bestücken.** Die R8-Piloten benötigen
+für Klebemontage eine Anpassung und Musterprüfung; keine Resin-Freigabe.
+Siehe [RESIN_HINWEIS_R8.md](RESIN_HINWEIS_R8.md). Geometrie unverändert.
 Außenmaß **104 × 80 × 36 mm**, Platinenraster 58 × 49 mm.
 Siehe [RETRO_R8_MONTAGE.md](RETRO_R8_MONTAGE.md). Physische R8-Abnahme steht aus.
 
@@ -13,6 +17,10 @@ Explosionsabstände sind Darstellungsabstände; Explosions-STEP nicht drucken.
 Material- und Bestellangaben: [DRUCKMATERIALIEN_R8.md](DRUCKMATERIALIEN_R8.md).
 Jedem Release aktuelle Explosion, Materialliste, Druckmaterialangaben,
 Montageanleitung und ausführliche USB-Erstinstallationsanleitung beilegen.
+Reproduzierbare Release-Pakete: `python scripts/package_enclosure.py`.
+GitHub Actions veröffentlicht beide ZIPs und Einzeldokumente am zugehörigen
+Firmware-Release; die Firmware-Binärdateien eines bestehenden Releases
+werden dabei nicht überschrieben.
 
 ```sh
 python hardware/enclosure/designs/make_retro_r8.py output/Retro_R8

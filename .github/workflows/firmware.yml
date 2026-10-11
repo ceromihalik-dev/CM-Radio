@@ -10,6 +10,8 @@ permissions:
 env:
   PLATFORMIO_SETTING_ENABLE_TELEMETRY: 'no'
 jobs:
+  enclosure:
+    uses: ./.github/workflows/enclosure.yml
   build:
     runs-on: ubuntu-24.04
     steps:
@@ -30,7 +32,7 @@ jobs:
           path: dist/CM-Radio-V0.1.3-09/
   release:
     if: github.event_name != 'pull_request'
-    needs: build
+    needs: [build, enclosure]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -39,6 +41,11 @@ jobs:
         with:
           name: CM-Radio-WROVER-V0.1.3-09
           path: firmware
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: CM-Radio-Enclosure-R8
+          path: enclosure
       - name: Prepare release metadata and archive
         shell: bash
         run: |
@@ -81,3 +88,11 @@ jobs:
           gh release create "$RELEASE_TAG" "$RELEASE_ARCHIVE" \
             --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --title "CM-Radio $RELEASE_TAG" --notes-file release-notes.md
+      - name: Publish current enclosure and documentation
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$RELEASE_TAG" enclosure/* \
+            --repo "$GITHUB_REPOSITORY" --clobber
+          python3 scripts/release_enclosure_notes.py "$RELEASE_TAG"

@@ -1,0 +1,59 @@
+name: Enclosure release
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'hardware/enclosure/**'
+      - 'scripts/package_enclosure.py'
+      - 'scripts/enclosure_pdf.py'
+      - '.github/workflows/enclosure.yml'
+permissions:
+  contents: read
+concurrency:
+  group: enclosure-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r hardware/enclosure/requirements.txt reportlab==4.4.3 pypdf==6.1.1
+      - run: python scripts/package_enclosure.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CM-Radio-Enclosure-R8
+          path: |
+            dist/enclosure-release/*.zip
+            dist/enclosure-release/*.pdf
+            dist/enclosure-release/*.png
+            dist/enclosure-release/*.csv
+            dist/enclosure-release/*.txt
+  publish:
+    if: github.workflow == 'Enclosure release'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: CM-Radio-Enclosure-R8
+          path: enclosure
+      - name: Attach current enclosure to firmware release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RELEASE_TAG=$(python -c 'import sys;sys.path.insert(0,"scripts");from package_enclosure import firmware_release;v,b=firmware_release();print(f"v{v}-build{b}")')
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Firmware release does not exist yet; firmware workflow will attach enclosure assets."
+            exit 0
+          fi
+          gh release upload "$RELEASE_TAG" enclosure/* --clobber --repo "$GITHUB_REPOSITORY"
+          python scripts/release_enclosure_notes.py "$RELEASE_TAG"

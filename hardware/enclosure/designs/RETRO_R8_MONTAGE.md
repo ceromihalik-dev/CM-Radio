@@ -4,6 +4,11 @@ Stand: 11.10.2026. Maße in **mm**, Druck **1:1 / 100 %**.
 Fünf Druckteile, zehn Messinggewindeeinsätze. Außenmaß **104 × 80 × 36 mm**.
 Keine sichtbare Versionsnummer am Gehäuse.
 
+**Aktuelle Resin-Fertigung:** Vor Montage `RESIN_HINWEIS_R8.md` lesen.
+Thermische Montage in dieser Referenzanleitung gilt nur für Thermoplast.
+Resin-Aufnahmen müssen vor Klebemontage angepasst und am Muster geprüft
+werden; die veröffentlichten R8-Bohrungen bleiben unverändert.
+
 ## Änderung gegenüber R7
 
 Seitliche Schutzhauben und innere Prallwand entfernt. Die drei Schlitze je
@@ -13,7 +18,7 @@ Frontgewinde, Frontschrauben oder Silikon-Zwischenlagen. Die früheren
 Laschendurchbrüche im Deckel sind geschlossen. Metallgewinde für Deckel,
 Platine und Reset-Halteplatte bleiben erhalten. R5 mit Display bleibt zurückgestellt.
 
-## Druckteile, Material und Farbe
+## Druckteile, bisherige Thermoplast-Referenzmaterialien und Farben
 
 | Teil | Anzahl | JLC3DP-Material / dokumentierte Materialfarbe |
 |---|---:|---|
@@ -50,7 +55,8 @@ Die Deckelbefestigung am Unterteil bleibt verschraubt.
 
 ## Metallgewindeeinsätze und Schrauben
 
-Einsätze separat beschaffen und **nach dem Druck thermisch einsetzen**.
+Einsätze separat beschaffen; **nur bei Thermoplast thermisch einsetzen**.
+Bei Resin gelten Anpassung und Klebemontage nach `RESIN_HINWEIS_R8.md`.
 Druckdateien enthalten Bohrungen, kein Metall. Keine Gewinde in die
 Kunststoffbohrungen schneiden; sie sind für die folgenden Einsätze ausgelegt.
 

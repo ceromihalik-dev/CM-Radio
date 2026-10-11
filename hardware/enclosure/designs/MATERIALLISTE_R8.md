@@ -3,6 +3,11 @@
 Für **ein Gehäuse V0.3 R8 ohne Display**, ohne Reserveteile / optionale Probe.
 Die Bildpositionen beziehen sich auf `CM-Radio_Retro_R8_Explosionszeichnung.png`.
 
+**Resin-Fertigung:** Diese Hardwareliste beschreibt die R8-Referenz.
+Keine thermische Montage in Resin. Die unveränderten Pilotbohrungen sind
+für Klebemontage zu klein; Anpassung und Musterprüfung erforderlich.
+Siehe `RESIN_HINWEIS_R8.md`. Physische Resin-Abnahme steht aus.
+
 | Bild | Menge | Teil | Ausführung / Maße | Verwendung |
 |---|---:|---|---|---|
 | A | 4 | M3 × 8 mm Schraube | 90° Senkkopf, Kopf Ø höchstens 5,6 mm; Länge einschließlich Kopf | Deckel |
@@ -19,7 +24,7 @@ Einsatzlänge 4 mm für beide Typen; Standard-M3-Einsätze mit anderer Länge
 oder anderem Außendurchmesser passen nicht ohne neue Auslegung.
 
 Aufnahmebohrungen: M3 Ø **4,0 × 6,0 mm**, M2 Ø **3,2 × 5,0 mm**.
-Nachträglich thermisch und bündig einsetzen; JLC-Standard-Einsatzservice
+Nur in Thermoplast nachträglich thermisch und bündig einsetzen; JLC-Standard-Einsatzservice
 wird für diese kompakten ruthex-Aufnahmen nicht beauftragt. Erst an der
 optionalen Einsatzprobe Material / Maß / Einsetzprozess prüfen.
 
